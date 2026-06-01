@@ -1,0 +1,214 @@
+// ─── Dashboard header ─────────────────────────────────────────────────────────
+
+.dashboard-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.dashboard-header__subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+// ─── Stat cards ───────────────────────────────────────────────────────────────
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #f0f0f0;
+}
+
+.stat-card__number {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+  line-height: 1;
+}
+
+.stat-card__label {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+}
+
+// ─── Missions table card ──────────────────────────────────────────────────────
+
+.missions-table-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #f0f0f0;
+}
+
+.missions-table-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.missions-table-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+// Tabs
+.missions-table-tabs {
+  display: flex;
+  gap: 4px;
+  background: $light-gray;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.missions-table-tabs__tab {
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.15s;
+
+  &:hover { color: #333; }
+
+  &.active {
+    background: white;
+    color: #111;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+}
+
+// Table
+.missions-table {
+  border-collapse: collapse;
+
+  thead th {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #bbb;
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f8f8f8;
+
+    &:last-child { border-bottom: none; }
+    &:hover td { background: #fafafa; }
+  }
+
+  tbody td {
+    padding: 0.9rem 1rem 0.9rem 0;
+    vertical-align: middle;
+    font-size: 0.875rem;
+  }
+}
+
+// Mission cell
+.missions-table__mission-title {
+  font-weight: 600;
+  margin: 0 0 2px;
+  color: #111;
+}
+
+.missions-table__mission-meta {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 0;
+}
+
+// Progress cell
+.missions-table__progress-cell {
+  min-width: 160px;
+}
+
+.missions-progress {
+  display: inline-flex;
+  width: 100px;
+  border-radius: 99px;
+  background: #f0f0f0;
+  vertical-align: middle;
+}
+
+.missions-progress__bar {
+  border-radius: 99px;
+
+  &--full { --bs-progress-bar-bg: #{$green}; }
+  &--mid  { --bs-progress-bar-bg: #{$blue}; }
+  &--low  { --bs-progress-bar-bg: #{$orange}; }
+}
+
+.missions-progress__pct {
+  font-size: 0.8rem;
+  color: #888;
+  margin-left: 0.5rem;
+}
+
+// Client cell
+.client-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.client-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.client-cell__name {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+// ─── Mission status badges ────────────────────────────────────────────────────
+
+.mission-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.mission-badge--en-cours {
+  background: rgba($blue, 0.1);
+  color: $blue;
+}
+
+.mission-badge--en-attente {
+  background: rgba($orange, 0.12);
+  color: $orange;
+}
+
+.mission-badge--terminee {
+  background: rgba($green, 0.15);
+  color: darken($green, 10%);
+}
+
+.mission-badge--en-revision {
+  background: rgba(#7c3aed, 0.1);
+  color: #7c3aed;
+}
