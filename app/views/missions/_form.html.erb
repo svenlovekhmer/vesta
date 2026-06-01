@@ -1,10 +1,11 @@
-<%= simple_form_for mission, class: "new-mission-form" do |f| %>
+<%= simple_form_for mission, class: "new-mission-form form-control" do |f| %>
   <div class="row">
     <div class="col-12 col-md-6">
-      <div class="border rounded-4 p-4">
+      <div class="bg-white border rounded-4 p-4">
         <%= f.input :title,
             label: "Nom de la mission",
-            placeholder: "ex. Loft Bastille - Rénovation" %>
+            placeholder: "ex. Loft Bastille - Rénovation",
+            class: "rounded-4" %>
         <%= link_to "Ajouter un client", new_client_path %>
         <%= f.input :client_id,
             collection: Client.all,

@@ -1,0 +1,45 @@
+<aside class="app-sidebar">
+  <div class="sidebar-top">
+    <div class="sidebar-logo">
+      <span class="sidebar-logo__icon">&#9632;</span>
+      <span class="sidebar-logo__name">VESTA</span>
+    </div>
+
+    <%= link_to new_mission_path, class: "btn btn-danger sidebar-new-btn w-100 mt-3" do %>
+      <span>+</span> Nouvelle mission
+    <% end %>
+
+    <nav class="sidebar-nav mt-4">
+      <p class="sidebar-nav__label">PILOTAGE</p>
+      <%= link_to root_path, class: "sidebar-nav__link #{current_page?(root_path) ? 'active' : ''}" do %>
+        <i class="fa-solid fa-table-columns"></i>
+        Tableau de bord
+      <% end %>
+      <%= link_to missions_path, class: "sidebar-nav__link #{current_page?(missions_path) ? 'active' : ''}" do %>
+        <i class="fa-solid fa-briefcase"></i>
+        Missions
+        <span class="sidebar-nav__count"><%= current_user.missions.count %></span>
+      <% end %>
+      <%= link_to "#", class: "sidebar-nav__link" do %>
+        <i class="fa-solid fa-users"></i>
+        Clients
+        <span class="sidebar-nav__count"><%= current_user.clients.count %></span>
+      <% end %>
+      <%= link_to "#", class: "sidebar-nav__link" do %>
+        <i class="fa-solid fa-user"></i>
+        Profil
+      <% end %>
+    </nav>
+  </div>
+
+  <div class="sidebar-profile">
+    <% profile = current_user.profiles.first %>
+    <div class="sidebar-profile__avatar">
+      <%= profile ? "#{profile.first_name[0]}#{profile.last_name[0]}" : current_user.email[0..1].upcase %>
+    </div>
+    <div class="sidebar-profile__info">
+      <p class="sidebar-profile__name"><%= profile ? "#{profile.first_name} #{profile.last_name}" : current_user.email %></p>
+      <p class="sidebar-profile__role"><%= profile&.profession %></p>
+    </div>
+  </div>
+</aside>
