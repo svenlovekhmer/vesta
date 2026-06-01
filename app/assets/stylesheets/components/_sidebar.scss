@@ -1,0 +1,151 @@
+// ─── App layout ──────────────────────────────────────────────────────────────
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-main {
+  margin-left: 240px;
+  flex: 1;
+  padding: 2rem 2.5rem;
+  background: $light-gray;
+  min-height: 100vh;
+}
+
+// ─── Sidebar ─────────────────────────────────────────────────────────────────
+
+.app-sidebar {
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: white;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
+  z-index: 100;
+}
+
+.sidebar-top {
+  flex: 1;
+}
+
+// Logo
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-logo__icon {
+  color: $red;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+// New mission button
+.sidebar-new-btn {
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+}
+
+// Nav
+.sidebar-nav__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #aaa;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.sidebar-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+  transition: background 0.15s;
+
+  i {
+    width: 16px;
+    text-align: center;
+    color: #aaa;
+  }
+
+  &:hover {
+    background: $light-gray;
+    color: #222;
+
+    i { color: #555; }
+  }
+
+  &.active {
+    background: $light-gray;
+    color: #111;
+    font-weight: 600;
+
+    i { color: $red; }
+  }
+}
+
+.sidebar-nav__count {
+  margin-left: auto;
+  background: $light-gray;
+  color: #888;
+  font-size: 0.75rem;
+  padding: 1px 7px;
+  border-radius: 20px;
+}
+
+// Profile
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1rem;
+}
+
+.sidebar-profile__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #555;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.sidebar-profile__name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  color: #111;
+}
+
+.sidebar-profile__role {
+  font-size: 0.75rem;
+  color: #999;
+  margin: 0;
+}

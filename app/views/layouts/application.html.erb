@@ -22,8 +22,18 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <%= render "shared/flashes" %>
   <body>
-    <%= yield %>
+    <% if user_signed_in? %>
+      <div class="app-layout">
+        <%= render "shared/sidebar" %>
+        <main class="app-main">
+          <%= render "shared/flashes" %>
+          <%= yield %>
+        </main>
+      </div>
+    <% else %>
+      <%= render "shared/flashes" %>
+      <%= yield %>
+    <% end %>
   </body>
 </html>
