@@ -1,0 +1,2 @@
+class MissionStatus < ApplicationRecord
+end
