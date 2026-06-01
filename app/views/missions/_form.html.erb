@@ -1,0 +1,25 @@
+<%= simple_form_for mission, class: "new-mission-form" do |f| %>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="border rounded-4 p-4">
+        <%= f.input :title,
+            label: "Nom de la mission",
+            placeholder: "ex. Loft Bastille - Rénovation" %>
+        <%= link_to "Ajouter un client", new_client_path %>
+        <%= f.input :client_id,
+            collection: Client.all,
+            label_method: ->(c) { "#{c.first_name} #{c.last_name}" },
+            value_method: :id,
+            label: "Client",
+            prompt: "Sélectionnez un client" %>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="border rounded-4 p-4">
+        <h4 class="mb-3">Étapes de la mission</h4>
+        to do
+      </div>
+    </div>
+  </div>
+  <%= f.submit "Ajouter", class: "btn btn-primary" %>
+<% end %>
