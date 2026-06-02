@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :profiles
+  has_one :profile
   has_many :clients
   has_many :missions, through: :clients
 end

@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   root to: "dashboard#index"
   resources :missions, only: [:index, :new, :create, :show]
   resources :clients, only: [:new, :create]
+  resource :profile, only: [:edit, :update]
 end

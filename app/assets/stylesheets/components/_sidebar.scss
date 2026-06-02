@@ -114,12 +114,18 @@
 // Profile
 .sidebar-profile {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.75rem;
   padding: 0.75rem;
   border-radius: 8px;
   border-top: 1px solid #f0f0f0;
   padding-top: 1rem;
+}
+
+.sidebar-profile__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .sidebar-profile__avatar {
@@ -148,4 +154,27 @@
   font-size: 0.75rem;
   color: #999;
   margin: 0;
+}
+
+.sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #aaa;
+  text-decoration: none;
+  padding: 0.35rem 0.25rem;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+
+  i {
+    font-size: 0.8rem;
+    width: 16px;
+    text-align: center;
+  }
+
+  &:hover {
+    color: $red;
+    background: lighten($red, 38%);
+  }
 }
