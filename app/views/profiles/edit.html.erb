@@ -79,10 +79,12 @@
       </div>
     </div>
     <div class="d-flex justify-content-between mt-4">
-      <%= link_to root_path, class: "btn btn-outline-danger rounded-pill" do %>
-        <i class="fa-solid fa-angle-left"></i> Retour
+      <%= link_to root_path, class: "text-danger cancel-btn" do %>
+        <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
       <% end %>
-      <%= f.submit "Enregistrer", class: "btn btn-danger rounded-pill text-white" %>
+      <%= f.button :button, type: :submit, class: "btn btn-danger vesta-btn rounded-pill text-white" do %>
+        <i class="fa-regular fa-floppy-disk d-inline-block me-2"></i> Enregistrer
+      <% end %>
     </div>
   <% end %>
 </div>
