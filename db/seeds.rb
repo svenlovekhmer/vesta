@@ -90,8 +90,8 @@ missions_data = [
       { title: "Appel d'offres",       description: "Consultation des artisans partenaires",                 position: 5, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { content: "Client souhaite conserver les moulures d'origine.", status: "Validé", decided_by: "Marie Laurent", decided_at: 3.weeks.ago },
-      { content: "Budget recadré à 45 000€ suite à l'étude de faisabilité.", status: "Validé", decided_by: "Sven Dupont", decided_at: 2.weeks.ago }
+      { description: "Client souhaite conserver les moulures d'origine.", status: "decided", decided_by: "Marie Laurent", decided_at: 3.weeks.ago },
+      { description: "Budget recadré à 45 000€ suite à l'étude de faisabilité.", status: "decided", decided_by: "Sven Dupont", decided_at: 2.weeks.ago }
     ]
   },
   {
@@ -104,7 +104,7 @@ missions_data = [
       { title: "Plans & rendus 3D",    description: "Proposition d'aménagement de la pièce 20m²",           position: 3, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { content: "Projet limité à une seule pièce, 20m². Budget estimé : 12 000€.", status: "Validé", decided_by: "Thomas Moreau", decided_at: 1.week.ago }
+      { description: "Projet limité à une seule pièce, 20m². Budget estimé : 12 000€.", status: "decided", decided_by: "Thomas Moreau", decided_at: 1.week.ago }
     ]
   },
   {
@@ -121,9 +121,9 @@ missions_data = [
       { title: "Réception des travaux",description: "Remise des clés prévue en fin d'année",               position: 7, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { content: "Extension de 20m² validée par les services d'urbanisme.", status: "Validé", decided_by: "Sven Dupont", decided_at: 6.weeks.ago },
-      { content: "Choix des matériaux : parquet chêne et carrelage grès pour les pièces humides.", status: "Validé", decided_by: "Isabelle Petit", decided_at: 1.month.ago },
-      { content: "Révision du plan de cuisine demandée par le client.", status: "En cours", decided_by: "Isabelle Petit", decided_at: 1.week.ago }
+      { description: "Extension de 20m² validée par les services d'urbanisme.", status: "decided", decided_by: "Sven Dupont", decided_at: 6.weeks.ago },
+      { description: "Choix des matériaux : parquet chêne et carrelage grès pour les pièces humides.", status: "decided", decided_by: "Isabelle Petit", decided_at: 1.month.ago },
+      { description: "Révision du plan de cuisine demandée par le client.", status: "pending", decided_by: "Isabelle Petit", decided_at: 1.week.ago }
     ]
   },
   {
@@ -139,8 +139,8 @@ missions_data = [
       { title: "Réception des travaux",description: "Visite finale et satisfaction client confirmée",       position: 6, status: :validee, validate_at: 3.weeks.ago }
     ],
     decision_logs: [
-      { content: "Style retenu : Japandi minimaliste avec touches de bois naturel.", status: "Validé", decided_by: "Nicolas Bernard", decided_at: 3.months.ago },
-      { content: "Budget final : 8 500€, dans les limites prévues.", status: "Validé", decided_by: "Sven Dupont", decided_at: 3.weeks.ago }
+      { description: "Style retenu : Japandi minimaliste avec touches de bois naturel.", status: "decided", decided_by: "Nicolas Bernard", decided_at: 3.months.ago },
+      { description: "Budget final : 8 500€, dans les limites prévues.", status: "decided", decided_by: "Sven Dupont", decided_at: 3.weeks.ago }
     ]
   }
 ]
@@ -168,7 +168,7 @@ missions_data.each do |mission_data|
   mission_data[:decision_logs].each do |log_attrs|
     DecisionLog.create!(
       mission: mission,
-      content: log_attrs[:content],
+      description: log_attrs[:description],
       status: log_attrs[:status],
       decided_by: log_attrs[:decided_by],
       decided_at: log_attrs[:decided_at]
