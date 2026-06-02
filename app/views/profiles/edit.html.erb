@@ -42,7 +42,8 @@
             <strong class="profile__visual-title">Vos visuels</strong>
           </div>
           <div class="p-4">
-            fsdfsdf
+            <%= cl_image_tag @profile.logo.key, height: 200, width: 200, crop: :fill %>
+            <%= f.input :logo, as: :file %>
           </div>
         </div>
       </div>
