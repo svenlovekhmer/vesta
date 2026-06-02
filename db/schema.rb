@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_02_105459) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,14 +53,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_105459) do
   end
 
   create_table "decision_logs", force: :cascade do |t|
-    t.text "content"
     t.datetime "created_at", null: false
     t.date "decided_at"
     t.string "decided_by"
+    t.text "description"
+    t.date "due_date"
     t.bigint "mission_id", null: false
-    t.string "status"
+    t.bigint "owner_id"
+    t.string "owner_type"
+    t.integer "position", default: 0, null: false
+    t.string "status", default: "pending", null: false
+    t.string "title"
     t.datetime "updated_at", null: false
     t.index ["mission_id"], name: "index_decision_logs_on_mission_id"
+    t.index ["owner_id"], name: "index_decision_logs_on_owner_id"
+    t.check_constraint "owner_type IS NULL OR (owner_type::text = ANY (ARRAY['client'::character varying, 'provider'::character varying, 'third_party'::character varying]::text[]))", name: "decision_logs_owner_type_check"
+    t.check_constraint "status::text = ANY (ARRAY['decided'::character varying, 'pending'::character varying]::text[])", name: "decision_logs_status_check"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -77,6 +85,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_105459) do
     t.datetime "created_at", null: false
     t.string "title"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "mission_step_blockers", force: :cascade do |t|
+    t.string "blocking_status", default: "blocking", null: false
+    t.datetime "created_at", null: false
+    t.bigint "decision_log_id", null: false
+    t.bigint "mission_id", null: false
+    t.datetime "resolved_at"
+    t.bigint "step_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decision_log_id"], name: "index_mission_step_blockers_on_decision_log_id"
+    t.index ["mission_id"], name: "index_mission_step_blockers_on_mission_id"
+    t.index ["step_id"], name: "index_mission_step_blockers_on_step_id"
+    t.check_constraint "blocking_status::text = ANY (ARRAY['blocking'::character varying, 'warning'::character varying, 'resolved'::character varying]::text[])", name: "mission_step_blockers_blocking_status_check"
   end
 
   create_table "missions", force: :cascade do |t|
@@ -301,7 +323,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_105459) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "clients", "users"
   add_foreign_key "decision_logs", "missions"
+  add_foreign_key "decision_logs", "users", column: "owner_id"
   add_foreign_key "documents", "steps"
+  add_foreign_key "mission_step_blockers", "decision_logs"
+  add_foreign_key "mission_step_blockers", "missions"
+  add_foreign_key "mission_step_blockers", "steps"
   add_foreign_key "missions", "clients"
   add_foreign_key "missions", "mission_statuses"
   add_foreign_key "missions", "step_templates"
