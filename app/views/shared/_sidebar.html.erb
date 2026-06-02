@@ -25,7 +25,7 @@
         Clients
         <span class="sidebar-nav__count"><%= current_user.clients.count %></span>
       <% end %>
-      <%= link_to "#", class: "sidebar-nav__link" do %>
+      <%= link_to edit_profile_path, class: "sidebar-nav__link #{current_page?(edit_profile_path) ? 'active' : ''}" do %>
         <i class="fa-solid fa-user"></i>
         Profil
       <% end %>
@@ -33,13 +33,13 @@
   </div>
 
   <div class="sidebar-profile">
-    <% profile = current_user.profiles.first %>
+    <% profile = current_user.profile %>
     <div class="sidebar-profile__user">
       <div class="sidebar-profile__avatar">
-        <%= profile ? "#{profile.first_name[0]}#{profile.last_name[0]}" : current_user.email[0..1].upcase %>
+        <%= profile && profile.first_name && profile.last_name ? "#{profile.first_name}#{profile.last_name}"[0..1].upcase : current_user.email[0..1].upcase %>
       </div>
       <div class="sidebar-profile__info">
-        <p class="sidebar-profile__name"><%= profile ? "#{profile.first_name} #{profile.last_name}" : current_user.email %></p>
+        <p class="sidebar-profile__name"><%= profile && profile.first_name && profile.last_name ? "#{profile.first_name} #{profile.last_name}" : current_user.email %></p>
         <p class="sidebar-profile__role"><%= profile&.profession %></p>
       </div>
     </div>
