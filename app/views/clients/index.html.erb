@@ -16,6 +16,9 @@
         <i class="fa-solid fa-arrow-down-short-wide"></i>
       </button>
     </div>
+    <%= link_to new_client_path, class: "btn btn-outline-secondary vesta-btn rounded-pill", data: { turbo_frame: "modal" } do %>
+      <i class="fa-solid fa-plus"></i> Ajouter un client
+    <% end %>
   </div>
 
   <div class="clients-list">
