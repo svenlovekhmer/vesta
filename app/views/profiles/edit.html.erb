@@ -41,9 +41,39 @@
           <div class="bg-light border-bottom p-4">
             <strong class="profile__visual-title">Vos visuels</strong>
           </div>
-          <div class="p-4">
-            <%= cl_image_tag @profile.logo.key, height: 200, width: 200, crop: :fill %>
-            <%= f.input :logo, as: :file %>
+          <div class="p-4" data-controller="logo-upload">
+            <%= f.file_field :logo, class: "d-none",
+                data: { logo_upload_target: "input", action: "change->logo-upload#change" } %>
+            <%= f.hidden_field :remove_logo, value: "0",
+                data: { logo_upload_target: "removeField" } %>
+
+            <div class="logo-upload__dropzone" data-action="click->logo-upload#trigger">
+              <% if @profile.logo.attached? %>
+                <img src="<%= url_for(@profile.logo) %>"
+                     class="logo-upload__preview"
+                     data-logo-upload-target="preview"
+                     alt="Logo actuel">
+                <div class="logo-upload__placeholder d-none" data-logo-upload-target="placeholder">
+                  <i class="fa-regular fa-image logo-upload__icon"></i>
+                  <p class="logo-upload__label fw-semibold mb-1">Choisir un fichier</p>
+                  <p class="logo-upload__hint mb-0">Cliquez pour parcourir vos fichiers</p>
+                </div>
+              <% else %>
+                <img src="" class="logo-upload__preview d-none" data-logo-upload-target="preview" alt="">
+                <div class="logo-upload__placeholder" data-logo-upload-target="placeholder">
+                  <i class="fa-regular fa-image logo-upload__icon"></i>
+                  <p class="logo-upload__label fw-semibold mb-1">Choisir un fichier</p>
+                  <p class="logo-upload__hint mb-0">Cliquez pour parcourir vos fichiers</p>
+                </div>
+              <% end %>
+            </div>
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-dark rounded-pill mt-3 <%= 'd-none' unless @profile.logo.attached? %>"
+                    data-logo-upload-target="removeBtn"
+                    data-action="click->logo-upload#remove">
+              <i class="fa-solid fa-trash-can me-1"></i> Supprimer le logo
+            </button>
           </div>
         </div>
       </div>
