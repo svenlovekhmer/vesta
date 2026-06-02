@@ -11,12 +11,15 @@ class MissionsController < ApplicationController
     @clients = current_user.clients
     @step_templates = current_user.step_templates.includes(:step_template_items)
     @step_templates_json = build_templates_json(@step_templates)
+    @default_template = current_user.step_templates.find_by(is_default: "true")
+    preload_default_steps
   end
 
   def create
     @mission = Mission.new(mission_params)
     @mission.mission_status = MissionStatus.find_by(title: "En attente")
     if @mission.save
+      save_steps_as_template
       redirect_to mission_path(@mission), notice: "La mission a été créée avec succès."
     else
       @clients = current_user.clients
@@ -33,6 +36,40 @@ class MissionsController < ApplicationController
 
   def set_mission
     @mission = current_user.missions.find(params[:id])
+  end
+
+  def save_steps_as_template
+    return if @mission.steps.empty?
+    return if steps_match_existing_template?
+
+    client = @mission.client
+    template = current_user.step_templates.create!(
+      name: "Modèle #{client.first_name} #{client.last_name}",
+      is_default: "false"
+    )
+
+    @mission.steps.each do |step|
+      template.step_template_items.create!(
+        title: step.title,
+        position: step.position.to_s
+      )
+    end
+  end
+
+  def steps_match_existing_template?
+    step_titles = @mission.steps.map(&:title)
+    current_user.step_templates.includes(:step_template_items).any? do |template|
+      template.step_template_items.map(&:title) == step_titles
+    end
+  end
+
+  def preload_default_steps
+    default = current_user.step_templates.find_by(is_default: "true")
+    return unless default
+
+    default.step_template_items.each_with_index do |item, i|
+      @mission.steps.build(title: item.title, position: i + 1)
+    end
   end
 
   def build_templates_json(templates)

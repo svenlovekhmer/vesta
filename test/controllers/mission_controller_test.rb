@@ -243,6 +243,86 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "create sauvegarde les étapes comme nouveau template nommé d'après le client" do
+    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_tpl@test.com")
+    StepStatus.find_or_create_by!(title: "À faire")
+
+    sign_in @user
+    assert_difference("StepTemplate.count", 1) do
+      post missions_path, params: {
+        mission: {
+          title: "Mission Marie",
+          client_id: client.id,
+          steps_attributes: {
+            "0" => { title: "Brief reçu", position: "1" },
+            "1" => { title: "Visite réalisée", position: "2" }
+          }
+        }
+      }
+    end
+
+    template = StepTemplate.order(:created_at).last
+    assert_equal "Modèle Marie Laurent", template.name
+    assert_equal %w[Brief\ reçu Visite\ réalisée], template.step_template_items.map(&:title)
+  end
+
+  test "create ne sauvegarde pas un template si les étapes sont identiques à un template existant" do
+    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_dup@test.com")
+    StepStatus.find_or_create_by!(title: "À faire")
+
+    existing = StepTemplate.create!(user: @user, name: "Modèle existant", is_default: "false")
+    StepTemplateItem.create!(step_template: existing, title: "Brief reçu",    position: "1")
+    StepTemplateItem.create!(step_template: existing, title: "Visite réalisée", position: "2")
+
+    sign_in @user
+    assert_no_difference("StepTemplate.count") do
+      post missions_path, params: {
+        mission: {
+          title: "Mission Marie",
+          client_id: client.id,
+          steps_attributes: {
+            "0" => { title: "Brief reçu",    position: "1" },
+            "1" => { title: "Visite réalisée", position: "2" }
+          }
+        }
+      }
+    end
+  end
+
+  test "create sauvegarde un nouveau template si l'ordre des étapes a changé" do
+    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_reorder@test.com")
+    StepStatus.find_or_create_by!(title: "À faire")
+
+    existing = StepTemplate.create!(user: @user, name: "Modèle existant", is_default: "false")
+    StepTemplateItem.create!(step_template: existing, title: "Brief reçu",    position: "1")
+    StepTemplateItem.create!(step_template: existing, title: "Visite réalisée", position: "2")
+
+    sign_in @user
+    assert_difference("StepTemplate.count", 1) do
+      post missions_path, params: {
+        mission: {
+          title: "Mission Marie",
+          client_id: client.id,
+          steps_attributes: {
+            "0" => { title: "Visite réalisée", position: "1" },
+            "1" => { title: "Brief reçu",      position: "2" }
+          }
+        }
+      }
+    end
+  end
+
+  test "create sans étapes ne crée pas de template" do
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_notpl@test.com")
+
+    sign_in @user
+    assert_no_difference("StepTemplate.count") do
+      post missions_path, params: {
+        mission: { title: "Mission sans étapes", client_id: client.id }
+      }
+    end
+  end
+
   test "create en échec re-expose les modèles d'étapes" do
     StepTemplate.create!(user: @user, name: "Modèle B", description: "D")
 

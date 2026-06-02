@@ -2,8 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 import Sortable from "sortablejs"
 
 export default class extends Controller {
-  static targets = ["list", "row", "rowTemplate", "badge", "handle"]
-  static values  = { templates: Array }
+  static targets = ["list", "row", "rowTemplate", "badge", "handle", "templateLabel"]
+  static values  = { templates: Array, defaultTemplate: String }
 
   connect() {
     this._sortable = Sortable.create(this.listTarget, {
@@ -12,6 +12,7 @@ export default class extends Controller {
       onEnd: () => this._updateNumbers()
     })
     this._updateNumbers()
+    if (this.defaultTemplateValue) this._showLabel(this.defaultTemplateValue)
   }
 
   disconnect() {
@@ -57,6 +58,13 @@ export default class extends Controller {
     })
 
     this._updateNumbers()
+    this._showLabel(tpl.name)
+  }
+
+  _showLabel(name) {
+    if (!this.hasTemplateLabelTarget) return
+    this.templateLabelTarget.querySelector("[data-steps-label-text]").textContent = name
+    this.templateLabelTarget.classList.remove("d-none")
   }
 
   _visibleRows() {

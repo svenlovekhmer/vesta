@@ -51,8 +51,24 @@ template = StepTemplate.create!(
   user: user,
   name: "Projet rénovation standard",
   description: "Template pour projets de rénovation résidentielle",
+  is_default: "false"
+)
+
+default_template = StepTemplate.create!(
+  user: user,
+  name: "Modèle par défaut",
+  description: "Template standard pour les missions d'accompagnement",
   is_default: "true"
 )
+
+[
+  { title: "Brief reçu",           position: "1" },
+  { title: "Visite réalisée",      position: "2" },
+  { title: "Devis validé",         position: "3" },
+  { title: "Réalisation en cours", position: "4" },
+  { title: "Livraison",            position: "5" },
+  { title: "Mission terminée",     position: "6" }
+].each { |item| StepTemplateItem.create!(step_template: default_template, **item) }
 
 [
   { title: "Brief client",         description: "Recueil des besoins et attentes du client",        position: "1" },

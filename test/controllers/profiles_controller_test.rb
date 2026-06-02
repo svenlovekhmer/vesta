@@ -72,7 +72,7 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
   test "update ignore les paramètres non autorisés" do
     sign_in @user
-    patch profile_path, params: { profile: { first_name: "Alice", profession: "Architecte" } }
-    assert_nil @user.profile.reload.profession
+    patch profile_path, params: { profile: { first_name: "Alice", user_id: 9999 } }
+    assert_equal @user.id, @user.profile.reload.user_id
   end
 end
