@@ -1,10 +1,14 @@
 class MissionsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_mission, only: [:show]
+
   def index
-    @missions = Mission.all
+    @missions = current_user.missions
   end
 
   def new
     @mission = Mission.new
+    @clients = current_user.clients
   end
 
   def create
@@ -13,7 +17,8 @@ class MissionsController < ApplicationController
     if @mission.save
       redirect_to mission_path(@mission), notice: "La mission a été créée avec succès."
     else
-      render :new
+      @clients = current_user.clients
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -21,6 +26,10 @@ class MissionsController < ApplicationController
   end
 
   private
+
+  def set_mission
+    @mission = current_user.missions.find(params[:id])
+  end
 
   def mission_params
     params.require(:mission).permit(:title, :description, :client_id)

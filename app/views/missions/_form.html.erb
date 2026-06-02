@@ -1,4 +1,4 @@
-<%= simple_form_for mission, class: "new-mission-form form-control" do |f| %>
+<%= simple_form_for mission, class: "new-mission-form" do |f| %>
   <div class="row">
     <div class="col-12 col-md-6">
       <div class="bg-white border rounded-4 p-4">
@@ -6,18 +6,21 @@
           <%= f.input :title,
             label: "Nom de la mission",
             placeholder: "ex. Loft Bastille - Rénovation",
-            class: "rounded-4" %>
+            input_html: { class: "rounded-4" } %>
         </div>
         <div class="form-group">
-          <span class="d-flex justify-content-end text-uppercase new-mission--add-client-link">
-            <%= link_to new_client_path do %>
-              <i class="fa-regular fa-square-plus"></i> Ajouter un client
-            <% end %>
-          </span>
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label mb-0">Client</label>
+            <span class="new-mission--add-client-link">
+              <%= link_to new_client_path do %>
+                <i class="fa-regular fa-square-plus"></i> Ajouter un client
+              <% end %>
+            </span>
+          </div>
           <%= f.association :client,
-            collection: Client.all,
+            collection: @clients,
             label_method: ->(c) { "#{c.first_name} #{c.last_name}" },
-            label: "Client",
+            label: false,
             prompt: "Sélectionnez un client" %>
         </div>
       </div>
@@ -30,9 +33,10 @@
               <strong class="new-mission--steps-title">Etapes du projet</strong>
               <span class="new-mission--steps-subtitle text-muted">Définir les étapes clés de votre projet.</span>
             </div>
-             <div>
+            <div>
               <button type="button" class="btn btn-outline-dark btn-sm rounded-pill">
                 Modèles <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -56,9 +60,9 @@
     </div>
   </div>
   <div class="d-flex justify-content-between mt-4">
-    <button type="button" class="btn btn-outline-danger rounded-pill">
+    <%= link_to missions_path, class: "btn btn-outline-danger rounded-pill" do %>
       <i class="fa-solid fa-angle-left"></i> Annuler
-    </button>
+    <% end %>
     <%= f.submit "Ajouter une mission", class: "btn btn-danger rounded-pill text-white" %>
   </div>
 <% end %>
