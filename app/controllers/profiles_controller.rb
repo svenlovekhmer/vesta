@@ -1,12 +1,12 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
 
+  before_action :set_profile
+
   def edit
-    @profile = current_user.profile || current_user.build_profile
   end
 
   def update
-    @profile = current_user.profile || current_user.build_profile
     if @profile.update(profile_params)
       redirect_to edit_profile_path, notice: "Profil mis à jour avec succès."
     else
@@ -15,6 +15,10 @@ class ProfilesController < ApplicationController
   end
 
   private
+
+  def set_profile
+    @profile = current_user.profile || current_user.build_profile
+  end
 
   def profile_params
     params.require(:profile).permit(:first_name, :last_name)
