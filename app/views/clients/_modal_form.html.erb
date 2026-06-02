@@ -1,11 +1,19 @@
 <div class="modal-header">
-  <h5 class="modal-title">Modifier le client</h5>
+  <% if client.new_record? %>
+    <h5 class="modal-title">Ajouter un client</h5>
+  <% else %>
+    <h5 class="modal-title">Modifier le client</h5>
+  <% end %>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
 </div>
 <div class="modal-body">
   <%= render "form", client: client %>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-  <button type="submit" form="client_form" class="btn btn-primary">Enregistrer</button>
+  <button type="button" class="btn btn-secondary vesta-btn rounded-pill" data-bs-dismiss="modal">
+    <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+  </button>
+  <button type="submit" form="client_form" class="btn btn-success rounded-circle">
+    <i class="fa-solid fa-save"></i>
+  </button>
 </div>
