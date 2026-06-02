@@ -361,8 +361,16 @@
   &--third_party { background: rgba(#888, 0.10); color: #888; }
 }
 
-.pav-log-item__title   { flex: 1; color: #333; }
-.pav-log-item__actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.pav-log-item__title-col { flex-shrink: 0; }
+.pav-log-item__tag-col   { flex: 1; }
+.pav-log-item__title     { color: #333; }
+.pav-log-item__actions   { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+.pav-action--resolve {
+  font-size: 0.75rem;
+  padding: 3px 12px;
+  white-space: nowrap;
+}
 
 // Action links
 
@@ -376,6 +384,102 @@
 
   &:hover { opacity: 0.8; }
 
-  &--validate { background: rgba($orange, 0.15); color: $orange; }
+  &--validate { background: rgba($green, 0.15); color: darken($green, 15%); }
   &--remind   { background: #f0f0f0; color: #888; }
+}
+
+// ─── Resolve modal ────────────────────────────────────────────────────────────
+
+.resolve-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resolve-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #f0f0f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+
+  input[type="radio"] { display: none; }
+
+  &:hover {
+    border-color: rgba($red, 0.25);
+    background: rgba($red, 0.03);
+  }
+
+  &:has(input:checked) {
+    border-color: $red;
+    background: rgba($red, 0.05);
+
+    .resolve-option__dot {
+      background: $red;
+      border-color: $red;
+
+      &::after { opacity: 1; }
+    }
+
+    .resolve-option__icon { color: $red; }
+    .resolve-option__label { font-weight: 600; color: #111; }
+  }
+}
+
+.resolve-option__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+}
+
+.resolve-option__icon {
+  font-size: 0.9rem;
+  color: #ccc;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.resolve-option__label {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.resolve-preview {
+  background: $light-gray;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__label { font-size: 0.75rem; color: #aaa; }
+
+  &__value {
+    color: #888;
+    font-style: italic;
+  }
+
+  &--ready .resolve-preview__value {
+    color: $red;
+    font-style: normal;
+    font-weight: 600;
+  }
 }

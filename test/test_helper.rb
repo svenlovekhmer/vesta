@@ -20,7 +20,8 @@ module ActiveSupport
         user_id: user.id,
         first_name: "Client",
         last_name: SecureRandom.hex(4).capitalize,
-        email: "#{SecureRandom.hex(4)}@test.com"
+        email: "#{SecureRandom.hex(4)}@test.com",
+        phone_number: "0600000000"
       )
       attrs = { title: title, client: client, mission_status: status, step_template: template, portal_token: SecureRandom.hex(10) }
       attrs[:created_at] = created_at if created_at

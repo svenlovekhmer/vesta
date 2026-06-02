@@ -70,8 +70,8 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "new charge uniquement les clients de l'utilisateur connecté" do
-    my_client    = Client.create!(user: @user,  first_name: "Alice", last_name: "A", email: "alice@test.com")
-    other_client = Client.create!(user: @other, first_name: "Bob",   last_name: "B", email: "bob@test.com")
+    my_client    = Client.create!(user: @user,  first_name: "Alice", last_name: "A", email: "alice@test.com", phone_number: "0600000000")
+    other_client = Client.create!(user: @other, first_name: "Bob",   last_name: "B", email: "bob@test.com", phone_number: "0600000000")
 
     sign_in @user
     get new_mission_path
@@ -83,7 +83,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   # ── Create ─────────────────────────────────────────────────────────────────
 
   test "create avec des paramètres valides crée une mission et redirige vers show" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com", phone_number: "0600000000")
 
     sign_in @user
     assert_difference("Mission.count", 1) do
@@ -95,7 +95,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create assigne automatiquement le statut 'En attente'" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com", phone_number: "0600000000")
 
     sign_in @user
     post missions_path, params: { mission: { title: "Nouvelle mission", client_id: client.id } }
@@ -104,7 +104,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create avec un titre manquant affiche le formulaire avec une erreur" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com", phone_number: "0600000000")
 
     sign_in @user
     assert_no_difference("Mission.count") do
@@ -173,7 +173,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   # ── Steps — Create ─────────────────────────────────────────────────────────
 
   test "create avec steps_attributes crée les étapes associées à la mission" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sc@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sc@test.com", phone_number: "0600000000")
     StepStatus.find_or_create_by!(title: "À faire")
 
     sign_in @user
@@ -192,7 +192,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "les étapes créées reçoivent automatiquement le statut 'À faire'" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sf@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sf@test.com", phone_number: "0600000000")
     StepStatus.find_or_create_by!(title: "À faire")
 
     sign_in @user
@@ -209,7 +209,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "les étapes créées ont les positions soumises par le formulaire" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sp@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sp@test.com", phone_number: "0600000000")
     StepStatus.find_or_create_by!(title: "À faire")
 
     sign_in @user
@@ -229,7 +229,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create avec une étape au titre vide ne crée pas cette étape" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sb@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sb@test.com", phone_number: "0600000000")
 
     sign_in @user
     assert_difference("Step.count", 0) do
@@ -244,7 +244,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create sauvegarde les étapes comme nouveau template nommé d'après le client" do
-    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_tpl@test.com")
+    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_tpl@test.com", phone_number: "0600000000")
     StepStatus.find_or_create_by!(title: "À faire")
 
     sign_in @user
@@ -267,7 +267,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create ne sauvegarde pas un template si les étapes sont identiques à un template existant" do
-    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_dup@test.com")
+    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_dup@test.com", phone_number: "0600000000")
     StepStatus.find_or_create_by!(title: "À faire")
 
     existing = StepTemplate.create!(user: @user, name: "Modèle existant", is_default: "false")
@@ -290,7 +290,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create sauvegarde un nouveau template si l'ordre des étapes a changé" do
-    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_reorder@test.com")
+    client = Client.create!(user: @user, first_name: "Marie", last_name: "Laurent", email: "ml_reorder@test.com", phone_number: "0600000000")
     StepStatus.find_or_create_by!(title: "À faire")
 
     existing = StepTemplate.create!(user: @user, name: "Modèle existant", is_default: "false")
@@ -313,7 +313,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create sans étapes ne crée pas de template" do
-    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_notpl@test.com")
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_notpl@test.com", phone_number: "0600000000")
 
     sign_in @user
     assert_no_difference("StepTemplate.count") do
