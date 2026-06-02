@@ -17,6 +17,7 @@ bin/rails db:reset         # Drop, recreate, migrate, seed
 # Tests & CI
 bin/rails test             # Run all tests (controller + system)
 bin/rails test test/controllers/dashboard_controller_test.rb
+bin/rails test test/controllers/mission_controller_test.rb
 bin/rails test test/system/dashboard_test.rb
 bin/rails test test/models/mission_test.rb:42   # Single test at line
 bin/ci                     # Full CI: rubocop + bundler-audit + brakeman + importmap audit + tests + seeds
@@ -62,7 +63,8 @@ Step → belongs_to StepStatus
 ```ruby
 devise_for :users
 root to: "dashboard#index"
-resources :missions, only: [:index]
+resources :missions, only: [:index, :new, :create, :show]
+resources :clients,  only: [:new, :create]
 get "up" => "rails/health#show"
 ```
 
@@ -73,6 +75,12 @@ get "up" => "rails/health#show"
 - Mission table: client avatar (initials), progress bar, status badge
 - Client-side tab filter (Toutes / En cours / Terminées) via Stimulus `mission-filter` controller
 - Sidebar with VESTA logo, nav links, user profile (name + profession from `Profile`)
+
+**Missions** (`/missions`) — requires authentication
+- `index` — lists all missions for `current_user` (scoped via `current_user.missions`)
+- `new` — blank `Mission`, loads `current_user.clients`
+- `create` — saves mission, auto-assigns `MissionStatus "En attente"`, redirects to `show` on success; re-renders `new` (422) on failure
+- `show` — scoped via `current_user.missions.find(id)`; returns 404 for another user's mission
 
 ### Styling
 
@@ -107,4 +115,5 @@ Uses Rails Minitest (no RSpec). Gems: `capybara`, `selenium-webdriver`, `rails-c
 
 **Test files:**
 - `test/controllers/dashboard_controller_test.rb` — 9 integration tests: auth redirect, data isolation per user, stats counts, ordering, response body content
+- `test/controllers/mission_controller_test.rb` — 16 integration tests: auth redirects (index/new/create/show), index isolation + empty list, new (blank record + client scoping), create (happy path, status assignment, missing title, missing client), show (own mission + 404 for other user's mission)
 - `test/system/dashboard_test.rb` — 11 system tests: page content, sidebar, Stimulus tab filter (JS), progress bar display
