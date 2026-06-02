@@ -3,8 +3,10 @@ class Mission < ApplicationRecord
   belongs_to :step_template, optional: true # temporary, to be removed when the step templatating will be implemented
   belongs_to :client
 
-  has_many :steps, dependent: :destroy
+  has_many :steps, -> { order(:position) }, dependent: :destroy
   has_many :decision_logs, dependent: :destroy
+
+  accepts_nested_attributes_for :steps, allow_destroy: true, reject_if: :all_blank
 
   validates :title, presence: true
 end

@@ -26,23 +26,84 @@
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <div class="bg-white border rounded-4 overflow-hidden new-mission--steps">
+      <div class="bg-white border rounded-4 overflow-hidden new-mission--steps"
+           data-controller="steps"
+           data-steps-templates-value="<%= @step_templates_json %>"
+           data-steps-default-template-value="<%= @default_template&.name %>">
+
+        <%# Header %>
         <div class="bg-light border-bottom p-4">
           <div class="d-flex justify-content-between align-items-center gap-2">
             <div>
-              <strong class="new-mission--steps-title">Etapes du projet</strong>
+              <strong class="new-mission--steps-title">Étapes du projet</strong>
               <span class="new-mission--steps-subtitle text-muted">Définir les étapes clés de votre projet.</span>
+              <span class="step-template-label d-none mt-1" data-steps-target="templateLabel">
+                <i class="fa-solid fa-layer-group"></i>
+                <span data-steps-label-text></span>
+              </span>
             </div>
-            <div>
-              <button type="button" class="btn btn-outline-dark btn-sm rounded-pill">
-                Modèles <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <div class="dropdown step-template-dropdown">
+              <button type="button"
+                      class="btn btn-sm rounded-pill step-template-trigger"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Modèle
               </button>
+              <ul class="dropdown-menu dropdown-menu-end step-template-menu">
+                <li><h6 class="dropdown-header">Choisir un modèle</h6></li>
+                <% if @step_templates&.any? %>
+                  <% @step_templates.each do |t| %>
+                    <li>
+                      <button type="button"
+                              class="dropdown-item step-template-item"
+                              data-action="steps#loadTemplate"
+                              data-template-id="<%= t.id %>">
+                        <span class="step-template-item__icon">
+                          <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <span class="step-template-item__info">
+                          <span class="step-template-item__name">
+                            <%= t.name %>
+                            <% if t.is_default == "true" %>
+                              <span class="step-template-item__badge">Par défaut</span>
+                            <% end %>
+                          </span>
+                          <span class="step-template-item__count"><%= t.step_template_items.size %> étapes</span>
+                        </span>
+                      </button>
+                    </li>
+                  <% end %>
+                <% else %>
+                  <li><span class="dropdown-item text-muted fst-italic">Aucun modèle disponible</span></li>
+                <% end %>
+              </ul>
             </div>
           </div>
         </div>
+
+        <%# Step list %>
         <div class="p-4">
-          <p>To do: template management. The button "modeles" is for selecting pre-defined templates for the mission steps.</p>
+          <div data-steps-target="list">
+            <%= f.fields_for :steps do |sf| %>
+              <%= render "missions/step_fields", sf: sf %>
+            <% end %>
+          </div>
+
+          <button type="button"
+                  class="btn step-add-btn w-100 mt-3"
+                  data-action="steps#addStep">
+            <i class="fa-solid fa-plus"></i> Ajouter une étape
+          </button>
+
+          <p class="text-center text-muted mt-2 step-drag-hint">
+            <i class="fa-solid fa-circle-info fa-xs"></i> Glissez-déposez pour réorganiser
+          </p>
         </div>
+
+        <%# Hidden template for JS cloning %>
+        <template data-steps-target="rowTemplate">
+          <%= render "missions/step_fields", sf: nil %>
+        </template>
       </div>
     </div>
   </div>
