@@ -1,0 +1,24 @@
+<div data-controller="clients-filter">
+  <div class="clients-toolbar">
+    <input
+      type="text"
+      class="clients-search-input"
+      placeholder="Rechercher un client..."
+      data-clients-filter-target="search"
+      data-action="input->clients-filter#filter">
+
+    <div class="clients-filter-tabs">
+      <button
+        type="button"
+        class="clients-sort-btn"
+        data-clients-filter-target="sortButton"
+        data-action="click->clients-filter#toggleSort">
+        <i class="fa-solid fa-arrow-down-short-wide"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="clients-list">
+    <%= render partial: "clients/client_card", collection: @clients, as: :client %>
+  </div>
+</div>

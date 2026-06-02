@@ -1,8 +1,10 @@
 <aside class="app-sidebar">
   <div class="sidebar-top">
     <div class="sidebar-logo">
-      <span class="sidebar-logo__icon">&#9632;</span>
-      <span class="sidebar-logo__name">VESTA</span>
+      <%= link_to root_path do %>
+        <span class="sidebar-logo__icon">&#9632;</span>
+        <span class="sidebar-logo__name">VESTA</span>
+      <% end %>
     </div>
 
     <%= link_to new_mission_path, class: "btn btn-danger sidebar-new-btn w-100 mt-3 text-white" do %>
@@ -20,7 +22,7 @@
         Missions
         <span class="sidebar-nav__count"><%= current_user.missions.count %></span>
       <% end %>
-      <%= link_to "#", class: "sidebar-nav__link" do %>
+      <%= link_to clients_path, class: "sidebar-nav__link #{current_page?(clients_path) ? 'active' : ''}" do %>
         <i class="fa-solid fa-users"></i>
         Clients
         <span class="sidebar-nav__count"><%= current_user.clients.count %></span>

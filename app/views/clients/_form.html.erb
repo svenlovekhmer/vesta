@@ -1,0 +1,37 @@
+<%= form_with(model: client, id: "client_form", html: { novalidate: true }) do |form| %>
+  <% if client.errors.any? %>
+    <div class="alert alert-danger mb-3">
+      <% client.errors.full_messages.each do |msg| %>
+        <div><%= msg %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :first_name, "Prénom", class: "form-label" %>
+    <%= form.text_field :first_name,
+          class: "form-control #{client.errors[:first_name].any? ? "is-invalid" : ""}" %>
+    <div class="invalid-feedback"><%= client.errors[:first_name].first %></div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :last_name, "Nom", class: "form-label" %>
+    <%= form.text_field :last_name,
+          class: "form-control #{client.errors[:last_name].any? ? "is-invalid" : ""}" %>
+    <div class="invalid-feedback"><%= client.errors[:last_name].first %></div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :email, "Email", class: "form-label" %>
+    <%= form.email_field :email,
+          class: "form-control #{client.errors[:email].any? ? "is-invalid" : ""}" %>
+    <div class="invalid-feedback"><%= client.errors[:email].first %></div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :phone_number, "Téléphone", class: "form-label" %>
+    <%= form.telephone_field :phone_number,
+          class: "form-control #{client.errors[:phone_number].any? ? "is-invalid" : ""}" %>
+    <div class="invalid-feedback"><%= client.errors[:phone_number].first %></div>
+  </div>
+<% end %>
