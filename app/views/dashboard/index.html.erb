@@ -2,7 +2,7 @@
   <div>
     <h1 class="dashboard-header__title">Tableau de bord</h1>
     <p class="dashboard-header__subtitle">
-      <% profile = current_user.profiles.first %>
+      <% profile = current_user.profile %>
       Bonjour <%= profile&.first_name || current_user.email.split("@").first %> &mdash;
       <%= @missions.count %> mission<%= @missions.count > 1 ? "s" : "" %> en cours
     </p>

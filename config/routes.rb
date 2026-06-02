@@ -9,4 +9,5 @@ Rails.application.routes.draw do
       get :confirm_destroy
     end
   end
+  resource :profile, only: [:edit, :update]
 end

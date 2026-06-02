@@ -1,0 +1,88 @@
+<div class="container-fluid profile-edit p-4">
+  <h1 class="profile-edit__title">Mon profil</h1>
+  <p class="text-muted mb-4">Renseignez vos informations personnelles et chartez la page de vos projets que vous partagerez à vos clients.</p>
+
+  <%= simple_form_for @profile, url: profile_path, method: :patch, class: "profile-edit-form" do |f| %>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="bg-white border rounded-4 p-4">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <%= render "shared/user_avatar", user: current_user, css_class: "profile-edit__avatar" %>
+            <div>
+              <p class="fw-semibold mb-0"><%= current_user.email %></p>
+              <p class="text-muted small mb-0">Membre depuis <%= l(current_user.created_at, format: "%B %Y") %></p>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <%= f.input :first_name,
+              label: "Prénom",
+              required: false,
+              input_html: { class: "rounded-4" } %>
+          </div>
+
+          <div class="form-group mb-3">
+            <%= f.input :last_name,
+              label: "Nom",
+              required: false,
+              input_html: { class: "rounded-4" } %>
+          </div>
+
+          <div class="form-group mb-3">
+            <%= f.input :profession,
+              label: "Profession",
+              required: false,
+              input_html: { class: "rounded-4" } %>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="bg-white border rounded-4 overflow-hidden">
+          <div class="bg-light border-bottom p-4">
+            <strong class="profile__visual-title">Vos visuels</strong>
+          </div>
+          <div class="p-4" data-controller="logo-upload">
+            <%= f.file_field :logo, class: "d-none",
+                data: { logo_upload_target: "input", action: "change->logo-upload#change" } %>
+            <%= f.hidden_field :remove_logo, value: "0",
+                data: { logo_upload_target: "removeField" } %>
+
+            <div class="logo-upload__dropzone" data-action="click->logo-upload#trigger">
+              <% if @profile.logo.attached? %>
+                <img src="<%= url_for(@profile.logo) %>"
+                     class="logo-upload__preview"
+                     data-logo-upload-target="preview"
+                     alt="Logo actuel">
+                <div class="logo-upload__placeholder d-none" data-logo-upload-target="placeholder">
+                  <i class="fa-regular fa-image logo-upload__icon"></i>
+                  <p class="logo-upload__label fw-semibold mb-1">Choisir un fichier</p>
+                  <p class="logo-upload__hint mb-0">Cliquez pour parcourir vos fichiers</p>
+                </div>
+              <% else %>
+                <img src="" class="logo-upload__preview d-none" data-logo-upload-target="preview" alt="">
+                <div class="logo-upload__placeholder" data-logo-upload-target="placeholder">
+                  <i class="fa-regular fa-image logo-upload__icon"></i>
+                  <p class="logo-upload__label fw-semibold mb-1">Choisir un fichier</p>
+                  <p class="logo-upload__hint mb-0">Cliquez pour parcourir vos fichiers</p>
+                </div>
+              <% end %>
+            </div>
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-dark rounded-pill mt-3 <%= 'd-none' unless @profile.logo.attached? %>"
+                    data-logo-upload-target="removeBtn"
+                    data-action="click->logo-upload#remove">
+              <i class="fa-solid fa-trash-can me-1"></i> Supprimer le logo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+      <%= link_to root_path, class: "btn btn-outline-danger rounded-pill" do %>
+        <i class="fa-solid fa-angle-left"></i> Retour
+      <% end %>
+      <%= f.submit "Enregistrer", class: "btn btn-danger rounded-pill text-white" %>
+    </div>
+  <% end %>
+</div>
