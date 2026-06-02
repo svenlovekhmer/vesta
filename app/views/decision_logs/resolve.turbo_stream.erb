@@ -1,0 +1,56 @@
+<%# 1. Close the modal by clearing the turbo-frame %>
+<%= turbo_stream.update "modal", "" %>
+
+<%# 2. Remove the resolved log item from the DOM %>
+<%= turbo_stream.remove dom_id(@decision_log) %>
+
+<%# 3. Update or remove the pav-row for this mission %>
+<% if @remaining_pending.empty? %>
+  <%# No more pending logs for this mission — remove the whole row %>
+  <%= turbo_stream.remove "pav_row_#{@mission.id}" %>
+<% else %>
+  <%# Still pending logs — refresh the badge counts on the row %>
+  <%= turbo_stream.replace "pav_vesta_badge_#{@mission.id}" do %>
+    <span id="pav_vesta_badge_<%= @mission.id %>"
+          class="pav-badge pav-badge--vesta <%= @entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
+      &bull; <%= @entry[:vesta_count] %> <%= current_user.profile&.first_name %>
+    </span>
+  <% end %>
+
+  <%= turbo_stream.replace "pav_client_badge_#{@mission.id}" do %>
+    <span id="pav_client_badge_<%= @mission.id %>"
+          class="pav-badge pav-badge--client <%= @entry[:client_count] > 0 ? '' : 'pav-badge--inactive' %>">
+      &bull; <%= @entry[:client_count] %> client
+    </span>
+  <% end %>
+<% end %>
+
+<%# 4. Recompute global totals for this user and update the card subtitle %>
+<% new_total_vesta = DecisionLog
+     .joins(mission: :client)
+     .where(clients: { user_id: current_user.id })
+     .where(status: "pending", owner_type: "provider")
+     .count %>
+<% new_total_client = DecisionLog
+     .joins(mission: :client)
+     .where(clients: { user_id: current_user.id })
+     .where(status: "pending", owner_type: "client")
+     .count %>
+<% profile = current_user.profile %>
+
+<% if new_total_vesta == 0 && new_total_client == 0 %>
+  <%# No pending logs left anywhere — remove the entire pav-card %>
+  <%= turbo_stream.remove "pav_card" %>
+<% else %>
+  <%= turbo_stream.replace "pav_total_vesta" do %>
+    <span id="pav_total_vesta" class="pav-card__subtitle--vesta">
+      <%= new_total_vesta %> côté <%= profile&.first_name %> <%= profile&.last_name %>
+    </span>
+  <% end %>
+
+  <%= turbo_stream.replace "pav_total_client" do %>
+    <span id="pav_total_client" class="pav-card__subtitle--client">
+      <%= new_total_client %> côté client
+    </span>
+  <% end %>
+<% end %>

@@ -37,6 +37,75 @@
   </div>
 </div>
 
+<%# Points à valider %>
+<% if @pending_logs_by_mission.any? %>
+  <div id="pav_card" class="pav-card mb-4">
+    <div class="pav-card__header">
+      <div class="pav-card__title-group">
+        <span class="pav-card__icon">🎯</span>
+        <h2 class="pav-card__title">Points à valider</h2>
+      </div>
+      <p class="pav-card__subtitle">
+        Par mission &middot;
+        <span id="pav_total_vesta" class="pav-card__subtitle--vesta"><%= @total_vesta_pending %> côté <%= profile&.first_name %> <%= profile&.last_name %></span> &middot;
+        <span id="pav_total_client" class="pav-card__subtitle--client"><%= @total_client_pending %> côté client</span>
+      </p>
+    </div>
+
+    <div class="pav-list" data-controller="mission-accordion">
+      <% @pending_logs_by_mission.each do |entry| %>
+        <% m = entry[:mission] %>
+        <% current_step = m.steps.find { |s| s.step_status.title == "En cours" } %>
+
+        <div id="pav_row_<%= m.id %>" class="pav-row" data-mission-accordion-target="row">
+          <div class="pav-row__summary"
+               data-action="click->mission-accordion#toggle"
+               data-mission-accordion-target="summary">
+            <div class="pav-row__identity">
+              <span class="pav-row__mission-title"><%= m.title %></span>
+              <span class="pav-row__meta">
+                <%= m.client.first_name %> <%= m.client.last_name %>
+                <% if current_step %>&middot; <%= current_step.title %><% end %>
+              </span>
+            </div>
+            <div class="pav-row__badges">
+              <span id="pav_vesta_badge_<%= m.id %>" class="pav-badge pav-badge--vesta <%= entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
+                &bull; <%= entry[:vesta_count] %> <%= profile&.first_name %>
+              </span>
+              <span id="pav_client_badge_<%= m.id %>" class="pav-badge pav-badge--client <%= entry[:client_count] > 0 ? '' : 'pav-badge--inactive' %>">
+                &bull; <%= entry[:client_count] %> client
+              </span>
+              <span class="pav-chevron" data-mission-accordion-target="chevron">›</span>
+            </div>
+          </div>
+
+          <div class="pav-row__detail" data-mission-accordion-target="detail">
+            <% entry[:logs].each do |log| %>
+              <div id="<%= dom_id(log) %>" class="pav-log-item">
+                <div class="pav-log-item__title-col">
+                  <span class="pav-log-item__title"><%= log.title.presence || log.description %></span>
+                </div>
+                <div class="pav-log-item__tag-col">
+                  <span class="pav-log-item__tag pav-log-item__tag--<%= log.owner_type %>">
+                    <%= log.owner_type == "provider" ? "#{profile&.first_name} #{profile&.last_name}" : "client" %>
+                  </span>
+                </div>
+                <div class="pav-log-item__actions">
+                  <%= link_to resolve_modal_decision_log_path(log),
+                        class: "btn btn-danger vesta-btn text-white rounded-pill pav-action--resolve",
+                        data: { turbo_frame: "modal" } do %>
+                    <i class="fa-solid fa-check pe-1"></i> Marquer comme résolu
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <%# Missions table %>
 <div class="missions-table-card" data-controller="mission-filter">
   <div class="missions-table-card__header">
