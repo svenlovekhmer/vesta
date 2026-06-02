@@ -2,25 +2,63 @@
   <div class="row">
     <div class="col-12 col-md-6">
       <div class="bg-white border rounded-4 p-4">
-        <%= f.input :title,
+        <div class="form-group mb-4">
+          <%= f.input :title,
             label: "Nom de la mission",
             placeholder: "ex. Loft Bastille - Rénovation",
             class: "rounded-4" %>
-        <%= link_to "Ajouter un client", new_client_path %>
-        <%= f.input :client_id,
+        </div>
+        <div class="form-group">
+          <span class="d-flex justify-content-end text-uppercase new-mission--add-client-link">
+            <%= link_to new_client_path do %>
+              <i class="fa-regular fa-square-plus"></i> Ajouter un client
+            <% end %>
+          </span>
+          <%= f.association :client,
             collection: Client.all,
             label_method: ->(c) { "#{c.first_name} #{c.last_name}" },
-            value_method: :id,
             label: "Client",
             prompt: "Sélectionnez un client" %>
+        </div>
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <div class="border rounded-4 p-4">
-        <h4 class="mb-3">Étapes de la mission</h4>
-        to do
+      <div class="bg-white border rounded-4 overflow-hidden new-mission--steps">
+        <div class="bg-light border-bottom p-4">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <div>
+              <strong class="new-mission--steps-title">Etapes du projet</strong>
+              <span class="new-mission--steps-subtitle text-muted">Définir les étapes clés de votre projet.</span>
+            </div>
+             <div>
+              <button type="button" class="btn btn-outline-dark btn-sm rounded-pill">
+                Modèles <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+          </div>
+        </div>
+        <div class="p-4">
+          <p>To do: template management. The button "modeles" is for selecting pre-defined templates for the mission steps.</p>
+        </div>
       </div>
     </div>
   </div>
-  <%= f.submit "Ajouter", class: "btn btn-primary" %>
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="bg-white border rounded-4 p-4">
+        <div class="form-group">
+          <%= f.input :description,
+            as: :text,
+            label: "Brief de la mission",
+            placeholder: "Décrivez les objectifs, les contraintes et le périmètre de la mission...",
+            input_html: { class: "rounded-4" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between mt-4">
+    <button type="button" class="btn btn-outline-danger rounded-pill">
+      <i class="fa-solid fa-angle-left"></i> Annuler
+    </button>
+    <%= f.submit "Ajouter une mission", class: "btn btn-danger rounded-pill text-white" %>
+  </div>
 <% end %>

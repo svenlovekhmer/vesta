@@ -1,0 +1,6 @@
+<h1>Liste des missions</h1>
+<ul>
+  <% @missions.each do |mission| %>
+    <li><%= link_to mission.title, mission_path(mission) %></li>
+  <% end %>
+</ul>
