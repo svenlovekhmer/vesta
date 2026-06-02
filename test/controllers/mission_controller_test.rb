@@ -144,4 +144,113 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  # ── Steps — New ────────────────────────────────────────────────────────────
+
+  test "new expose les modèles d'étapes de l'utilisateur connecté" do
+    my_template    = StepTemplate.create!(user: @user,  name: "Mon modèle",  description: "D")
+    other_template = StepTemplate.create!(user: @other, name: "Autre modèle", description: "D")
+
+    sign_in @user
+    get new_mission_path
+
+    assert_includes     assigns(:step_templates), my_template
+    assert_not_includes assigns(:step_templates), other_template
+  end
+
+  test "new expose le JSON des modèles d'étapes" do
+    StepTemplate.create!(user: @user, name: "Modèle A", description: "D")
+
+    sign_in @user
+    get new_mission_path
+
+    assert_not_nil assigns(:step_templates_json)
+    parsed = JSON.parse(assigns(:step_templates_json))
+    assert_equal 1, parsed.length
+    assert_equal "Modèle A", parsed.first["name"]
+  end
+
+  # ── Steps — Create ─────────────────────────────────────────────────────────
+
+  test "create avec steps_attributes crée les étapes associées à la mission" do
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sc@test.com")
+    StepStatus.find_or_create_by!(title: "À faire")
+
+    sign_in @user
+    assert_difference("Step.count", 2) do
+      post missions_path, params: {
+        mission: {
+          title: "Mission avec étapes",
+          client_id: client.id,
+          steps_attributes: {
+            "0" => { title: "Étude préalable", position: "1" },
+            "1" => { title: "Permis de construire", position: "2" }
+          }
+        }
+      }
+    end
+  end
+
+  test "les étapes créées reçoivent automatiquement le statut 'À faire'" do
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sf@test.com")
+    StepStatus.find_or_create_by!(title: "À faire")
+
+    sign_in @user
+    post missions_path, params: {
+      mission: {
+        title: "Mission statut étapes",
+        client_id: client.id,
+        steps_attributes: { "0" => { title: "Première étape", position: "1" } }
+      }
+    }
+
+    step = Mission.last.steps.first
+    assert_equal "À faire", step.step_status.title
+  end
+
+  test "les étapes créées ont les positions soumises par le formulaire" do
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sp@test.com")
+    StepStatus.find_or_create_by!(title: "À faire")
+
+    sign_in @user
+    post missions_path, params: {
+      mission: {
+        title: "Mission positions étapes",
+        client_id: client.id,
+        steps_attributes: {
+          "0" => { title: "Étape A", position: "1" },
+          "1" => { title: "Étape B", position: "2" }
+        }
+      }
+    }
+
+    steps = Mission.last.steps
+    assert_equal [1, 2], steps.map(&:position)
+  end
+
+  test "create avec une étape au titre vide ne crée pas cette étape" do
+    client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice_sb@test.com")
+
+    sign_in @user
+    assert_difference("Step.count", 0) do
+      post missions_path, params: {
+        mission: {
+          title: "Mission sans étape",
+          client_id: client.id,
+          steps_attributes: { "0" => { title: "", position: "" } }
+        }
+      }
+    end
+  end
+
+  test "create en échec re-expose les modèles d'étapes" do
+    StepTemplate.create!(user: @user, name: "Modèle B", description: "D")
+
+    sign_in @user
+    post missions_path, params: { mission: { title: "" } }
+
+    assert_response :unprocessable_entity
+    assert_not_nil assigns(:step_templates)
+    assert_not_nil assigns(:step_templates_json)
+  end
 end

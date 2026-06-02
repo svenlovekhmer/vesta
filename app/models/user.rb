@@ -7,4 +7,5 @@ class User < ApplicationRecord
   has_one :profile
   has_many :clients
   has_many :missions, through: :clients
+  has_many :step_templates, dependent: :destroy
 end

@@ -26,23 +26,67 @@
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <div class="bg-white border rounded-4 overflow-hidden new-mission--steps">
+      <div class="bg-white border rounded-4 overflow-hidden new-mission--steps"
+           data-controller="steps"
+           data-steps-templates-value="<%= @step_templates_json.html_safe %>">
+
+        <%# Header %>
         <div class="bg-light border-bottom p-4">
           <div class="d-flex justify-content-between align-items-center gap-2">
             <div>
-              <strong class="new-mission--steps-title">Etapes du projet</strong>
+              <strong class="new-mission--steps-title">Étapes du projet</strong>
               <span class="new-mission--steps-subtitle text-muted">Définir les étapes clés de votre projet.</span>
             </div>
-            <div>
-              <button type="button" class="btn btn-outline-dark btn-sm rounded-pill">
-                Modèles <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <div class="dropdown">
+              <button type="button"
+                      class="btn btn-outline-dark btn-sm rounded-pill"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                Modèle <i class="fa-solid fa-wand-magic-sparkles"></i>
               </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <% if @step_templates&.any? %>
+                  <% @step_templates.each do |t| %>
+                    <li>
+                      <button type="button"
+                              class="dropdown-item"
+                              data-action="steps#loadTemplate"
+                              data-template-id="<%= t.id %>">
+                        <%= t.name %>
+                      </button>
+                    </li>
+                  <% end %>
+                <% else %>
+                  <li><span class="dropdown-item text-muted fst-italic">Aucun modèle disponible</span></li>
+                <% end %>
+              </ul>
             </div>
           </div>
         </div>
+
+        <%# Step list %>
         <div class="p-4">
-          <p>To do: template management. The button "modeles" is for selecting pre-defined templates for the mission steps.</p>
+          <div data-steps-target="list">
+            <%= f.fields_for :steps do |sf| %>
+              <%= render "missions/step_fields", sf: sf %>
+            <% end %>
+          </div>
+
+          <button type="button"
+                  class="btn step-add-btn w-100 mt-3"
+                  data-action="steps#addStep">
+            <i class="fa-solid fa-plus"></i> Ajouter une étape
+          </button>
+
+          <p class="text-center text-muted mt-2 step-drag-hint">
+            <i class="fa-solid fa-circle-info fa-xs"></i> Glissez-déposez pour réorganiser
+          </p>
         </div>
+
+        <%# Hidden template for JS cloning %>
+        <template data-steps-target="rowTemplate">
+          <%= render "missions/step_fields", sf: nil %>
+        </template>
       </div>
     </div>
   </div>

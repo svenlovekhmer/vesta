@@ -33,3 +33,91 @@
     font-size: 0.85rem;
   }
 }
+
+// ── Step Cards ────────────────────────────────────────────────────────────
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 50%;
+  background-color: $red;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.step-card {
+  background: $light-gray;
+  border-radius: 12px;
+  padding: 10px 12px;
+
+  &:hover .step-drag-handle {
+    opacity: 1;
+  }
+}
+
+.step-title-input {
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  box-shadow: none;
+
+  &:focus {
+    background: #fff;
+    border-color: $red;
+    box-shadow: 0 0 0 3px rgba(253, 16, 21, 0.1);
+  }
+}
+
+.step-action-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.step-drag-handle {
+  cursor: grab;
+  opacity: 0.35;
+  transition: opacity 0.15s;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.step-add-btn {
+  border: 2px dashed #dee2e6;
+  color: #6c757d;
+  font-size: 0.875rem;
+  background: transparent;
+  border-radius: 12px;
+  padding: 10px;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: $red;
+    background: #fff5f5;
+    color: $red;
+  }
+}
+
+.step-drag-hint {
+  font-size: 0.78rem;
+  margin-bottom: 0;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+.sortable-chosen {
+  background: #fff0f0 !important;
+}
