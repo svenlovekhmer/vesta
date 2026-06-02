@@ -16,7 +16,6 @@ puts "Creating statuses..."
 mission_statuses = {
   en_attente:  MissionStatus.create!(title: "En attente"),
   en_cours:    MissionStatus.create!(title: "En cours"),
-  en_revision: MissionStatus.create!(title: "En révision"),
   terminee:    MissionStatus.create!(title: "Terminée")
 }
 
