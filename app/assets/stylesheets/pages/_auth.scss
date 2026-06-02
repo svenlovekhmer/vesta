@@ -1,0 +1,44 @@
+// Auth pages (sign up, sign in)
+
+.auth-page {
+  min-height: 100vh;
+  background: $light-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.auth-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.auth-links {
+  a {
+    font-size: 0.875rem;
+    color: $red;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
