@@ -4,13 +4,17 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
   </div>
   <div class="modal-body">
-    <p>Êtes-vous sûr de vouloir supprimer <strong><%= "#{@client.first_name} #{@client.last_name}" %></strong> ?</p>
-    <p class="text-muted small">Cette action est irréversible.</p>
+    <div class="bg-white border rounded-4 p-4">
+      <p>Êtes-vous sûr de vouloir supprimer <strong><%= "#{@client.first_name} #{@client.last_name}" %></strong> ?</p>
+      <p class="text-muted small">Cette action est irréversible.</p>
+    </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+    <button type="button" class="btn btn-secondary vesta-btn rounded-pill" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
     <%= button_to "Supprimer", client_path(@client), method: :delete,
-          class: "btn btn-danger",
+          class: "btn btn-danger vesta-btn rounded-pill text-white",
           form: { data: { turbo_frame: "_top" } } %>
   </div>
 </turbo-frame>

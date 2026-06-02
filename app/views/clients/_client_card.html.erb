@@ -10,21 +10,20 @@
     <div>
       <%= link_to "tel:#{client.phone_number}", class: "btn btn-outline-danger rounded-circle" do %>
         <i class="fa-solid fa-phone"></i>
-        <%= client.phone_number %>
       <% end %>
-      <%= link_to mission_path(client), class: "ms-4 btn btn-danger vesta-btn rounded-pill text-white" do %>
+      <%= link_to mission_path(client), class: "ms-2 btn btn-danger vesta-btn rounded-pill text-white" do %>
         <i class="fa-solid fa-eye d-inline-block me-2"></i>
         Voir les missions
       <% end %>
     </div>
     <div class="ms-auto">
       <%= link_to edit_client_path(client),
-            class: "btn btn-outline-secondary",
+            class: "btn btn-outline-secondary rounded-pill me-2",
             data: { turbo_frame: "modal" } do %>
         <i class="fa-solid fa-pen-to-square"></i>
       <% end %>
       <%= link_to confirm_destroy_client_path(client),
-            class: "btn btn-outline-danger",
+            class: "btn btn-outline-danger rounded-pill",
             data: { turbo_frame: "modal" } do %>
         <i class="fa-solid fa-trash"></i>
       <% end %>
