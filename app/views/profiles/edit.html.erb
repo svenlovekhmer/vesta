@@ -42,6 +42,7 @@
             <strong class="profile__visual-title">Vos visuels</strong>
           </div>
           <div class="p-4" data-controller="logo-upload">
+            <label class="form-label string optional" for="profile_logo">Logo</label>
             <%= f.file_field :logo, class: "d-none",
                 data: { logo_upload_target: "input", action: "change->logo-upload#change" } %>
             <%= f.hidden_field :remove_logo, value: "0",
