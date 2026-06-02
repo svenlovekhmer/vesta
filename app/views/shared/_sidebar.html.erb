@@ -33,14 +33,11 @@
   </div>
 
   <div class="sidebar-profile">
-    <% profile = current_user.profile %>
     <div class="sidebar-profile__user">
-      <div class="sidebar-profile__avatar">
-        <%= profile && profile.first_name && profile.last_name ? "#{profile.first_name}#{profile.last_name}"[0..1].upcase : current_user.email[0..1].upcase %>
-      </div>
+      <%= render "shared/user_avatar", user: current_user, css_class: "sidebar-profile__avatar" %>
       <div class="sidebar-profile__info">
-        <p class="sidebar-profile__name"><%= profile && profile.first_name && profile.last_name ? "#{profile.first_name} #{profile.last_name}" : current_user.email %></p>
-        <p class="sidebar-profile__role"><%= profile&.profession %></p>
+        <p class="sidebar-profile__name"><%= user_display_name(current_user) %></p>
+        <p class="sidebar-profile__role"><%= current_user.profile&.profession %></p>
       </div>
     </div>
     <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "sidebar-logout" do %>
