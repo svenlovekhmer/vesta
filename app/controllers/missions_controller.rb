@@ -30,6 +30,7 @@ class MissionsController < ApplicationController
   end
 
   def show
+    @mission = current_user.missions.find(params[:id])
   end
 
   private
@@ -82,7 +83,7 @@ class MissionsController < ApplicationController
   def mission_params
     params.require(:mission).permit(
       :title, :description, :client_id,
-      steps_attributes: [:id, :title, :position, :_destroy]
+      steps_attributes: %i[id title position _destroy]
     )
   end
 end
