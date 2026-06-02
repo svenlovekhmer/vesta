@@ -1,0 +1,71 @@
+.clients-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 24px;
+}
+
+.clients-search-input {
+  width: 100%;
+  max-width: 430px;
+  height: 42px;
+  border: 1px solid #ffd8d8;
+  border-radius: 999px;
+  padding: 0 18px;
+  font-size: 14px;
+  background: #fffafa;
+  color: #222;
+}
+
+.clients-search-input:focus {
+  outline: none;
+  border-color: $red;
+  box-shadow: 0 0 0 3px rgba(240, 76, 76, 0.12);
+}
+
+.clients-filter-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.clients-filter-tab,
+.clients-sort-btn {
+  height: 42px;
+  border: 1px solid #ffd8d8;
+  background: #fffafa;
+  color: $red;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.clients-filter-tab {
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.clients-sort-btn {
+  width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clients-filter-tab:hover,
+.clients-sort-btn:hover {
+  background: #ffefef;
+  border-color: #ffbfbf;
+}
+
+.clients-filter-tab.active {
+  background: #ffeded;
+  color: $light-red;
+  border-color: #ffb5b5;
+  box-shadow: inset 0 0 0 1px rgba(91, 76, 240, 0.12);
+}
+
+.clients-sort-btn i {
+  font-size: 14px;
+  color: $red;
+}

@@ -1,0 +1,16 @@
+<turbo-frame id="modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Supprimer le client</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <p>Êtes-vous sûr de vouloir supprimer <strong><%= "#{@client.first_name} #{@client.last_name}" %></strong> ?</p>
+    <p class="text-muted small">Cette action est irréversible.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+    <%= button_to "Supprimer", client_path(@client), method: :delete,
+          class: "btn btn-danger",
+          form: { data: { turbo_frame: "_top" } } %>
+  </div>
+</turbo-frame>

@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h5 class="modal-title">Modifier le client</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+</div>
+<div class="modal-body">
+  <%= render "form", client: client %>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+  <button type="submit" form="client_form" class="btn btn-primary">Enregistrer</button>
+</div>
