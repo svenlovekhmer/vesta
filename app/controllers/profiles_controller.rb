@@ -7,6 +7,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    @profile.logo.purge if params.dig(:profile, :remove_logo) == "1"
     if @profile.update(profile_params)
       redirect_to edit_profile_path, notice: "Profil mis à jour avec succès."
     else
@@ -21,6 +22,6 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:profile).permit(:first_name, :last_name)
+    params.require(:profile).permit(:first_name, :last_name, :profession, :logo)
   end
 end

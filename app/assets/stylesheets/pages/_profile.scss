@@ -19,4 +19,58 @@
     flex-shrink: 0;
     text-transform: uppercase;
   }
+
+  &__visual-title {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+}
+
+.logo-upload {
+  &__dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed $red;
+    border-radius: 12px;
+    padding: 2rem;
+    cursor: pointer;
+    min-height: 180px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: rgba($red, 0.05);
+    }
+  }
+
+  &__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__icon {
+    font-size: 2.5rem;
+    color: $red;
+    margin-bottom: 0.75rem;
+  }
+
+  &__label {
+    font-size: 1rem;
+    color: #1a1a1a;
+  }
+
+  &__hint {
+    font-size: 0.875rem;
+    color: $red;
+  }
+
+  &__preview {
+    max-width: 100%;
+    max-height: 160px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
 }
