@@ -22,7 +22,7 @@
         Missions
         <span class="sidebar-nav__count"><%= current_user.missions.count %></span>
       <% end %>
-      <%= link_to "#", class: "sidebar-nav__link" do %>
+      <%= link_to clients_path, class: "sidebar-nav__link #{current_page?(clients_path) ? 'active' : ''}" do %>
         <i class="fa-solid fa-users"></i>
         Clients
         <span class="sidebar-nav__count"><%= current_user.clients.count %></span>

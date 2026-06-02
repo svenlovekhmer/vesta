@@ -1,0 +1,28 @@
+<div class="bg-white border rounded-4 p-4 mb-3"
+    data-clients-filter-target="card"
+    data-title="<%= client.first_name.to_s.downcase %> <%= client.last_name.to_s.downcase %>"
+    data-email="<%= client.email.to_s.downcase %>"
+    data-created-at="<%= client.created_at.to_i %>">
+    <h5 class="card-title"><%= "#{client.first_name} #{client.last_name}" %></h5>
+    <p class="card-text"><%= client.email %></p>
+    <div class="d-flex gap-2">
+      <div>
+        <%= link_to "tel:#{client.phone_number}", class: "btn btn-outline-primary" do %>
+          <i class="fa-solid fa-phone"></i>
+          <%= client.phone_number %>
+        <% end %>
+        <%= link_to mission_path(client), class: "btn btn-primary" do %>
+          <i class="fa-solid fa-eye"></i>
+          Voir les missions
+        <% end %>
+      </div>
+      <div class="ms-auto">
+        <%= link_to edit_client_path(client), class: "btn btn-outline-secondary" do %>
+          <i class="fa-solid fa-pen-to-square"></i>
+        <% end %>
+        <%= link_to client_path(client), method: :delete, data: { confirm: "Êtes-vous sûr de vouloir supprimer ce client ?" }, class: "btn btn-outline-danger" do %>
+          <i class="fa-solid fa-trash"></i>
+        <% end %>
+      </div>
+  </div>
+</div>
