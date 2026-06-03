@@ -8,38 +8,34 @@
   flex-shrink: 0;
 }
 
-$item-transition: background 0.12s, color 0.12s;
+$dot_size: 25px;
+$grey_timeline: #dee2e6;
 
 // ── Step Timeline ─────────────────────────────────────────────────────────
 
 .step-timeline {
   &__item {
-    display: flex;
-    gap: 16px;
+    @extend .d-flex, .gap-4;
   }
 
   &__indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
+    @extend .d-flex, .flex-column, .align-items-center, .flex-shrink-0;
   }
 
   &__dot {
     @include flex-circle;
-    width: 25px;
-    height: 25px;
-    min-height: 25px;
-    background: #fff;
+    width: $dot_size;
+    height: $dot_size;
+    min-height: $dot_size;
+    background: $white;
 
     &--done {
-      background-color: $green;
-      color: #fff;
+      @extend .bg-success, .text-white;
       font-size: 0.85rem;
     }
 
     &--active  { border: 2.5px solid $green; }
-    &--pending { border: 2.5px solid #dee2e6; }
+    &--pending { border: 2.5px solid $grey_timeline; }
   }
 
   &__dot-inner {
@@ -50,16 +46,16 @@ $item-transition: background 0.12s, color 0.12s;
   }
 
   &__line {
+    @extend .flex-grow-1;
     width: 2px;
-    flex-grow: 1;
     min-height: 20px;
     margin: 3px 0;
 
-    &--done    { background-color: $green; }
-    &--pending { background-color: #dee2e6; }
+    &--done    { @extend .bg-success; }
+    &--pending { background-color: $grey_timeline; }
   }
 
-  &__content { padding-bottom: 20px; }
+  &__content { @extend .pb-4; }
 
   &__title {
     font-weight: 700;
@@ -68,8 +64,8 @@ $item-transition: background 0.12s, color 0.12s;
   }
 
   &__description {
+    @extend .text-secondary;
     font-size: 0.85rem;
-    color: #888;
     margin-bottom: 0;
   }
 }
@@ -128,7 +124,7 @@ $item-transition: background 0.12s, color 0.12s;
 }
 
 .step-add-btn {
-  border: 2px dashed #dee2e6;
+  border: 2px dashed $grey_timeline;
   color: #6c757d;
   font-size: 0.875rem;
   background: transparent;
@@ -206,7 +202,6 @@ $item-transition: background 0.12s, color 0.12s;
   border-radius: 10px;
   padding: 8px 10px;
   color: #343a40;
-  transition: $item-transition;
   white-space: normal;
 
   &__icon {
@@ -220,7 +215,6 @@ $item-transition: background 0.12s, color 0.12s;
     justify-content: center;
     font-size: 0.8rem;
     color: #868e96;
-    transition: $item-transition;
   }
 
   &__info {
@@ -246,14 +240,12 @@ $item-transition: background 0.12s, color 0.12s;
     padding: 1px 5px;
     margin-left: 4px;
     vertical-align: middle;
-    transition: $item-transition;
   }
 
   &__count {
     font-size: 0.75rem;
     color: #adb5bd;
     margin-top: 1px;
-    transition: $item-transition;
   }
 
   &:hover, &:focus {

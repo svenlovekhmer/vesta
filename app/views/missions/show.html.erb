@@ -1,6 +1,6 @@
-<div class="container-fluid show-mission p-1">
-  <h1 class="show-mission--title"><%= @mission.title %></h1>
-  <div class="show-mission--subtitle d-flex align-items-center gap-4 mb-4">
+<div class="container-fluid mission-show">
+  <h1 class="mission-show--title"><%= @mission.title %></h1>
+  <div class="mission-show--subtitle">
     <div><%= mission_status_badge(@mission.mission_status) %></div>
     <div>Client : <%= "#{@mission.client.first_name} #{@mission.client.last_name}" %></div>
     <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at) %></div>

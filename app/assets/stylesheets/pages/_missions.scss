@@ -4,6 +4,7 @@
 }
 
 %mission-subtitle {
+  @extend .d-flex, .align-items-center, .gap-4, .mb-4;
   color: #888;
   font-size: 0.9rem;
 }
@@ -39,9 +40,10 @@
   }
 }
 
-// ── Show mission page ─────────────────────────────────────────────────────
+// ── mission#show page ─────────────────────────────────────────────────────
 
-.show-mission {
+.mission-show {
+  @extend .p-1;
   &--title    { @extend %mission-title; }
   &--subtitle { @extend %mission-subtitle; }
 }
