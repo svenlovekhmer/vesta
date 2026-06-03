@@ -30,13 +30,18 @@ class MissionsController < ApplicationController
   end
 
   def show
-    @mission = current_user.missions.find(params[:id])
+    pending = @mission.decision_logs.select { |dl| dl.status == "pending" }
+    @pending_logs = pending
+    @vesta_pending_count = pending.count { |dl| dl.owner_type == "provider" }
+    @client_pending_count = pending.count { |dl| dl.owner_type == "client" }
   end
 
   private
 
   def set_mission
-    @mission = current_user.missions.find(params[:id])
+    @mission = current_user.missions
+      .includes(:mission_status, :client, :decision_logs, steps: :step_status)
+      .find(params[:id])
   end
 
   def save_steps_as_template

@@ -68,8 +68,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
     t.datetime "updated_at", null: false
     t.index ["mission_id"], name: "index_decision_logs_on_mission_id"
     t.index ["owner_id"], name: "index_decision_logs_on_owner_id"
-    t.check_constraint "owner_type IS NULL OR (owner_type::text = ANY (ARRAY['client'::character varying::text, 'provider'::character varying::text, 'third_party'::character varying::text]))", name: "decision_logs_owner_type_check"
-    t.check_constraint "status::text = ANY (ARRAY['decided'::character varying::text, 'pending'::character varying::text])", name: "decision_logs_status_check"
+    t.check_constraint "owner_type IS NULL OR (owner_type::text = ANY (ARRAY['client'::character varying, 'provider'::character varying, 'third_party'::character varying]::text[]))", name: "decision_logs_owner_type_check"
+    t.check_constraint "status::text = ANY (ARRAY['decided'::character varying, 'pending'::character varying]::text[])", name: "decision_logs_status_check"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -99,7 +99,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
     t.index ["decision_log_id"], name: "index_mission_step_blockers_on_decision_log_id"
     t.index ["mission_id"], name: "index_mission_step_blockers_on_mission_id"
     t.index ["step_id"], name: "index_mission_step_blockers_on_step_id"
-    t.check_constraint "blocking_status::text = ANY (ARRAY['blocking'::character varying::text, 'warning'::character varying::text, 'resolved'::character varying::text])", name: "mission_step_blockers_blocking_status_check"
+    t.check_constraint "blocking_status::text = ANY (ARRAY['blocking'::character varying, 'warning'::character varying, 'resolved'::character varying]::text[])", name: "mission_step_blockers_blocking_status_check"
   end
 
   create_table "missions", force: :cascade do |t|
