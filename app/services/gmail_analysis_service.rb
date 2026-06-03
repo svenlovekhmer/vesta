@@ -85,11 +85,18 @@ class GmailAnalysisService
       Tu es un assistant expert pour des professionnels de l'amenagement interieur.
       Analyse les echanges emails entre le professionnel "#{@provider_name}" et son client (#{@client_email}).
       Retourne uniquement un objet JSON valide avec exactement ces deux cles :
-      - "decided" : tableau d'objets {text, owner} listant tous les points valides/actes explicitement dans les echanges
-      - "pending" : tableau d'objets {text, owner} listant tous les points en attente ou actions a realiser
+      - "decided" : tableau d'objets {text, owner} listant les points deja actes/valides
+      - "pending" : tableau d'objets {text, owner} listant les actions encore a realiser
 
-      owner vaut "client", "provider" ou "third_party".
-      N'invente pas de date, de responsable ou de decision non presente dans les emails.
+      Regles STRICTES pour chaque objet :
+      - "owner" : la personne qui DOIT REALISER l'action (pas celle qui l'a demandee).
+        "client" si c'est le client qui doit agir, "provider" si c'est le professionnel "#{@provider_name}" qui doit agir, "third_party" sinon.
+      - "text" : titre court et imperatif decrivant l'ACTION attendue du owner, pas un extrait de l'email.
+        Formule comme une tache : verbe a l'infinitif + objet concis.
+        Exemples corrects : "Transmettre les photos des malfacons", "Planifier une visite sur site", "Valider la palette de couleurs"
+        Exemples INCORRECTS (ne pas faire) : "Merci de m'envoyer...", "Vous devez...", extraits de phrases des emails.
+
+      N'invente aucune information absente des emails.
       Si aucun point dans une categorie, retourne [].
       Ne retourne que le JSON, sans texte supplementaire.
     PROMPT

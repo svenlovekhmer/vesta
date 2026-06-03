@@ -1,4 +1,4 @@
-<% profile = current_user.profile %>
+<% profile = local_assigns.fetch(:profile) { current_user.profile } %>
 <div id="pav_section_<%= mission.id %>">
   <% if pending_logs.any? %>
     <div class="pav-card border mb-4">
