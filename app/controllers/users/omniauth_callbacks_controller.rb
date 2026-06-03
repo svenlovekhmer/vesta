@@ -22,16 +22,20 @@ module Users
 
     private
 
-    def connect_gmail_to_current_user
-      gmail_connection = current_user.gmail_connection || current_user.build_gmail_connection
-
-      gmail_connection.update!(
+    def update_gmail_connection!(gmail_connection, user)
+      gmail_connection.user = user
+      gmail_connection.assign_attributes(
         email: auth.info.email,
         access_token: auth.credentials.token,
-        refresh_token: auth.credentials.refresh_token,
         expires_at: auth.credentials.expires_at.present? ? Time.at(auth.credentials.expires_at) : nil
       )
+      gmail_connection.refresh_token = auth.credentials.refresh_token if auth.credentials.refresh_token.present?
+      gmail_connection.save!
+    end
 
+    def connect_gmail_to_current_user
+      gmail_connection = current_user.gmail_connection || current_user.build_gmail_connection
+      update_gmail_connection!(gmail_connection, current_user)
       redirect_to root_path, notice: "Gmail connecté avec succès."
     end
 
@@ -60,14 +64,7 @@ module Users
         user.gmail_connection ||
         user.build_gmail_connection
 
-      gmail_connection.user = user
-
-      gmail_connection.update!(
-        email: auth.info.email,
-        access_token: auth.credentials.token,
-        refresh_token: auth.credentials.refresh_token,
-        expires_at: auth.credentials.expires_at.present? ? Time.at(auth.credentials.expires_at) : nil
-      )
+      update_gmail_connection!(gmail_connection, user)
     end
 
     def auth
