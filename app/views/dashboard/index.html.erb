@@ -42,10 +42,9 @@
   <div id="pav_card" class="pav-card mb-4">
     <div class="pav-card__header">
       <div class="pav-card__title-group">
-        <h2 class="pav-card__title">Points à valider</h2>
+        <h2 class="pav-card__title"><i class="fa-regular fa-circle-pause text-danger"></i> Points à valider</h2>
       </div>
       <p class="pav-card__subtitle">
-        Par mission &middot;
         <span id="pav_total_vesta" class="pav-card__subtitle--vesta"><%= @total_vesta_pending %> côté <%= profile&.first_name %> <%= profile&.last_name %></span> &middot;
         <span id="pav_total_client" class="pav-card__subtitle--client"><%= @total_client_pending %> côté client</span>
       </p>

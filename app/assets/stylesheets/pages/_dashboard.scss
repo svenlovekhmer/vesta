@@ -243,14 +243,13 @@
 }
 
 .pav-row__mission-title {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #111;
 }
 
 .pav-row__meta {
-  font-size: 0.75rem;
-  color: #aaa;
+  @extend .text-secondary;
+  font-size: 0.85rem;
 }
 
 .pav-row__badges {
