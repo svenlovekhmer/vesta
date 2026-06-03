@@ -1,4 +1,5 @@
 puts "Cleaning database..."
+MissionStepBlocker.destroy_all if defined?(MissionStepBlocker)
 DecisionLog.destroy_all
 Document.destroy_all
 Step.destroy_all
@@ -106,8 +107,9 @@ missions_data = [
       { title: "Appel d'offres",       description: "Consultation des artisans partenaires",                 position: 5, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { description: "Client souhaite conserver les moulures d'origine.", status: "decided", decided_by: "Marie Laurent", decided_at: 3.weeks.ago },
-      { description: "Budget recadré à 45 000€ suite à l'étude de faisabilité.", status: "decided", decided_by: "Sven Dupont", decided_at: 2.weeks.ago }
+      { title: "Délai menuiserie – 8 semaines",   description: "Délai artisan menuisier confirmé à 8 semaines.",        status: "pending", owner_type: "provider" },
+      { title: "Budget travaux V3 – 45 000 €",    description: "Budget recadré à 45 000€ suite à l'étude de faisabilité.", status: "pending", owner_type: "client" },
+      { title: "Conservation des moulures",        description: "Client souhaite conserver les moulures d'origine.",       status: "decided", owner_type: "client", decided_by: "Marie Laurent", decided_at: 3.weeks.ago }
     ]
   },
   {
@@ -120,7 +122,9 @@ missions_data = [
       { title: "Plans & rendus 3D",    description: "Proposition d'aménagement de la pièce 20m²",           position: 3, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { description: "Projet limité à une seule pièce, 20m². Budget estimé : 12 000€.", status: "decided", decided_by: "Thomas Moreau", decided_at: 1.week.ago }
+      { title: "Choix revêtement sol",       description: "Parquet ou béton ciré ?",                  status: "pending", owner_type: "provider" },
+      { title: "Validation devis mobilier",  description: "Devis mobilier bureau à valider.",          status: "pending", owner_type: "client" },
+      { title: "Périmètre une pièce",        description: "Projet limité à une seule pièce, 20m².",   status: "decided", owner_type: "client", decided_by: "Thomas Moreau", decided_at: 1.week.ago }
     ]
   },
   {
@@ -137,9 +141,9 @@ missions_data = [
       { title: "Réception des travaux",description: "Remise des clés prévue en fin d'année",               position: 7, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { description: "Extension de 20m² validée par les services d'urbanisme.", status: "decided", decided_by: "Sven Dupont", decided_at: 6.weeks.ago },
-      { description: "Choix des matériaux : parquet chêne et carrelage grès pour les pièces humides.", status: "decided", decided_by: "Isabelle Petit", decided_at: 1.month.ago },
-      { description: "Révision du plan de cuisine demandée par le client.", status: "pending", decided_by: "Isabelle Petit", decided_at: 1.week.ago }
+      { title: "Révision plan cuisine",  description: "Révision demandée par le client.",                          status: "pending", owner_type: "client" },
+      { title: "Extension urbanisme",    description: "Extension de 20m² validée par les services d'urbanisme.",   status: "decided", owner_type: "provider", decided_by: "Sven Dupont",     decided_at: 6.weeks.ago },
+      { title: "Choix matériaux",        description: "Parquet chêne et carrelage grès pour les pièces humides.",  status: "decided", owner_type: "client",   decided_by: "Isabelle Petit",  decided_at: 1.month.ago }
     ]
   },
   {
@@ -155,8 +159,9 @@ missions_data = [
       { title: "Réception des travaux",description: "Visite finale et satisfaction client confirmée",       position: 6, status: :validee, validate_at: 3.weeks.ago }
     ],
     decision_logs: [
-      { description: "Style retenu : Japandi minimaliste avec touches de bois naturel.", status: "decided", decided_by: "Nicolas Bernard", decided_at: 3.months.ago },
-      { description: "Budget final : 8 500€, dans les limites prévues.", status: "decided", decided_by: "Sven Dupont", decided_at: 3.weeks.ago }
+      { title: "Validation palette couleurs", description: "Choix final des couleurs à confirmer.",         status: "pending", owner_type: "provider" },
+      { title: "Style Japandi retenu",        description: "Style Japandi minimaliste avec bois naturel.",  status: "decided", owner_type: "client",   decided_by: "Nicolas Bernard", decided_at: 3.months.ago },
+      { title: "Budget final : 8 500€",       description: "Budget dans les limites prévues.",              status: "decided", owner_type: "provider", decided_by: "Sven Dupont",     decided_at: 3.weeks.ago }
     ]
   }
 ]
@@ -183,9 +188,11 @@ missions_data.each do |mission_data|
 
   mission_data[:decision_logs].each do |log_attrs|
     DecisionLog.create!(
-      mission: mission,
+      mission:    mission,
+      title:      log_attrs[:title],
       description: log_attrs[:description],
-      status: log_attrs[:status],
+      status:     log_attrs[:status],
+      owner_type: log_attrs[:owner_type],
       decided_by: log_attrs[:decided_by],
       decided_at: log_attrs[:decided_at]
     )

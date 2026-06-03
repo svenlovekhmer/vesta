@@ -1,0 +1,22 @@
+<turbo-frame id="modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Marquer comme résolu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+  </div>
+
+  <div class="modal-body">
+    <p class="text-muted mb-0"><%= @decision_log.title.presence || @decision_log.description %></p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary vesta-btn rounded-pill" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
+    <%= button_to resolve_decision_log_path(@decision_log),
+          method: :patch,
+          class: "btn btn-danger vesta-btn text-white rounded-pill",
+          data: { turbo_stream: true } do %>
+      <i class="fa-solid fa-check me-1"></i> Confirmer
+    <% end %>
+  </div>
+</turbo-frame>

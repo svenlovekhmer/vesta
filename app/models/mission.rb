@@ -9,4 +9,9 @@ class Mission < ApplicationRecord
   accepts_nested_attributes_for :steps, allow_destroy: true, reject_if: :all_blank
 
   validates :title, presence: true
+
+  def last_activity_at
+    timestamps = [updated_at] + steps.map(&:updated_at) + decision_logs.map(&:updated_at)
+    timestamps.compact.max
+  end
 end
