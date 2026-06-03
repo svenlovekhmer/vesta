@@ -64,3 +64,22 @@
     font-size: .85rem;
   }
 }
+
+.gmail-stat-card {
+  background: #f8f9fa;
+  border: 1px solid #edf0f2;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.gmail-stat-card__label {
+  display: block;
+  font-size: 0.8rem;
+  color: #8a8f98;
+  margin-bottom: 0.35rem;
+}
+
+.gmail-stat-card strong {
+  font-size: 1rem;
+  color: #111;
+}

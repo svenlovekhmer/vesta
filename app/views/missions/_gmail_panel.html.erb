@@ -1,0 +1,47 @@
+<div class="bg-white border rounded-4 p-3 mb-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <h6 class="mb-1">
+        <i class="fa-brands fa-google me-2"></i>
+        Emails du client
+      </h6>
+
+      <small class="text-muted">
+        Analyse des échanges avec
+        <%= mission.client.email %>
+      </small>
+    </div>
+
+    <% if current_user.gmail_connection.present? %>
+      <%= button_to sync_emails_client_path(mission.client),
+          method: :post,
+          turbo: false,
+          class: "btn btn-danger vesta-btn text-white rounded-pill" do %>
+        <i class="fa-solid fa-rotate me-2"></i>
+        Synchroniser
+      <% end %>
+    <% else %>
+      <span class="text-muted">
+        Gmail non connecté
+      </span>
+    <% end %>
+  </div>
+    <% if mission.client.gmail_last_synced_at.present? %>
+      <div class="mt-4 pt-3 border-top">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="gmail-stat-card">
+              <span class="gmail-stat-card__label">Emails trouvés</span>
+              <strong><%= mission.client.gmail_messages_count || 0 %></strong>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="gmail-stat-card">
+              <span class="gmail-stat-card__label">Dernière synchronisation</span>
+              <strong>il y a <%= time_ago_in_words(mission.client.gmail_last_synced_at) %></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+</div>
