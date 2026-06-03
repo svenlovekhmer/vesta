@@ -1,19 +1,23 @@
 .breadcrumb {
-  border: 1px solid #dee2e6 !important;
-  border-radius: $bs-breadcrumb-border-radius;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
+  @extend .mb-3, .p-4, .bg-white;
+  margin-top: -2rem;
+  margin-left: -2.5rem;
+  margin-right: -2.5rem;
+  border-bottom: 1px solid #f0f0f0;
 
   .breadcrumb-item {
     a {
-      font-size: 0.875rem;
-      color: $gray;
+      @extend .text-secondary;
+      font-size: 0.85rem;
       text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &.active span{
-      font-size: 0.875rem;
-      color: $bs-breadcrumb-active-color;
+      font-size: 0.85rem;
     }
   }
 }
