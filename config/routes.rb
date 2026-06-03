@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   }
 
   get "up" => "rails/health#show", as: :rails_health_check
-  root to: "dashboard#index"
+  root to: "pages#home"
+  get "dashboard", to: "dashboard#index", as: :dashboard
   resources :missions, only: [:index, :new, :create, :show]
   resources :clients, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
