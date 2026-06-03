@@ -1,0 +1,19 @@
+.breadcrumb {
+  border: 1px solid #dee2e6 !important;
+  border-radius: $bs-breadcrumb-border-radius;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+
+  .breadcrumb-item {
+    a {
+      font-size: 0.875rem;
+      color: $gray;
+      text-decoration: none;
+    }
+
+    &.active span{
+      font-size: 0.875rem;
+      color: $bs-breadcrumb-active-color;
+    }
+  }
+}

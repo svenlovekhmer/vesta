@@ -7,7 +7,7 @@
           <% if !last && crumb[:path] %>
             <%= link_to crumb[:name], crumb[:path] %>
           <% else %>
-            <%= crumb[:name] %>
+            <span><%= crumb[:name] %></span>
           <% end %>
         </li>
       <% end %>
