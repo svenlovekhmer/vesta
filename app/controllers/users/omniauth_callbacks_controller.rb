@@ -34,7 +34,9 @@ module Users
     end
 
     def connect_gmail_to_current_user
-      gmail_connection = current_user.gmail_connection || current_user.build_gmail_connection
+      gmail_connection = GmailConnection.find_by(email: auth.info.email) ||
+                         current_user.gmail_connection ||
+                         current_user.build_gmail_connection
       update_gmail_connection!(gmail_connection, current_user)
       redirect_to root_path, notice: "Gmail connecté avec succès."
     end
