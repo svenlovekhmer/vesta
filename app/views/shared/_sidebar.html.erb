@@ -42,6 +42,29 @@
         <p class="sidebar-profile__role"><%= current_user.profile&.profession %></p>
       </div>
     </div>
+    <div class="sidebar-profile__gmail">
+      <% if current_user.gmail_connection.present? %>
+        <%= button_to user_google_oauth2_omniauth_authorize_path,
+            method: :post,
+            data: { turbo: false },
+            class: "sidebar-profile__gmail-button" do %>
+          <i class="fa-brands fa-google"></i>
+          Changer de compte Gmail
+        <% end %>
+        <p class="sidebar-profile__gmail-email">
+          <%= current_user.gmail_connection.email %>
+        </p>
+      <% else %>
+        <%= button_to user_google_oauth2_omniauth_authorize_path,
+            method: :post,
+            data: { turbo: false },
+            class: "sidebar-profile__gmail-button" do %>
+          <i class="fa-brands fa-google"></i>
+          Connecter Gmail
+        <% end %>
+      <% end %>
+    </div>
+
     <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "sidebar-logout" do %>
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
       Se déconnecter

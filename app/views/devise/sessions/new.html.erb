@@ -38,5 +38,21 @@
     <div class="auth-links mt-3 text-center">
       <%= link_to "Pas encore de compte ? S'inscrire", new_registration_path(resource_name) %>
     </div>
-  </div>
+    <div>
+      <% if devise_mapping.omniauthable? %>
+        <div class="auth-separator my-4">
+          <span>ou</span>
+        </div>
+
+        <% resource_class.omniauth_providers.each do |provider| %>
+          <%= button_to omniauth_authorize_path(resource_name, provider),
+              method: :post,
+              data: { turbo: false },
+              class: "btn auth-google-btn rounded-pill w-100" do %>
+            <i class="fa-brands fa-google"></i>
+            Continuer avec Google
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
 </div>
