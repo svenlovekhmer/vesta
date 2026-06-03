@@ -6,6 +6,10 @@
     <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at) %></div>
   </div>
 
+<div class="container-fluid show-mission p-1">
+  <%= render "gmail_panel", mission: @mission %>
+</div>
+
   <div class="row">
     <div class="col-md-4">
       <div class="bg-white border rounded-4 p-4">

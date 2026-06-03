@@ -22,6 +22,45 @@ class ClientsController < ApplicationController
     end
   end
 
+  def sync_emails
+    @client = current_user.clients.find(params[:id])
+
+    query = "(from:#{@client.email} OR to:#{@client.email})"
+
+    response = Faraday.get(
+      "https://gmail.googleapis.com/gmail/v1/users/me/messages"
+    ) do |req|
+      req.headers["Authorization"] = "Bearer #{current_user.gmail_connection.access_token}"
+      req.params["q"] = query
+      req.params["format"] = "full"
+      req.params["maxResults"] = 50
+    end
+
+    data = JSON.parse(response.body)
+    messages_count = data["messages"]&.count || 0
+
+    if data["messages"].present?
+      message_id = data["messages"].first["id"]
+
+      message_response = Faraday.get(
+        "https://gmail.googleapis.com/gmail/v1/users/me/messages/#{message_id}"
+      ) do |req|
+        req.headers["Authorization"] = "Bearer #{current_user.gmail_connection.access_token}"
+        req.params["format"] = "full"
+      end
+
+      data["first_message"] = JSON.parse(message_response.body)
+    end
+
+    @client.update!(
+      gmail_summary: JSON.pretty_generate(data),
+      gmail_messages_count: messages_count,
+      gmail_last_synced_at: Time.current
+    )
+
+    redirect_back fallback_location: client_path(@client), notice: "Emails synchronisés."
+  end
+
   def edit
   end
 

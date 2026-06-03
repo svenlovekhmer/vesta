@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :clients, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
       get :confirm_destroy
+      post :sync_emails
     end
   end
   resource :profile, only: [:edit, :update]
