@@ -54,3 +54,18 @@
     </span>
   <% end %>
 <% end %>
+
+<%# Show page: replace both sections with fresh renders (no-op on dashboard where these IDs don't exist) %>
+<%= turbo_stream.replace "pav_section_#{@mission.id}" do %>
+  <%= render "missions/pav_section",
+        mission:       @mission,
+        pending_logs:  @remaining_pending,
+        vesta_count:   @entry[:vesta_count],
+        client_count:  @entry[:client_count] %>
+<% end %>
+
+<%= turbo_stream.replace "decided_section_#{@mission.id}" do %>
+  <%= render "missions/decided_section",
+        mission:      @mission,
+        decided_logs: @decided_logs %>
+<% end %>

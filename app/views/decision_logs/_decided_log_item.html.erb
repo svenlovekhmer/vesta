@@ -1,0 +1,12 @@
+<div class="decided-item">
+  <span class="decided-item__date"><%= log.decided_at&.strftime("%-d %B") %></span>
+  <div style="min-width: 110px;">
+    <span class="pav-log-item__tag pav-log-item__tag--<%= log.owner_type %>">
+      <%= log.owner_type == "provider" ? "#{profile&.first_name} #{profile&.last_name}" : "client" %>
+    </span>
+  </div>
+  <div class="decided-item__content">
+    <p class="decided-item__title"><%= log.title %></p>
+    <p class="decided-item__description"><%= log.description %></p>
+  </div>
+</div>

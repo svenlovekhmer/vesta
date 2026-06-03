@@ -24,8 +24,9 @@ class DecisionLogsController < ApplicationController
 
     mission = @decision_log.mission
     @remaining_pending = mission.decision_logs.where(status: "pending").to_a
-    @mission            = mission
-    @entry              = build_entry(@remaining_pending)
+    @decided_logs      = mission.decision_logs.where(status: "decided").order(decided_at: :desc).to_a
+    @mission           = mission
+    @entry             = build_entry(@remaining_pending)
 
     respond_to do |format|
       format.turbo_stream

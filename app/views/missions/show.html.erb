@@ -11,8 +11,8 @@
       <%= render "step_timeline", mission: @mission %>
     </div>
     <div class="col-md-8">
-      <%= render "pav_section", pending_logs: @pending_logs, vesta_count: @vesta_pending_count, client_count: @client_pending_count %>
-      <div class="bg-white border rounded-4 p-4 mb-4">fdfdsf</div>
+      <%= render "pav_section", mission: @mission, pending_logs: @pending_logs, vesta_count: @vesta_pending_count, client_count: @client_pending_count %>
+      <%= render "decided_section", mission: @mission, decided_logs: @decided_logs %>
     </div>
   </div>
 </div>
