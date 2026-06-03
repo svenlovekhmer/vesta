@@ -1,0 +1,20 @@
+<% profile = current_user.profile %>
+<div id="decided_section_<%= mission.id %>">
+  <% if decided_logs.any? %>
+    <div class="decided-card card mb-4">
+      <div class="decided-card__header">
+        <div>
+          <h6 class="decided-card__title">
+            <i class="fa-solid fa-circle-check text-success me-2"></i>Décisions actées
+          </h6>
+          <p class="decided-card__subtitle">Toutes les décisions actées pour cette mission</p>
+        </div>
+      </div>
+      <div class="log-list">
+        <% decided_logs.each do |log| %>
+          <%= render "decision_logs/decided_log_item", log: log, profile: profile %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
