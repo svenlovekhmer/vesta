@@ -1,0 +1,31 @@
+<div class="bg-white border rounded-4 p-4">
+  <h6><i class="fa-solid fa-list-check d-inline-block me-2"></i> Progression de la mission</h6>
+
+  <div class="step-timeline mt-4">
+    <% mission.steps.each_with_index do |step, index| %>
+      <% status = step.step_status.title %>
+      <div class="step-timeline__item">
+        <div class="step-timeline__indicator">
+          <% if status == "Validée" %>
+            <div class="step-timeline__dot step-timeline__dot--done">
+              <i class="fa-solid fa-check"></i>
+            </div>
+          <% elsif status == "En cours" %>
+            <div class="step-timeline__dot step-timeline__dot--active">
+              <div class="step-timeline__dot-inner"></div>
+            </div>
+          <% else %>
+            <div class="step-timeline__dot step-timeline__dot--pending"></div>
+          <% end %>
+          <% unless index == mission.steps.length - 1 %>
+            <div class="step-timeline__line <%= status == "Validée" ? "step-timeline__line--done" : "step-timeline__line--pending" %>"></div>
+          <% end %>
+        </div>
+        <div class="step-timeline__content">
+          <p class="step-timeline__title <%= "text-muted fw-normal" unless %w[Validée En\ cours].include?(status) %>"><%= step.title %></p>
+          <p class="step-timeline__description"><%= step.description %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
