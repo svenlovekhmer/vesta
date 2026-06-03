@@ -317,5 +317,6 @@ Devise.setup do |config|
     ENV['GOOGLE_CLIENT_ID'],
     ENV['GOOGLE_CLIENT_SECRET'],
     scope: 'email,profile,https://www.googleapis.com/auth/gmail.readonly',
-    access_type: 'offline'
+    access_type: 'offline',
+    prompt: 'consent'
 end
