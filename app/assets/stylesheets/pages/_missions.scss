@@ -48,57 +48,51 @@
   &--subtitle { @extend %mission-subtitle; }
 }
 
-// ── Décisions actées ──────────────────────────────────────────────────────
+// ── mission#show decisions archived ──────────────────────────────────────────────────────
 
 .decided-card {
   &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
+    @extend .d-flex, .justify-content-between, .align-items-start, .mb-3;
   }
 
   &__title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
+    @extend .mb-1;
   }
 
   &__subtitle {
-    font-size: 0.8rem;
-    color: #888;
-    margin-bottom: 0;
+    @extend .text-secondary, .mb-0;
+    font-size: .85rem;
   }
 }
 
-.decided-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  font-size: 0.875rem;
+.decided-list {
+  @extend .border, .rounded-4;
+}
 
-  &:not(:last-child) { border-bottom: 1px solid #efefef; }
+.decided-item {
+  @extend .d-flex, .align-items-center, .gap-3, .p-3, .border-bottom;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+
+  &:last-child { border-bottom: none !important; }
 
   &__date {
-    font-size: 0.8rem;
-    color: #888;
-    min-width: 55px;
-    padding-top: 2px;
-    flex-shrink: 0;
+    @extend .text-secondary;
+    font-weight: 600;
+    font-size: .9rem;
   }
 
   &__content { flex: 1; }
 
   &__title {
+    @extend .mb-0;
+    font-size: .9rem;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 0.1rem;
   }
 
   &__description {
-    font-size: 0.8rem;
-    color: #888;
-    margin-bottom: 0;
+    @extend .mb-0;
+    @extend .text-secondary;
+    font-size: .85rem;
   }
 }
