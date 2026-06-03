@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_03_100116) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,8 +68,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
     t.datetime "updated_at", null: false
     t.index ["mission_id"], name: "index_decision_logs_on_mission_id"
     t.index ["owner_id"], name: "index_decision_logs_on_owner_id"
-    t.check_constraint "owner_type IS NULL OR (owner_type::text = ANY (ARRAY['client'::character varying::text, 'provider'::character varying::text, 'third_party'::character varying::text]))", name: "decision_logs_owner_type_check"
-    t.check_constraint "status::text = ANY (ARRAY['decided'::character varying::text, 'pending'::character varying::text])", name: "decision_logs_status_check"
+    t.check_constraint "owner_type IS NULL OR (owner_type::text = ANY (ARRAY['client'::character varying, 'provider'::character varying, 'third_party'::character varying]::text[]))", name: "decision_logs_owner_type_check"
+    t.check_constraint "status::text = ANY (ARRAY['decided'::character varying, 'pending'::character varying]::text[])", name: "decision_logs_status_check"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -80,6 +80,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
     t.bigint "step_id", null: false
     t.datetime "updated_at", null: false
     t.index ["step_id"], name: "index_documents_on_step_id"
+  end
+
+  create_table "gmail_connections", force: :cascade do |t|
+    t.text "access_token"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.datetime "expires_at"
+    t.text "refresh_token"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_gmail_connections_on_user_id"
   end
 
   create_table "mission_statuses", force: :cascade do |t|
@@ -99,7 +110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
     t.index ["decision_log_id"], name: "index_mission_step_blockers_on_decision_log_id"
     t.index ["mission_id"], name: "index_mission_step_blockers_on_mission_id"
     t.index ["step_id"], name: "index_mission_step_blockers_on_step_id"
-    t.check_constraint "blocking_status::text = ANY (ARRAY['blocking'::character varying::text, 'warning'::character varying::text, 'resolved'::character varying::text])", name: "mission_step_blockers_blocking_status_check"
+    t.check_constraint "blocking_status::text = ANY (ARRAY['blocking'::character varying, 'warning'::character varying, 'resolved'::character varying]::text[])", name: "mission_step_blockers_blocking_status_check"
   end
 
   create_table "missions", force: :cascade do |t|
@@ -312,9 +323,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "provider"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
+    t.string "uid"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -326,6 +339,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_02_110316) do
   add_foreign_key "decision_logs", "missions"
   add_foreign_key "decision_logs", "users", column: "owner_id"
   add_foreign_key "documents", "steps"
+  add_foreign_key "gmail_connections", "users"
   add_foreign_key "mission_step_blockers", "decision_logs"
   add_foreign_key "mission_step_blockers", "missions"
   add_foreign_key "mission_step_blockers", "steps"

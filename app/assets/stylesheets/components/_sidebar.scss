@@ -174,3 +174,24 @@
     background: lighten($red, 38%);
   }
 }
+
+.sidebar-profile__gmail {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-profile__gmail-button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.sidebar-profile__gmail-email {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}

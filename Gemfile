@@ -47,7 +47,9 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
 gem "devise"
-
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
 gem "cloudinary"
 
 group :development, :test do
