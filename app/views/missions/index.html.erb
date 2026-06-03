@@ -1,6 +1,34 @@
 <h1>Liste des missions</h1>
-<ul>
-  <% @missions.each do |mission| %>
-    <li><%= link_to mission.title, mission_path(mission) %></li>
-  <% end %>
-</ul>
+<div class="missions-table-card" data-controller="mission-filter">
+  <div class="missions-table-card__header">
+    <h2 class="missions-table-card__title">Toutes mes missions</h2>
+    <div class="missions-table-tabs">
+      <button class="missions-table-tabs__tab active"
+              data-mission-filter-target="tab"
+              data-filter="all"
+              data-action="click->mission-filter#filter">
+        Toutes
+      </button>
+      <button class="missions-table-tabs__tab"
+              data-mission-filter-target="tab"
+              data-filter="en-cours"
+              data-action="click->mission-filter#filter">
+        En cours
+      </button>
+      <button class="missions-table-tabs__tab"
+              data-mission-filter-target="tab"
+              data-filter="en-attente"
+              data-action="click->mission-filter#filter">
+        En attente
+      </button>
+      <button class="missions-table-tabs__tab"
+              data-mission-filter-target="tab"
+              data-filter="terminee"
+              data-action="click->mission-filter#filter">
+        Terminées
+      </button>
+    </div>
+  </div>
+
+  <%= render "shared/missions_table" %>
+</div>
