@@ -91,8 +91,8 @@
 <%# Missions table %>
 <div class="missions-table-card" data-controller="mission-filter">
   <div class="missions-table-card__header">
-    <h2 class="missions-table-card__title">Toutes mes missions en cours</h2>
-    <%= link_to missions_path, class: "ms-2 btn btn-secondary vesta-btn rounded-pill text-white" do %>
+    <h2 class="missions-table-card__title"><i class="fa-solid fa-bullseye text-info"></i> Toutes mes missions en cours</h2>
+    <%= link_to missions_path, class: "ms-2 btn btn-outline-danger vesta-btn rounded-pill" do %>
         <i class="fa-solid fa-eye d-inline-block me-2"></i>
         Voir les missions
     <% end %>

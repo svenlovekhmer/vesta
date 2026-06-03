@@ -39,6 +39,11 @@
 }
 
 // ─── Missions table card ──────────────────────────────────────────────────────
+.missions-title {
+  @extend .mb-4;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
 
 .missions-table-card {
   background: white;
@@ -123,7 +128,7 @@
   color: #111;
   text-decoration: none;
 
-  &:hover { color: $blue; }
+  &:hover { color: $red; }
 }
 
 .missions-table__mission-meta {
