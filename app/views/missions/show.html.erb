@@ -6,8 +6,9 @@
     <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at) %></div>
   </div>
 
+<%= turbo_stream_from "gmail_sync_#{@mission.id}" %>
 <div class="container-fluid show-mission p-1">
-  <%= render "gmail_panel", mission: @mission %>
+  <%= render "gmail_panel", mission: @mission, current_user: current_user %>
 </div>
 
   <div class="row">

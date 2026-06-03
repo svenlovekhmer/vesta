@@ -1,0 +1,37 @@
+.gmail-sync__loader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gmail-sync__word {
+  display: inline-block;
+  opacity: 0;
+
+  &--in {
+    animation: gmail-word-in 0.35s ease-out forwards;
+  }
+}
+
+@keyframes gmail-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gmail-cursor {
+  display: inline-block;
+  animation: gmail-blink 1s step-end infinite;
+  color: $red;
+  font-weight: 600;
+}
+
+@keyframes gmail-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
