@@ -151,7 +151,6 @@
           <td class="missions-table__mission-cell">
             <p class="missions-table__mission-title">
               <%= link_to mission.title, mission_path(mission) %>
-              <%= mission.title %>
             </p>
             <p class="missions-table__mission-meta">
               créé le <%= mission.created_at.strftime("%-d %B") %> &middot; <%= steps_total %> étape<%= steps_total > 1 ? "s" : "" %>
