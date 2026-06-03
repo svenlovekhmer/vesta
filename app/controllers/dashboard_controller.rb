@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
+  before_action -> { add_breadcrumb "Tableau de bord", root_path }
 
   def index
     @missions = current_user.missions
