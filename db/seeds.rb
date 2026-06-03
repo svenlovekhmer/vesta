@@ -1,4 +1,5 @@
 puts "Cleaning database..."
+MissionStepBlocker.destroy_all if defined?(MissionStepBlocker)
 DecisionLog.destroy_all
 Document.destroy_all
 Step.destroy_all
@@ -16,6 +17,7 @@ puts "Creating statuses..."
 mission_statuses = {
   en_attente:  MissionStatus.create!(title: "En attente"),
   en_cours:    MissionStatus.create!(title: "En cours"),
+  en_revision: MissionStatus.create!(title: "En révision"),
   terminee:    MissionStatus.create!(title: "Terminée")
 }
 
