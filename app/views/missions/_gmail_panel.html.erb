@@ -38,6 +38,19 @@
     <% end %>
   </div>
 
+  <% if local_assigns[:reconnect_needed] %>
+    <div class="mt-3 pt-3 border-top d-flex align-items-center gap-3">
+      <p class="small text-muted mb-0">Session Gmail expirée.</p>
+      <%= button_to "Reconnecter Gmail", user_google_oauth2_omniauth_authorize_path,
+          method: :post,
+          class: "btn btn-sm btn-outline-danger vesta-btn rounded-pill" %>
+    </div>
+  <% elsif local_assigns[:sync_error].present? %>
+    <div class="mt-3 pt-3 border-top">
+      <p class="small text-danger mb-0"><i class="fa-solid fa-circle-exclamation me-1"></i><%= sync_error %></p>
+    </div>
+  <% end %>
+
   <% if mission.client.gmail_synthesis.present? %>
     <% ai_pending = mission.decision_logs.where(source: "gmail_ai", status: "pending") %>
     <% ai_decided = mission.decision_logs.where(source: "gmail_ai", status: "decided") %>

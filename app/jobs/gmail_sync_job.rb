@@ -39,7 +39,11 @@ class GmailSyncJob < ApplicationJob
     broadcast_panel
   rescue StandardError => e
     Rails.logger.error("GmailSyncJob failed: #{e.message}")
-    broadcast_panel
+    if e.message.include?("token") || e.message.include?("invalid_request")
+      broadcast_reconnect
+    else
+      broadcast_error(e.message)
+    end
   end
 
   private
@@ -103,14 +107,68 @@ class GmailSyncJob < ApplicationJob
   end
 
   def broadcast_panel
-    html = ApplicationController.render(
-      partial: "missions/gmail_panel",
-      locals:  { mission: @mission.reload, current_user: @user }
+    mission = @mission.reload
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "gmail_panel_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/gmail_panel",
+        locals: { mission: mission, current_user: @user }
+      )
     )
+
+    all_logs     = mission.decision_logs.to_a
+    pending      = all_logs.select { |dl| dl.status == "pending" }
+    decided      = all_logs.select { |dl| dl.status == "decided" }
+                           .sort_by { |dl| dl.decided_at || dl.created_at.to_date }
+                           .reverse
+    profile      = @user.profile
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "pav_section_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/pav_section",
+        locals: {
+          mission: mission,
+          profile: profile,
+          pending_logs: pending,
+          vesta_count: pending.count { |dl| dl.owner_type == "provider" },
+          client_count: pending.count { |dl| dl.owner_type == "client" }
+        }
+      )
+    )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "decided_section_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/decided_section",
+        locals: { mission: mission, profile: profile, decided_logs: decided }
+      )
+    )
+  end
+
+  def broadcast_reconnect
     Turbo::StreamsChannel.broadcast_replace_to(
       stream_key,
       target: "gmail_panel_#{@mission.id}",
-      html: html
+      html: ApplicationController.render(
+        partial: "missions/gmail_panel",
+        locals: { mission: @mission.reload, current_user: @user, reconnect_needed: true }
+      )
+    )
+  end
+
+  def broadcast_error(message)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "gmail_panel_#{@mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/gmail_panel",
+        locals: { mission: @mission.reload, current_user: @user, sync_error: message }
+      )
     )
   end
 
