@@ -91,79 +91,12 @@
 <%# Missions table %>
 <div class="missions-table-card" data-controller="mission-filter">
   <div class="missions-table-card__header">
-    <h2 class="missions-table-card__title">Toutes mes missions</h2>
-    <div class="missions-table-tabs">
-      <button class="missions-table-tabs__tab active"
-              data-mission-filter-target="tab"
-              data-filter="all"
-              data-action="click->mission-filter#filter">
-        Toutes
-      </button>
-      <button class="missions-table-tabs__tab"
-              data-mission-filter-target="tab"
-              data-filter="en-cours"
-              data-action="click->mission-filter#filter">
-        En cours
-      </button>
-      <button class="missions-table-tabs__tab"
-              data-mission-filter-target="tab"
-              data-filter="terminee"
-              data-action="click->mission-filter#filter">
-        Terminées
-      </button>
-    </div>
+    <h2 class="missions-table-card__title">Toutes mes missions en cours</h2>
+    <%= link_to missions_path, class: "ms-2 btn btn-secondary vesta-btn rounded-pill text-white" do %>
+        <i class="fa-solid fa-eye d-inline-block me-2"></i>
+        Voir les missions
+    <% end %>
   </div>
 
-  <table class="missions-table w-100">
-    <thead>
-      <tr>
-        <th>MISSION</th>
-        <th>CLIENT</th>
-        <th>AVANCEMENT</th>
-        <th>STATUT</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @missions.each do |mission| %>
-        <% steps_total = mission.steps.size %>
-        <% steps_done  = mission.steps.count { |s| s.step_status.title == "Validée" } %>
-        <% progress    = steps_total > 0 ? (steps_done.to_f / steps_total * 100).round : 0 %>
-        <% status_slug = mission.mission_status.title.parameterize %>
-        <tr data-mission-filter-target="row" data-status="<%= status_slug %>">
-          <td class="missions-table__mission-cell">
-            <p class="missions-table__mission-title">
-              <%= link_to mission.title, mission_path(mission) %>
-            </p>
-            <p class="missions-table__mission-meta">
-              créé le <%= mission.created_at.strftime("%-d %B") %> &middot; <%= steps_total %> étape<%= steps_total > 1 ? "s" : "" %>
-            </p>
-          </td>
-          <td>
-            <div class="client-cell">
-              <div class="client-avatar">
-                <%= "#{mission.client.first_name[0]}#{mission.client.last_name[0]}" %>
-              </div>
-              <span class="client-cell__name">
-                <%= mission.client.last_name[0] %>. <%= mission.client.first_name %>
-              </span>
-            </div>
-          </td>
-          <td class="missions-table__progress-cell">
-            <div class="progress missions-progress" style="height: 6px;">
-              <div class="progress-bar missions-progress__bar missions-progress__bar--<%= progress == 100 ? 'full' : (progress < 35 ? 'low' : 'mid') %>"
-                   role="progressbar"
-                   style="width: <%= progress %>%">
-              </div>
-            </div>
-            <span class="missions-progress__pct"><%= progress %>%</span>
-          </td>
-          <td>
-            <span class="mission-badge mission-badge--<%= status_slug %>">
-              &bull; <%= mission.mission_status.title %>
-            </span>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render "shared/missions_table", missions: @missions.select { |m| m.mission_status.title == "En cours" } %>
 </div>
