@@ -1,0 +1,20 @@
+<% profile = current_user.profile %>
+<% if pending_logs.any? %>
+  <div class="pav-card border mb-4">
+    <div class="pav-card__header">
+      <div class="pav-card__title-group">
+        <h2 class="pav-card__title">Points à valider</h2>
+      </div>
+      <p class="pav-card__subtitle">
+        <span class="pav-card__subtitle--vesta"><%= vesta_count %> côté <%= profile&.first_name %> <%= profile&.last_name %></span>
+        &middot;
+        <span class="pav-card__subtitle--client"><%= client_count %> côté client</span>
+      </p>
+    </div>
+    <div class="pav-list">
+      <% pending_logs.each do |log| %>
+        <%= render "decision_logs/pav_log_item", log: log, profile: profile %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
