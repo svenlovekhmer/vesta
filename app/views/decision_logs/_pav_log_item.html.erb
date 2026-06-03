@@ -1,0 +1,19 @@
+<div id="<%= dom_id(log) %>" class="log-item">
+  <span class="log-item__date"><%= log.created_at&.strftime("%-d %B") %></span>
+  <div class="log-item__tag-col">
+    <span class="log-item__tag log-item__tag--<%= log.owner_type %>">
+      <%= log.owner_type == "provider" ? "#{profile&.first_name} #{profile&.last_name}" : "client" %>
+    </span>
+  </div>
+  <div class="log-item__content">
+    <span class="log-item__title"><%= log.title.presence %></span>
+    <span class="log-item__description"><%= log.description %></span>
+  </div>
+  <div class="log-item__actions">
+    <%= link_to resolve_modal_decision_log_path(log),
+          class: "btn btn-danger vesta-btn text-white rounded-pill",
+          data: { turbo_frame: "modal" } do %>
+      <i class="fa-solid fa-check pe-1"></i> Résolu
+    <% end %>
+  </div>
+</div>

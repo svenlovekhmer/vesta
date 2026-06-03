@@ -42,7 +42,6 @@
   <div id="pav_card" class="pav-card mb-4">
     <div class="pav-card__header">
       <div class="pav-card__title-group">
-        <span class="pav-card__icon">🎯</span>
         <h2 class="pav-card__title">Points à valider</h2>
       </div>
       <p class="pav-card__subtitle">
@@ -81,23 +80,7 @@
 
           <div class="pav-row__detail" data-mission-accordion-target="detail">
             <% entry[:logs].each do |log| %>
-              <div id="<%= dom_id(log) %>" class="pav-log-item">
-                <div class="pav-log-item__title-col">
-                  <span class="pav-log-item__title"><%= log.title.presence || log.description %></span>
-                </div>
-                <div class="pav-log-item__tag-col">
-                  <span class="pav-log-item__tag pav-log-item__tag--<%= log.owner_type %>">
-                    <%= log.owner_type == "provider" ? "#{profile&.first_name} #{profile&.last_name}" : "client" %>
-                  </span>
-                </div>
-                <div class="pav-log-item__actions">
-                  <%= link_to resolve_modal_decision_log_path(log),
-                        class: "btn btn-danger vesta-btn text-white rounded-pill pav-action--resolve",
-                        data: { turbo_frame: "modal" } do %>
-                    <i class="fa-solid fa-check pe-1"></i> Marquer comme résolu
-                  <% end %>
-                </div>
-              </div>
+              <%= render "decision_logs/pav_log_item", log: log, profile: profile %>
             <% end %>
           </div>
         </div>
@@ -149,7 +132,9 @@
         <% status_slug = mission.mission_status.title.parameterize %>
         <tr data-mission-filter-target="row" data-status="<%= status_slug %>">
           <td class="missions-table__mission-cell">
-            <p class="missions-table__mission-title"><%= mission.title %></p>
+            <p class="missions-table__mission-title">
+              <%= link_to mission.title, mission_path(mission) %>
+            </p>
             <p class="missions-table__mission-meta">
               créé le <%= mission.created_at.strftime("%-d %B") %> &middot; <%= steps_total %> étape<%= steps_total > 1 ? "s" : "" %>
             </p>

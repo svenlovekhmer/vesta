@@ -1,0 +1,23 @@
+.breadcrumb {
+  @extend .mb-3, .p-4, .bg-white;
+  margin-top: -2rem;
+  margin-left: -2.5rem;
+  margin-right: -2.5rem;
+  border-bottom: 1px solid #f0f0f0;
+
+  .breadcrumb-item {
+    a {
+      @extend .text-secondary;
+      font-size: 0.85rem;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.active span{
+      font-size: 0.85rem;
+    }
+  }
+}

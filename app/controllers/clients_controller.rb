@@ -1,6 +1,12 @@
 class ClientsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_client, only: %i[show edit update destroy confirm_destroy]
+  before_action -> { add_breadcrumb "Tableau de bord", root_path }
+  before_action -> { add_breadcrumb "Clients", clients_path }
+  before_action -> { add_breadcrumb "#{@client.first_name} #{@client.last_name}" },
+                only: %i[show edit confirm_destroy]
+  before_action -> { add_breadcrumb "Modifier" }, only: [:edit]
+  before_action -> { add_breadcrumb "Nouveau client" }, only: %i[new create]
 
   def index
     @clients = current_user.clients

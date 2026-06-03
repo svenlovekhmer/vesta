@@ -4,6 +4,7 @@
 }
 
 %mission-subtitle {
+  @extend .d-flex, .align-items-center, .gap-4, .mb-4;
   color: #888;
   font-size: 0.9rem;
 }
@@ -39,11 +40,29 @@
   }
 }
 
-// ── Show mission page ─────────────────────────────────────────────────────
+// ── mission#show page ─────────────────────────────────────────────────────
 
-.show-mission {
+.mission-show {
+  @extend .p-1;
   &--title    { @extend %mission-title; }
   &--subtitle { @extend %mission-subtitle; }
+}
+
+// ── mission#show decisions archived ──────────────────────────────────────────────────────
+
+.decided-card {
+  &__header {
+    @extend .d-flex, .justify-content-between, .align-items-start, .mb-3;
+  }
+
+  &__title {
+    @extend .mb-1;
+  }
+
+  &__subtitle {
+    @extend .text-secondary, .mb-0;
+    font-size: .85rem;
+  }
 }
 
 .gmail-stat-card {
