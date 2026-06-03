@@ -213,43 +213,6 @@
   color: #7c3aed;
 }
 
-// ─── Points à valider ─────────────────────────────────────────────────────────
-
-.pav-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #f0f0f0;
-}
-
-.pav-card__header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-}
-
-.pav-card__title-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.pav-card__title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.pav-card__subtitle {
-  font-size: 0.8rem;
-  color: #888;
-  margin: 0;
-}
-
-.pav-card__subtitle--vesta  { color: $orange; font-weight: 600; }
-.pav-card__subtitle--client { color: $light-red; font-weight: 600; }
-
 // Mission row
 
 .pav-row {
@@ -334,37 +297,6 @@
 
   &--open { display: block; }
 }
-
-// Log items
-
-.pav-log-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-  font-size: 0.875rem;
-
-  &:not(:last-child) { border-bottom: 1px solid #efefef; }
-}
-
-.pav-log-item__tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-
-  &--provider    { background: rgba($orange, 0.12); color: $orange; }
-  &--client      { background: rgba($light-red, 0.10); color: $light-red; }
-  &--third_party { background: rgba(#888, 0.10); color: #888; }
-}
-
-.pav-log-item__title-col { flex-shrink: 0; }
-.pav-log-item__tag-col   { flex: 1; }
-.pav-log-item__title     { color: #333; }
-.pav-log-item__actions   { display: flex; gap: 0.5rem; flex-shrink: 0; }
 
 .pav-action--resolve {
   font-size: 0.75rem;

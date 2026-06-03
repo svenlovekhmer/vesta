@@ -1,12 +1,17 @@
 <div id="<%= dom_id(log) %>" class="pav-log-item">
-  <div class="pav-log-item__title-col">
-    <span class="pav-log-item__title"><%= log.title.presence || log.description %></span>
+  <div class="pav-log-item__date-col">
+    <span class="pav-log-item__title text-secondary"><%= log.created_at&.strftime("%-d %B") %></span>
   </div>
   <div class="pav-log-item__tag-col">
     <span class="pav-log-item__tag pav-log-item__tag--<%= log.owner_type %>">
       <%= log.owner_type == "provider" ? "#{profile&.first_name} #{profile&.last_name}" : "client" %>
     </span>
   </div>
+  <div class="pav-log-item__title-col">
+    <span class="pav-log-item__title"><%= log.title.presence %></span>
+    <span class="pav-log-item__description"><%= log.description %></span>
+  </div>
+
   <div class="pav-log-item__actions">
     <%= link_to resolve_modal_decision_log_path(log),
           class: "btn btn-danger vesta-btn text-white rounded-pill pav-action--resolve",
