@@ -1,6 +1,10 @@
 class MissionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_mission, only: [:show]
+  before_action -> { add_breadcrumb "Tableau de bord", root_path }
+  before_action -> { add_breadcrumb "Missions", missions_path }
+  before_action -> { add_breadcrumb @mission.title }, only: [:show]
+  before_action -> { add_breadcrumb "Nouvelle mission" }, only: [:new, :create]
 
   def index
     @missions = current_user.missions

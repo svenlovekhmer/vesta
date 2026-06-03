@@ -98,7 +98,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     color: #bbb;
-    padding: 0.5rem 1rem 0.5rem 0;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid #f0f0f0;
   }
 
@@ -110,17 +110,20 @@
   }
 
   tbody td {
-    padding: 0.9rem 1rem 0.9rem 0;
+    padding: 1rem;
     vertical-align: middle;
     font-size: 0.875rem;
   }
 }
 
 // Mission cell
-.missions-table__mission-title {
+.missions-table__mission-title a{
   font-weight: 600;
   margin: 0 0 2px;
   color: #111;
+  text-decoration: none;
+
+  &:hover { color: $blue; }
 }
 
 .missions-table__mission-meta {

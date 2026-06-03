@@ -149,7 +149,9 @@
         <% status_slug = mission.mission_status.title.parameterize %>
         <tr data-mission-filter-target="row" data-status="<%= status_slug %>">
           <td class="missions-table__mission-cell">
-            <p class="missions-table__mission-title"><%= mission.title %></p>
+            <p class="missions-table__mission-title">
+              <%= link_to mission.title, mission_path(mission) %>
+            </p>
             <p class="missions-table__mission-meta">
               créé le <%= mission.created_at.strftime("%-d %B") %> &middot; <%= steps_total %> étape<%= steps_total > 1 ? "s" : "" %>
             </p>
