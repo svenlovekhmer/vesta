@@ -12,7 +12,7 @@
           <span class="pav-card__subtitle--client"><%= client_count %> côté client</span>
         </p>
       </div>
-      <div class="pav-list">
+      <div class="log-list">
         <% pending_logs.each do |log| %>
           <%= render "decision_logs/pav_log_item", log: log, profile: profile %>
         <% end %>

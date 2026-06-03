@@ -64,35 +64,3 @@
     font-size: .85rem;
   }
 }
-
-.decided-list {
-  @extend .border, .rounded-4;
-}
-
-.decided-item {
-  @extend .d-flex, .align-items-center, .gap-3, .p-3, .border-bottom;
-  padding: 0.5rem 0;
-  font-size: 0.85rem;
-
-  &:last-child { border-bottom: none !important; }
-
-  &__date {
-    @extend .text-secondary;
-    font-weight: 600;
-    font-size: .9rem;
-  }
-
-  &__content { flex: 1; }
-
-  &__title {
-    @extend .mb-0;
-    font-size: .9rem;
-    font-weight: 600;
-  }
-
-  &__description {
-    @extend .mb-0;
-    @extend .text-secondary;
-    font-size: .85rem;
-  }
-}

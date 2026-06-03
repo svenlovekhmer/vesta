@@ -10,7 +10,7 @@
           <p class="decided-card__subtitle">Toutes les décisions actées pour cette mission</p>
         </div>
       </div>
-      <div class="decided-list">
+      <div class="log-list">
         <% decided_logs.each do |log| %>
           <%= render "decision_logs/decided_log_item", log: log, profile: profile %>
         <% end %>

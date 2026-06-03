@@ -1,4 +1,4 @@
-// ─── Points à valider ─────────────────────────────────────────────────────────
+// ─── Points à valider card ─────────────────────────────────────────────────
 
 .pav-card {
   @extend .card;
@@ -26,11 +26,13 @@
 .pav-card__subtitle--client { color: $light-red; font-weight: 600; }
 
 
-.pav-list {
+// ─── Shared log list / item ─────────────────────────────────────────────────
+
+.log-list {
   @extend .border, .rounded-4;
 }
 
-.pav-log-item {
+.log-item {
   @extend .d-flex, .align-items-center, .gap-3, .p-3, .border-bottom;
   padding: 0.5rem 0;
   font-size: 0.85rem;
@@ -38,7 +40,13 @@
   &:last-child { border-bottom: none !important; }
 }
 
-.pav-log-item__tag {
+.log-item__date {
+  @extend .text-secondary;
+  font-weight: 600;
+  font-size: .9rem;
+}
+
+.log-item__tag {
   font-size: 0.7rem;
   font-weight: 700;
   padding: 2px 8px;
@@ -52,23 +60,26 @@
   &--third_party { background: rgba(#888, 0.10); color: #888; }
 }
 
-.pav-log-item__tag-col {
+.log-item__tag-col {
   min-width: 110px;
 }
 
-.pav-log-item__title-col {
-  @extend .flex-shrink-0; flex: 1;
+.log-item__content {
+  @extend .flex-shrink-0;
+  flex: 1;
 }
 
-.pav-log-item__title {
-  @extend .d-block; font-weight: 600; font-size: .9rem;
+.log-item__title {
+  @extend .d-block;
+  font-weight: 600;
+  font-size: .9rem;
 }
 
-.pav-log-item__description {
-  @extend .d-block, .text-secondary; font-size: .9rem;
+.log-item__description {
+  @extend .d-block, .text-secondary;
   font-size: .85rem;
 }
 
-.pav-log-item__actions   {
+.log-item__actions {
   @extend .d-flex, .gap-1, .flex-shrink-0;
 }
