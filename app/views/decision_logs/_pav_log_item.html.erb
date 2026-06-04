@@ -6,8 +6,32 @@
     </span>
   </div>
   <div class="log-item__content">
-    <span class="log-item__title"><%= log.title.presence %></span>
-    <span class="log-item__description"><%= log.description %></span>
+    <div data-controller="inline-edit"
+         data-inline-edit-model-value="decision_log"
+         data-inline-edit-url-value="<%= decision_log_path(log) %>"
+         data-inline-edit-param-value="title">
+      <span class="log-item__title log-item__editable"
+            data-inline-edit-target="text"
+            data-action="click->inline-edit#edit"
+            title="Cliquer pour modifier"><%= log.title.presence %></span>
+      <input type="text"
+             class="form-control form-control-sm d-none log-item__edit-input"
+             data-inline-edit-target="input"
+             data-action="blur->inline-edit#save keydown->inline-edit#keydown" />
+    </div>
+    <div data-controller="inline-edit"
+         data-inline-edit-model-value="decision_log"
+         data-inline-edit-url-value="<%= decision_log_path(log) %>"
+         data-inline-edit-param-value="description">
+      <span class="log-item__description log-item__editable"
+            data-inline-edit-target="text"
+            data-action="click->inline-edit#edit"
+            title="Cliquer pour modifier"><%= log.description %></span>
+      <textarea class="form-control form-control-sm d-none log-item__edit-input"
+                rows="2"
+                data-inline-edit-target="input"
+                data-action="blur->inline-edit#save keydown->inline-edit#keydown"></textarea>
+    </div>
   </div>
   <div class="log-item__actions">
     <%= link_to resolve_modal_decision_log_path(log),
