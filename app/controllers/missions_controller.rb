@@ -50,6 +50,7 @@ class MissionsController < ApplicationController
                             .reverse
 
     @step_statuses = StepStatus.all
+    @documents = @mission.documents.with_attached_file.includes(:step).order(created_at: :desc)
   end
 
   private
@@ -58,7 +59,7 @@ class MissionsController < ApplicationController
     @mission = current_user.missions
                            .includes(
                              :mission_status, :client,
-                             steps: [:step_status, { mission_step_blockers: :decision_log }],
+                             steps: [:step_status, :documents, { mission_step_blockers: :decision_log }],
                              decision_logs: { mission_step_blockers: :step }
                            )
                            .find(params[:id])

@@ -1,0 +1,6 @@
+<%= turbo_stream.replace "documents_list" do %>
+  <%= render "missions/documents_list", mission: @mission, documents: @documents %>
+<% end %>
+<%= turbo_stream.replace "document_upload_form" do %>
+  <%= render "documents/form", mission: @mission %>
+<% end %>
