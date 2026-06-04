@@ -8,6 +8,12 @@
   &:hover {
     color: #fff;
   }
+
+  &--xs {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.65rem;
+    font-weight: 500;
+  }
 }
 
 .cancel-btn {

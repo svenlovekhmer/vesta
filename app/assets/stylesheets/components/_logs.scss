@@ -84,6 +84,13 @@
   @extend .d-flex, .gap-1, .flex-shrink-0;
 }
 
+.log-item__linked-pill {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
 .log-item__editable {
   cursor: text;
   border-radius: 4px;

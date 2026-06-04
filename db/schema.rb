@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_03_124249) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_04_110631) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -107,10 +107,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_124249) do
   create_table "mission_step_blockers", force: :cascade do |t|
     t.string "blocking_status", default: "blocking", null: false
     t.datetime "created_at", null: false
-    t.bigint "decision_log_id", null: false
+    t.bigint "decision_log_id"
+    t.string "decision_log_title"
     t.bigint "mission_id", null: false
     t.datetime "resolved_at"
-    t.bigint "step_id", null: false
+    t.bigint "step_id"
+    t.string "step_title"
     t.datetime "updated_at", null: false
     t.index ["decision_log_id"], name: "index_mission_step_blockers_on_decision_log_id"
     t.index ["mission_id"], name: "index_mission_step_blockers_on_mission_id"

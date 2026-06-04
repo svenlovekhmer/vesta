@@ -1,4 +1,10 @@
-<div id="<%= dom_id(log) %>" class="log-item">
+<div id="<%= dom_id(log) %>" class="log-item"
+     draggable="true"
+     data-action="dragstart->step-link#dragstart dragend->step-link#dragend"
+     data-decision-log-id="<%= log.id %>">
+  <span class="log-item__drag-handle" title="Glisser vers une étape">
+    <i class="fa-solid fa-grip-vertical"></i>
+  </span>
   <span class="log-item__date"><%= format_date_fr(log.created_at) if log.created_at %></span>
   <div class="log-item__tag-col">
     <span class="log-item__tag log-item__tag--<%= log.owner_type %>">
@@ -32,10 +38,15 @@
                 data-inline-edit-target="input"
                 data-action="blur->inline-edit#save keydown->inline-edit#keydown"></textarea>
     </div>
+    <div id="decision_log_pill_<%= log.id %>" class="log-item__linked-pill">
+      <% if (blocker = log.mission_step_blockers.find { |b| b.blocking_status == "blocking" }) %>
+        <%= render "mission_step_blockers/linked_pill", blocker: blocker %>
+      <% end %>
+    </div>
   </div>
   <div class="log-item__actions">
     <%= link_to resolve_modal_decision_log_path(log),
-          class: "btn btn-danger vesta-btn text-white rounded-pill",
+          class: "btn btn-outline-secondary vesta-btn vesta-btn--xs rounded-pill",
           data: { turbo_frame: "modal" } do %>
       <i class="fa-solid fa-check pe-1"></i> Résolu
     <% end %>

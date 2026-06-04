@@ -48,6 +48,9 @@
                       data-inline-edit-target="input"
                       data-action="blur->inline-edit#save keydown->inline-edit#keydown"></textarea>
           </div>
+          <% unless status == "Validée" %>
+            <%= render "step_blockers_zone", step: step %>
+          <% end %>
         </div>
       </div>
     <% end %>

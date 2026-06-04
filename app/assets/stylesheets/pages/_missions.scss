@@ -83,3 +83,117 @@
   font-size: 1rem;
   color: #111;
 }
+
+// ── Step link UI ──────────────────────────────────────────────────────────
+
+.log-item__drag-handle {
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 0;
+  color: var(--bs-secondary-color, #adb5bd);
+  cursor: grab;
+  flex-shrink: 0;
+
+  &:active { cursor: grabbing; }
+
+  i { font-size: 13px; }
+}
+
+.step-link-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $red;
+  background: rgba($red, .06);
+  border: 1px solid rgba($red, .2);
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+}
+
+// ── Step link drag & drop ─────────────────────────────────────────────────
+
+.step-link-drop-zone {
+  min-height: 20px;
+  border-radius: 6px;
+  border: 1.5px dashed transparent;
+  padding: 3px 4px;
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  transition: border-color .15s, background .15s;
+
+  &--active {
+    border-color: $orange;
+    background: rgba($orange, .07);
+  }
+
+  &--over {
+    border-color: $red;
+    background: rgba($red, .07);
+  }
+}
+
+.step-link-drop-hint {
+  display: none;
+  font-size: 11px;
+  color: $orange;
+  gap: 4px;
+  align-items: center;
+
+  .step-link-drop-zone--active & {
+    display: inline-flex;
+  }
+}
+
+.step-blocker-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #faece7;
+  color: #712b13;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 4px 2px 8px;
+  border-radius: 20px;
+  border: .5px solid #f0997b;
+
+  &:hover { background: #f5c4b3; }
+
+  &__remove {
+    cursor: pointer;
+    padding: 0 4px;
+    opacity: .6;
+    font-size: 13px;
+    line-height: 1;
+
+    &:hover { opacity: 1; }
+  }
+}
+
+.decision-log-linked-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #faeeda;
+  color: #633806;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: .5px solid #fac775;
+  cursor: pointer;
+
+  &:hover { background: #fac775; }
+}
+
+.log-item--dragging { opacity: .4; }
+
+.log-item--highlighted {
+  outline: 2px solid $red;
+  border-radius: 6px;
+}

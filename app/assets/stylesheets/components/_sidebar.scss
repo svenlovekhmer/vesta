@@ -38,7 +38,7 @@
   letter-spacing: 0.05em;
 
   a {
-    @extend .text-decoration-none;
+    @extend .text-decoration-none, .d-flex, .align-items-center, .gap-2;
     color: inherit;
   }
 }

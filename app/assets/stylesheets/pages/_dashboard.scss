@@ -19,10 +19,7 @@
 // ─── Stat cards ───────────────────────────────────────────────────────────────
 
 .stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #f0f0f0;
+  @extend .card;
 }
 
 .stat-card__number {
@@ -46,10 +43,7 @@
 }
 
 .missions-table-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #f0f0f0;
+  @extend .card;
 }
 
 .missions-table-card__header {
