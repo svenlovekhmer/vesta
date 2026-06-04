@@ -12,20 +12,27 @@ class MissionStepBlockersController < ApplicationController
       decision_log: decision_log,
       step: step,
       blocking_status: "blocking"
-    ) { |b| b.mission = mission }
+    ) do |b|
+      b.mission = mission
+      b.step_title = step.title
+      b.decision_log_title = decision_log.title
+    end
 
-    @blocker.step.mission_step_blockers.reload
-    @blocker.decision_log.mission_step_blockers.reload
+    @blocker.step&.mission_step_blockers&.reload
+    @blocker.decision_log&.mission_step_blockers&.reload
 
     respond_to do |format|
       format.turbo_stream
     end
+  rescue => e
+    Rails.logger.error "[MissionStepBlocker#create] #{e.class}: #{e.message}\n#{e.backtrace.first(5).join("\n")}"
+    head :unprocessable_entity
   end
 
   def destroy
     blocker = MissionStepBlocker
       .joins(:mission)
-      .where(missions: { id: current_user.missions.select(:id) })
+      .where(missions: { id: current_user.missions.select(:id) }, blocking_status: "blocking")
       .find(params[:id])
 
     @step = blocker.step
