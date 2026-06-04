@@ -6,18 +6,46 @@
     <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at, locale: :fr) %></div>
   </div>
 
-<%= turbo_stream_from "gmail_sync_#{@mission.id}" %>
-<div class="container-fluid show-mission p-1">
-  <%= render "gmail_panel", mission: @mission, current_user: current_user %>
-</div>
+  <%= turbo_stream_from "gmail_sync_#{@mission.id}" %>
 
-  <div class="row" data-controller="step-link" data-step-link-mission-id-value="<%= @mission.id %>">
-    <div class="col-md-4">
-      <%= render "step_timeline", mission: @mission %>
+  <div data-controller="mission-tabs">
+    <nav class="mission-tabs__nav">
+      <button class="mission-tabs__btn mission-tabs__btn--active"
+              data-tab="progression"
+              data-mission-tabs-target="tab"
+              data-action="click->mission-tabs#show">
+        <i class="fa-solid fa-list-check me-2"></i>Progression
+      </button>
+      <button class="mission-tabs__btn"
+              data-tab="documents"
+              data-mission-tabs-target="tab"
+              data-action="click->mission-tabs#show">
+        <i class="fa-regular fa-folder-open me-2"></i>Documents
+        <% if @documents.any? %>
+          <span class="mission-tabs__count"><%= @documents.count %></span>
+        <% end %>
+      </button>
+    </nav>
+
+    <%# Tab: Progression %>
+    <div data-mission-tabs-target="panel" data-panel="progression">
+      <div class="mb-4">
+        <%= render "gmail_panel", mission: @mission, current_user: current_user %>
+      </div>
+      <div class="row" data-controller="step-link" data-step-link-mission-id-value="<%= @mission.id %>">
+        <div class="col-md-4">
+          <%= render "step_timeline", mission: @mission %>
+        </div>
+        <div class="col-md-8">
+          <%= render "pav_section", mission: @mission, pending_logs: @pending_logs, vesta_count: @vesta_pending_count, client_count: @client_pending_count %>
+          <%= render "decided_section", mission: @mission, decided_logs: @decided_logs %>
+        </div>
+      </div>
     </div>
-    <div class="col-md-8">
-      <%= render "pav_section", mission: @mission, pending_logs: @pending_logs, vesta_count: @vesta_pending_count, client_count: @client_pending_count %>
-      <%= render "decided_section", mission: @mission, decided_logs: @decided_logs %>
+
+    <%# Tab: Documents %>
+    <div data-mission-tabs-target="panel" data-panel="documents" class="d-none">
+      <%= render "missions/documents_tab", mission: @mission, documents: @documents %>
     </div>
   </div>
 </div>

@@ -1,0 +1,27 @@
+<% ct = document.file.content_type.to_s %>
+<% icon, icon_color =
+     if ct.include?("pdf")                                   then ["fa-file-pdf",   "text-danger"]
+     elsif ct.start_with?("image/")                          then ["fa-file-image", "text-info"]
+     elsif ct.include?("word") || ct.include?("document")    then ["fa-file-word",  "text-primary"]
+     elsif ct.include?("sheet") || ct.include?("excel")      then ["fa-file-excel", "text-success"]
+     else                                                          ["fa-file",       "text-secondary"]
+     end %>
+<div id="document_<%= document.id %>" class="document-row">
+  <i class="fa-regular <%= icon %> <%= icon_color %> document-row__icon"></i>
+  <div class="document-row__body">
+    <%= link_to document.name,
+                rails_blob_path(document.file, disposition: :attachment),
+                class: "document-row__name",
+                target: "_blank" %>
+    <span class="document-row__meta">
+      <%= number_to_human_size(document.file.byte_size) %> &middot; il y a <%= time_ago_in_words(document.created_at) %>
+    </span>
+  </div>
+  <%= button_to document_path(document),
+                method: :delete,
+                class: "document-row__delete btn-reset",
+                title: "Supprimer",
+                form: { data: { turbo_confirm: false } } do %>
+    <i class="fa-solid fa-xmark"></i>
+  <% end %>
+</div>

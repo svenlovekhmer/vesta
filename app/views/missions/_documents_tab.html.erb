@@ -1,0 +1,11 @@
+<div class="documents-tab">
+  <%# Upload form %>
+  <div id="document_upload_form">
+    <%= render "documents/form", mission: mission %>
+  </div>
+
+  <%# Documents list %>
+  <div id="documents_list">
+    <%= render "missions/documents_list", mission: mission, documents: documents %>
+  </div>
+</div>
