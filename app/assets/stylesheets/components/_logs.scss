@@ -171,6 +171,11 @@
   padding: 0;
   line-height: 1;
 
+  &--resolve {
+    @extend .px-2;
+    width: auto;
+  }
+
   &--resolve:hover {
     background: rgba($green, 0.15);
     color: darken($green, 10%);
