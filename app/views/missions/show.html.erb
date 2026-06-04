@@ -11,7 +11,7 @@
   <%= render "gmail_panel", mission: @mission, current_user: current_user %>
 </div>
 
-  <div class="row">
+  <div class="row" data-controller="step-link" data-step-link-mission-id-value="<%= @mission.id %>">
     <div class="col-md-4">
       <%= render "step_timeline", mission: @mission %>
     </div>

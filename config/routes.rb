@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
   resource :profile, only: [:edit, :update]
   resources :steps, only: [:update]
+  resources :mission_step_blockers, only: [:create, :destroy]
   resources :decision_logs, only: [:update] do
     member do
       get  :resolve_modal

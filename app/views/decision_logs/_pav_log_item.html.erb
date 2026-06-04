@@ -1,4 +1,10 @@
-<div id="<%= dom_id(log) %>" class="log-item">
+<div id="<%= dom_id(log) %>" class="log-item"
+     draggable="true"
+     data-action="dragstart->step-link#dragstart dragend->step-link#dragend"
+     data-decision-log-id="<%= log.id %>">
+  <span class="log-item__drag-handle" title="Glisser vers une étape">
+    <i class="fa-solid fa-grip-vertical"></i>
+  </span>
   <span class="log-item__date"><%= log.created_at&.strftime("%-d %B") %></span>
   <div class="log-item__tag-col">
     <span class="log-item__tag log-item__tag--<%= log.owner_type %>">
@@ -31,6 +37,11 @@
                 rows="2"
                 data-inline-edit-target="input"
                 data-action="blur->inline-edit#save keydown->inline-edit#keydown"></textarea>
+    </div>
+    <div id="decision_log_pill_<%= log.id %>" class="log-item__linked-pill">
+      <% if (blocker = log.mission_step_blockers.find { |b| b.blocking_status == "blocking" }) %>
+        <%= render "mission_step_blockers/linked_pill", blocker: blocker %>
+      <% end %>
     </div>
   </div>
   <div class="log-item__actions">

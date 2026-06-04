@@ -1,0 +1,9 @@
+<%= turbo_stream.replace "step_blockers_#{@blocker.step_id}" do %>
+  <%= render "missions/step_blockers_zone", step: @blocker.step %>
+<% end %>
+
+<%= turbo_stream.update "decision_log_pill_#{@blocker.decision_log_id}" do %>
+  <% @blocker.decision_log.mission_step_blockers.select { |b| b.blocking_status == "blocking" }.each do |b| %>
+    <%= render "mission_step_blockers/linked_pill", blocker: b %>
+  <% end %>
+<% end %>

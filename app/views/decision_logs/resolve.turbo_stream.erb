@@ -55,6 +55,13 @@
   <% end %>
 <% end %>
 
+<%# Refresh step drop zones where this decision was blocking %>
+<% @affected_steps.each do |step| %>
+  <%= turbo_stream.replace "step_blockers_#{step.id}" do %>
+    <%= render "missions/step_blockers_zone", step: step %>
+  <% end %>
+<% end %>
+
 <%# Show page: replace both sections with fresh renders (no-op on dashboard where these IDs don't exist) %>
 <%= turbo_stream.replace "pav_section_#{@mission.id}" do %>
   <%= render "missions/pav_section",
