@@ -3,56 +3,10 @@
 
   <div class="step-timeline mt-4">
     <% mission.steps.each_with_index do |step, index| %>
-      <% status = step.step_status.title %>
-      <div class="step-timeline__item">
-        <div class="step-timeline__indicator">
-          <% if status == "Validée" %>
-            <div class="step-timeline__dot step-timeline__dot--done">
-              <i class="fa-solid fa-check"></i>
-            </div>
-          <% elsif status == "En cours" %>
-            <div class="step-timeline__dot step-timeline__dot--active">
-              <div class="step-timeline__dot-inner"></div>
-            </div>
-          <% else %>
-            <div class="step-timeline__dot step-timeline__dot--pending"></div>
-          <% end %>
-          <% unless index == mission.steps.length - 1 %>
-            <div class="step-timeline__line <%= status == "Validée" ? "step-timeline__line--done" : "step-timeline__line--pending" %>"></div>
-          <% end %>
-        </div>
-        <div class="step-timeline__content">
-          <div data-controller="inline-edit"
-               data-inline-edit-model-value="step"
-               data-inline-edit-url-value="<%= step_path(step) %>"
-               data-inline-edit-param-value="title">
-            <p class="step-timeline__title <%= "text-muted fw-normal" unless %w[Validée En\ cours].include?(status) %> log-item__editable mb-0"
-               data-inline-edit-target="text"
-               data-action="click->inline-edit#edit"
-               title="Cliquer pour modifier"><%= step.title %></p>
-            <input type="text"
-                   class="form-control form-control-sm d-none log-item__edit-input"
-                   data-inline-edit-target="input"
-                   data-action="blur->inline-edit#save keydown->inline-edit#keydown" />
-          </div>
-          <div data-controller="inline-edit"
-               data-inline-edit-model-value="step"
-               data-inline-edit-url-value="<%= step_path(step) %>"
-               data-inline-edit-param-value="description">
-            <p class="step-timeline__description log-item__editable mb-0"
-               data-inline-edit-target="text"
-               data-action="click->inline-edit#edit"
-               title="Cliquer pour modifier"><%= step.description %></p>
-            <textarea class="form-control form-control-sm d-none log-item__edit-input"
-                      rows="2"
-                      data-inline-edit-target="input"
-                      data-action="blur->inline-edit#save keydown->inline-edit#keydown"></textarea>
-          </div>
-          <% unless status == "Validée" %>
-            <%= render "step_blockers_zone", step: step %>
-          <% end %>
-        </div>
-      </div>
+      <%= render "missions/step_item",
+                 step: step,
+                 is_last: index == mission.steps.length - 1,
+                 step_statuses: local_assigns[:step_statuses] || StepStatus.all %>
     <% end %>
   </div>
 </div>
