@@ -51,7 +51,8 @@ gem "devise"
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
-gem "cloudinary"
+gem 'cloudinary'
+gem 'rails-i18n'
 
 group :development, :test do
   gem "dotenv-rails"

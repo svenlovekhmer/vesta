@@ -1,1 +1,55 @@
 // Specific CSS for your home-page
+
+.card-gray {
+  @extend .card;
+  background-color: $light-gray !important;
+}
+
+.home-badge {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius-xl;
+  white-space: nowrap;
+}
+
+.home-badge--gray {
+  background: $light-gray;
+  color: $gray;
+
+  i {
+    font-size: 0.325rem;
+    margin-right: 0.5rem;
+    color: $red;
+
+    &.inactive { color: rgba($gray, 0.25); }
+  }
+}
+
+.home-badge--white {
+  background: white;
+  color: $gray;
+
+  i {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    color: $gray;
+  }
+}
+
+.home-badge--black {
+  @extend .home-badge;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 1.5rem 2rem;
+  background: $dark;
+  color: white;
+
+  i {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    color: white;
+  }
+}

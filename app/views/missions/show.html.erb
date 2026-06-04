@@ -3,7 +3,7 @@
   <div class="mission-show--subtitle">
     <div><%= mission_status_badge(@mission.mission_status) %></div>
     <div>Client : <%= "#{@mission.client.first_name} #{@mission.client.last_name}" %></div>
-    <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at) %></div>
+    <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at, locale: :fr) %></div>
   </div>
 
 <%= turbo_stream_from "gmail_sync_#{@mission.id}" %>
