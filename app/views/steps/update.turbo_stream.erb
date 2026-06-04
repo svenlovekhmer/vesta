@@ -1,0 +1,18 @@
+<% step_statuses = StepStatus.all %>
+<% last_step_id = @step.mission.steps.last.id %>
+
+<%= turbo_stream.replace "step_#{@step.id}" do %>
+  <%= render "missions/step_item",
+             step: @step,
+             is_last: @step.id == last_step_id,
+             step_statuses: step_statuses %>
+<% end %>
+
+<% if @next_step %>
+  <%= turbo_stream.replace "step_#{@next_step.id}" do %>
+    <%= render "missions/step_item",
+               step: @next_step,
+               is_last: @next_step.id == last_step_id,
+               step_statuses: step_statuses %>
+  <% end %>
+<% end %>

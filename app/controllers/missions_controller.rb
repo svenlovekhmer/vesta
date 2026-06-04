@@ -48,6 +48,8 @@ class MissionsController < ApplicationController
       .select { |dl| dl.status == "decided" }
       .sort_by { |dl| dl.decided_at || dl.created_at.to_date }
       .reverse
+
+    @step_statuses = StepStatus.all
   end
 
   private
