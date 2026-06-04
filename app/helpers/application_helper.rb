@@ -26,4 +26,9 @@ module ApplicationHelper
       user.email
     end
   end
+
+  def format_date_fr(date)
+    months = %w[janvier février mars avril mai juin juillet août septembre octobre novembre décembre]
+    "#{date.day} #{months[date.month - 1]}"
+  end
 end

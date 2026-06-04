@@ -1,5 +1,5 @@
 <div id="<%= dom_id(log) %>" class="log-item">
-  <span class="log-item__date"><%= log.created_at&.strftime("%-d %B") %></span>
+  <span class="log-item__date"><%= format_date_fr(log.created_at) if log.created_at %></span>
   <div class="log-item__tag-col">
     <span class="log-item__tag log-item__tag--<%= log.owner_type %>">
       <%= log.owner_type == "provider" ? "#{profile&.first_name} #{profile&.last_name}" : "client" %>
