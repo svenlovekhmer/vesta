@@ -1,6 +1,6 @@
 class MissionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_mission, only: [:show]
+  before_action :set_mission, only: [:show, :destroy]
   before_action -> { add_breadcrumb "Tableau de bord", root_path }
   before_action -> { add_breadcrumb "Missions", missions_path }
   before_action -> { add_breadcrumb @mission.title }, only: [:show]
@@ -31,6 +31,11 @@ class MissionsController < ApplicationController
       @step_templates_json = build_templates_json(@step_templates)
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @mission.destroy
+    redirect_to missions_path, notice: "La mission a été supprimée."
   end
 
   def show
