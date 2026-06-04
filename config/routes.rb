@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     end
   end
   resource :profile, only: [:edit, :update]
-  resources :decision_logs, only: [] do
+  resources :decision_logs, only: [:update] do
     member do
       get  :resolve_modal
       patch :resolve

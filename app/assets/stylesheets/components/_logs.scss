@@ -83,3 +83,18 @@
 .log-item__actions {
   @extend .d-flex, .gap-1, .flex-shrink-0;
 }
+
+.log-item__editable {
+  cursor: text;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.log-item__edit-input {
+  font-size: inherit;
+  padding: 1px 4px;
+}
