@@ -1,9 +1,8 @@
 .breadcrumb {
-  @extend .mb-3, .p-4, .bg-white;
+  @extend .mb-3, .p-4, .bg-white, .border-bottom;
   margin-top: -2rem;
   margin-left: -2.5rem;
   margin-right: -2.5rem;
-  border-bottom: 1px solid #f0f0f0;
 
   .breadcrumb-item {
     a {

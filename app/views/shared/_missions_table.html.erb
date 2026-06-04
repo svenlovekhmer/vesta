@@ -5,6 +5,7 @@
         <th>CLIENT</th>
         <th>AVANCEMENT</th>
         <th>STATUT</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -45,6 +46,13 @@
             <span class="mission-badge mission-badge--<%= status_slug %>">
               &bull; <%= mission.mission_status.title %>
             </span>
+          </td>
+          <td>
+            <%= button_to mission_path(mission), method: :delete,
+                data: { turbo_confirm: "Supprimer la mission \"#{mission.title}\" ? Cette action est irréversible." },
+                class: "btn btn-sm btn-outline-danger border-0 rounded-pill" do %>
+              <i class="fa-regular fa-trash-can"></i>
+            <% end %>
           </td>
         </tr>
       <% end %>
