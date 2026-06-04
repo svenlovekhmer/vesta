@@ -1,0 +1,61 @@
+<%= turbo_stream.remove dom_id(@decision_log) %>
+
+<% if @remaining_pending.empty? %>
+  <%= turbo_stream.remove "pav_row_#{@mission.id}" %>
+<% else %>
+  <%= turbo_stream.replace "pav_vesta_badge_#{@mission.id}" do %>
+    <span id="pav_vesta_badge_<%= @mission.id %>"
+          class="pav-badge pav-badge--vesta <%= @entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
+      &bull; <%= @entry[:vesta_count] %> <%= current_user.profile&.first_name %>
+    </span>
+  <% end %>
+
+  <%= turbo_stream.replace "pav_client_badge_#{@mission.id}" do %>
+    <span id="pav_client_badge_<%= @mission.id %>"
+          class="pav-badge pav-badge--client <%= @entry[:client_count] > 0 ? '' : 'pav-badge--inactive' %>">
+      &bull; <%= @entry[:client_count] %> client
+    </span>
+  <% end %>
+<% end %>
+
+<% new_total_vesta = DecisionLog
+     .joins(mission: :client)
+     .where(clients: { user_id: current_user.id })
+     .where(status: "pending", owner_type: "provider")
+     .count %>
+<% new_total_client = DecisionLog
+     .joins(mission: :client)
+     .where(clients: { user_id: current_user.id })
+     .where(status: "pending", owner_type: "client")
+     .count %>
+<% profile = current_user.profile %>
+
+<% if new_total_vesta == 0 && new_total_client == 0 %>
+  <%= turbo_stream.remove "pav_card" %>
+<% else %>
+  <%= turbo_stream.replace "pav_total_vesta" do %>
+    <span id="pav_total_vesta" class="pav-card__subtitle--vesta">
+      <%= new_total_vesta %> côté <%= profile&.first_name %> <%= profile&.last_name %>
+    </span>
+  <% end %>
+
+  <%= turbo_stream.replace "pav_total_client" do %>
+    <span id="pav_total_client" class="pav-card__subtitle--client">
+      <%= new_total_client %> côté client
+    </span>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "pav_section_#{@mission.id}" do %>
+  <%= render "missions/pav_section",
+        mission:       @mission,
+        pending_logs:  @remaining_pending,
+        vesta_count:   @entry[:vesta_count],
+        client_count:  @entry[:client_count] %>
+<% end %>
+
+<%= turbo_stream.replace "decided_section_#{@mission.id}" do %>
+  <%= render "missions/decided_section",
+        mission:      @mission,
+        decided_logs: @decided_logs %>
+<% end %>

@@ -10,6 +10,22 @@ class DecisionLogsController < ApplicationController
     end
   end
 
+  def destroy
+    mission = @decision_log.mission
+
+    MissionStepBlocker.where(decision_log_id: @decision_log.id).destroy_all
+    @decision_log.destroy!
+
+    @remaining_pending = mission.decision_logs.where(status: "pending").to_a
+    @decided_logs      = mission.decision_logs.where(status: "decided").order(decided_at: :desc).to_a
+    @mission           = mission
+    @entry             = build_entry(@remaining_pending)
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   def resolve_modal
     render layout: false
   end

@@ -81,7 +81,35 @@
 }
 
 .log-item__actions {
-  @extend .d-flex, .gap-1, .flex-shrink-0;
+  @extend .d-flex, .align-items-center, .gap-1, .flex-shrink-0;
+}
+
+.log-item__action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+  color: #adb5bd;
+  padding: 0;
+  line-height: 1;
+
+  &--resolve:hover {
+    background: rgba($green, 0.15);
+    color: darken($green, 10%);
+  }
+
+  &--delete:hover {
+    background: rgba($red, 0.1);
+    color: $red;
+  }
 }
 
 .log-item__linked-pill {

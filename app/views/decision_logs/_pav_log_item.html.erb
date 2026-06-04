@@ -46,9 +46,17 @@
   </div>
   <div class="log-item__actions">
     <%= link_to resolve_modal_decision_log_path(log),
-          class: "btn btn-outline-secondary vesta-btn vesta-btn--xs rounded-pill",
+          class: "log-item__action-btn log-item__action-btn--resolve",
+          title: "Marquer comme décidé",
           data: { turbo_frame: "modal" } do %>
-      <i class="fa-solid fa-check pe-1"></i> Résolu
+      <i class="fa-solid fa-circle-check"></i>
+    <% end %>
+    <%= button_to decision_log_path(log),
+          method: :delete,
+          class: "log-item__action-btn log-item__action-btn--delete",
+          title: "Supprimer",
+          form: { class: "d-inline", data: { turbo_confirm: "Supprimer ce point à valider ?" } } do %>
+      <i class="fa-solid fa-trash-can"></i>
     <% end %>
   </div>
 </div>
