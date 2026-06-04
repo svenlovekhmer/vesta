@@ -7,6 +7,7 @@
   </div>
   <div class="log-item__content">
     <div data-controller="inline-edit"
+         data-inline-edit-model-value="decision_log"
          data-inline-edit-url-value="<%= decision_log_path(log) %>"
          data-inline-edit-param-value="title">
       <span class="log-item__title log-item__editable"
@@ -19,6 +20,7 @@
              data-action="blur->inline-edit#save keydown->inline-edit#keydown" />
     </div>
     <div data-controller="inline-edit"
+         data-inline-edit-model-value="decision_log"
          data-inline-edit-url-value="<%= decision_log_path(log) %>"
          data-inline-edit-param-value="description">
       <span class="log-item__description log-item__editable"

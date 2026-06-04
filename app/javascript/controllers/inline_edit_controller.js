@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["text", "input"]
-  static values = { url: String, param: String }
+  static values = { url: String, param: String, model: String }
 
   edit() {
     this.#originalValue = this.textTarget.textContent.trim()
@@ -27,7 +27,7 @@ export default class extends Controller {
           "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content,
           "Accept": "application/json"
         },
-        body: JSON.stringify({ decision_log: { [this.paramValue]: value } })
+        body: JSON.stringify({ [this.modelValue]: { [this.paramValue]: value } })
       })
 
       if (response.ok) {
