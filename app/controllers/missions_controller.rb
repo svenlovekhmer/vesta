@@ -49,7 +49,11 @@ class MissionsController < ApplicationController
 
   def set_mission
     @mission = current_user.missions
-      .includes(:mission_status, :client, :decision_logs, steps: :step_status)
+      .includes(
+        :mission_status, :client,
+        steps: [:step_status, { mission_step_blockers: :decision_log }],
+        decision_logs: { mission_step_blockers: :step }
+      )
       .find(params[:id])
   end
 

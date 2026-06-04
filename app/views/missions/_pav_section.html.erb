@@ -12,6 +12,10 @@
           <span class="pav-card__subtitle--client"><%= client_count %> côté client</span>
         </p>
       </div>
+      <div class="step-link-hint">
+        <i class="fa-solid fa-grip-vertical"></i>
+        Glissez une décision vers une étape pour la lier
+      </div>
       <div class="log-list">
         <% pending_logs.each do |log| %>
           <%= render "decision_logs/pav_log_item", log: log, profile: profile %>

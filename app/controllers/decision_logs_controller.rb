@@ -24,11 +24,16 @@ class DecisionLogsController < ApplicationController
       decided_by: full_name
     )
 
-    if defined?(MissionStepBlocker)
-      MissionStepBlocker
-        .where(decision_log_id: @decision_log.id)
-        .update_all(blocking_status: "resolved", resolved_at: Time.current)
-    end
+    @affected_steps = MissionStepBlocker
+      .where(decision_log_id: @decision_log.id, blocking_status: "blocking")
+      .includes(step: [:step_status, :mission_step_blockers])
+      .map(&:step)
+
+    MissionStepBlocker
+      .where(decision_log_id: @decision_log.id)
+      .update_all(blocking_status: "resolved", resolved_at: Time.current)
+
+    @affected_steps.each { |s| s.mission_step_blockers.reload }
 
     mission = @decision_log.mission
     @remaining_pending = mission.decision_logs.where(status: "pending").to_a

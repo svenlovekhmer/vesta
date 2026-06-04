@@ -1,0 +1,20 @@
+<div id="step_blockers_<%= step.id %>"
+     data-action="dragover->step-link#dragover dragleave->step-link#dragleave drop->step-link#drop"
+     data-step-id="<%= step.id %>"
+     class="step-link-drop-zone">
+  <span class="step-link-drop-hint">
+    <i class="fa-solid fa-arrow-down" style="font-size:9px"></i> Déposer ici
+  </span>
+  <% step.mission_step_blockers.select { |b| b.blocking_status == "blocking" }.each do |blocker| %>
+    <span class="step-blocker-badge">
+      <span data-action="click->step-link#highlight"
+            data-decision-log-id="<%= blocker.decision_log_id %>">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i>
+        <%= blocker.decision_log.title&.truncate(22) %>
+      </span>
+      <span class="step-blocker-badge__remove"
+            data-action="click->step-link#unlink"
+            data-blocker-id="<%= blocker.id %>">×</span>
+    </span>
+  <% end %>
+</div>

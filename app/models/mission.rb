@@ -5,6 +5,7 @@ class Mission < ApplicationRecord
 
   has_many :steps, -> { order(:position) }, dependent: :destroy
   has_many :decision_logs, dependent: :destroy
+  has_many :mission_step_blockers, dependent: :destroy
 
   accepts_nested_attributes_for :steps, allow_destroy: true, reject_if: :all_blank
 
