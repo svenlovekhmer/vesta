@@ -1,6 +1,21 @@
 class DecisionLogsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_decision_log
+  before_action :set_decision_log, only: [:update, :destroy, :resolve_modal, :resolve]
+
+  def new_modal
+    @mission = current_user.missions.find(params[:mission_id])
+    @decision_log = DecisionLog.new
+    render layout: false
+  end
+
+  def create
+    @mission = current_user.missions.find(params.dig(:decision_log, :mission_id))
+    @decision_log = @mission.decision_logs.build(create_params)
+    @decision_log.save
+    @pending_logs = @mission.decision_logs.where(status: "pending").to_a
+    @entry = build_entry(@pending_logs)
+    respond_to { |f| f.turbo_stream }
+  end
 
   def update
     if @decision_log.update(decision_log_params)
@@ -71,6 +86,10 @@ class DecisionLogsController < ApplicationController
 
   def decision_log_params
     params.require(:decision_log).permit(:title, :description)
+  end
+
+  def create_params
+    params.require(:decision_log).permit(:title, :description, :owner_type)
   end
 
   def build_entry(remaining)

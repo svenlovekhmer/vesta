@@ -20,7 +20,10 @@ Rails.application.routes.draw do
   resources :steps, only: [:update]
   resources :documents, only: [:destroy]
   resources :mission_step_blockers, only: [:create, :destroy]
-  resources :decision_logs, only: [:update, :destroy] do
+  resources :decision_logs, only: [:update, :destroy, :create] do
+    collection do
+      get :new_modal
+    end
     member do
       get  :resolve_modal
       patch :resolve

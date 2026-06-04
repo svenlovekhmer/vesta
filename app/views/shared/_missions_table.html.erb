@@ -49,9 +49,10 @@
           </td>
           <td>
             <%= button_to mission_path(mission), method: :delete,
-                data: { turbo_confirm: "Supprimer la mission \"#{mission.title}\" ? Cette action est irréversible." },
-                class: "btn btn-sm btn-outline-danger border-0 rounded-pill" do %>
-              <i class="fa-regular fa-trash-can"></i>
+                title: "Supprimer",
+                form: { class: "d-inline", data: { turbo_confirm: "Supprimer la mission \"#{mission.title}\" ? Cette action est irréversible." } },
+                class: "log-item__action-btn log-item__action-btn--delete" do %>
+              <i class="fa-solid fa-trash-can"></i>
             <% end %>
           </td>
         </tr>

@@ -4,7 +4,77 @@
   @extend .card;
 
   &__header {
-    @extend .d-flex, .align-items-baseline, .justify-content-between, .mb-4;
+    @extend .d-flex, .align-items-center, .justify-content-between, .mb-3;
+  }
+}
+
+.pav-card__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #adb5bd;
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    border-color: $red;
+    color: $red;
+    background: rgba($red, 0.05);
+  }
+}
+
+.pav-owner-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  input[type="radio"] {
+    display: none;
+
+    &:checked + label {
+      border-width: 2px;
+    }
+
+    &[value="provider"]:checked + label {
+      border-color: $orange;
+      background: rgba($orange, 0.07);
+      color: $orange;
+    }
+
+    &[value="client"]:checked + label {
+      border-color: $light-red;
+      background: rgba($light-red, 0.07);
+      color: $light-red;
+    }
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #6c757d;
+    background: white;
+    user-select: none;
+    margin-bottom: 0;
+
+    &:hover {
+      border-color: #adb5bd;
+      background: #f8f9fa;
+    }
   }
 }
 
@@ -78,6 +148,7 @@
 .log-item__description {
   @extend .d-block, .text-secondary;
   font-size: .85rem;
+  min-height: 1.2em;
 }
 
 .log-item__actions {
@@ -100,6 +171,11 @@
   color: #adb5bd;
   padding: 0;
   line-height: 1;
+
+  &--resolve {
+    @extend .px-2;
+    width: auto;
+  }
 
   &--resolve:hover {
     background: rgba($green, 0.15);

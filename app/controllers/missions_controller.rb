@@ -1,10 +1,10 @@
 class MissionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_mission, only: [:show, :destroy]
+  before_action :set_mission, only: %i[show destroy]
   before_action -> { add_breadcrumb "Tableau de bord", root_path }
   before_action -> { add_breadcrumb "Missions", missions_path }
   before_action -> { add_breadcrumb @mission.title }, only: [:show]
-  before_action -> { add_breadcrumb "Nouvelle mission" }, only: [:new, :create]
+  before_action -> { add_breadcrumb "Nouvelle mission" }, only: %i[new create]
 
   def index
     @missions = current_user.missions
@@ -39,15 +39,15 @@ class MissionsController < ApplicationController
   end
 
   def show
-    pending = @mission.decision_logs.select { |dl| dl.status == "pending" }
+    pending = @mission.decision_logs.reverse.select { |dl| dl.status == "pending" }
     @pending_logs        = pending
     @vesta_pending_count = pending.count { |dl| dl.owner_type == "provider" }
     @client_pending_count = pending.count { |dl| dl.owner_type == "client" }
 
     @decided_logs = @mission.decision_logs
-      .select { |dl| dl.status == "decided" }
-      .sort_by { |dl| dl.decided_at || dl.created_at.to_date }
-      .reverse
+                            .select { |dl| dl.status == "decided" }
+                            .sort_by { |dl| dl.decided_at || dl.created_at.to_date }
+                            .reverse
 
     @step_statuses = StepStatus.all
     @documents = @mission.documents.with_attached_file.includes(:step).order(created_at: :desc)
@@ -57,12 +57,12 @@ class MissionsController < ApplicationController
 
   def set_mission
     @mission = current_user.missions
-      .includes(
-        :mission_status, :client,
-        steps: [:step_status, :documents, { mission_step_blockers: :decision_log }],
-        decision_logs: { mission_step_blockers: :step }
-      )
-      .find(params[:id])
+                           .includes(
+                             :mission_status, :client,
+                             steps: [:step_status, :documents, { mission_step_blockers: :decision_log }],
+                             decision_logs: { mission_step_blockers: :step }
+                           )
+                           .find(params[:id])
   end
 
   def save_steps_as_template

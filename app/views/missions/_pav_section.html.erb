@@ -1,19 +1,28 @@
 <% profile = local_assigns.fetch(:profile) { current_user.profile } %>
 <div id="pav_section_<%= mission.id %>">
-  <% if pending_logs.any? %>
-    <div class="pav-card border mb-4">
-      <div class="pav-card__header">
+  <div class="pav-card border mb-4">
+    <div class="pav-card__header">
+      <div>
         <div class="pav-card__title-group">
           <h2 class="pav-card__title"><i class="fa-regular fa-circle-pause text-danger"></i> Points à valider</h2>
         </div>
-        <p class="pav-card__subtitle">
-          <span class="pav-card__subtitle--vesta"><%= vesta_count %> côté <%= profile&.first_name %> <%= profile&.last_name %></span>
-          &middot;
-          <span class="pav-card__subtitle--client"><%= client_count %> côté client</span>
-        </p>
+        <% if pending_logs.any? %>
+          <p class="pav-card__subtitle mt-1 mb-0">
+            <span class="pav-card__subtitle--vesta"><%= vesta_count %> côté <%= profile&.first_name %> <%= profile&.last_name %></span>
+            &middot;
+            <span class="pav-card__subtitle--client"><%= client_count %> côté client</span>
+          </p>
+        <% end %>
       </div>
+      <%= link_to new_modal_decision_logs_path(mission_id: mission.id),
+            class: "pav-card__add-btn",
+            data: { turbo_frame: "modal" } do %>
+        <i class="fa-solid fa-plus"></i> Ajouter
+      <% end %>
+    </div>
+    <% if pending_logs.any? %>
       <div class="step-link-hint">
-        <i class="fa-solid fa-grip-vertical"></i>
+        <i class="fa-solid fa-maximize"></i>
         Glissez une décision vers une étape pour la lier
       </div>
       <div class="log-list">
@@ -21,6 +30,6 @@
           <%= render "decision_logs/pav_log_item", log: log, profile: profile %>
         <% end %>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
