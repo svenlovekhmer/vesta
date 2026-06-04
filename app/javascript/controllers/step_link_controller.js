@@ -50,7 +50,11 @@ export default class extends Controller {
       })
     })
 
-    if (response.ok) Turbo.renderStreamMessage(await response.text())
+    if (response.ok) {
+      Turbo.renderStreamMessage(await response.text())
+    } else {
+      console.error(`[step-link] drop failed ${response.status}:`, await response.text())
+    }
   }
 
   async unlink(event) {
