@@ -19,7 +19,7 @@
               <%= link_to mission.title, mission_path(mission) %>
             </p>
             <p class="missions-table__mission-meta">
-              créé le <%= mission.created_at.strftime("%-d %B") %> &middot; <%= steps_total %> étape<%= steps_total > 1 ? "s" : "" %>
+              créé le <%= format_date_fr(mission.created_at) if mission.created_at %> &middot; <%= steps_total %> étape<%= steps_total > 1 ? "s" : "" %>
             </p>
           </td>
           <td>

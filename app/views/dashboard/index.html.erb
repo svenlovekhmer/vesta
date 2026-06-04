@@ -42,10 +42,9 @@
   <div id="pav_card" class="pav-card mb-4">
     <div class="pav-card__header">
       <div class="pav-card__title-group">
-        <h2 class="pav-card__title">Points à valider</h2>
+        <h2 class="pav-card__title"><i class="fa-regular fa-circle-pause text-danger"></i> Points à valider</h2>
       </div>
       <p class="pav-card__subtitle">
-        Par mission &middot;
         <span id="pav_total_vesta" class="pav-card__subtitle--vesta"><%= @total_vesta_pending %> côté <%= profile&.first_name %> <%= profile&.last_name %></span> &middot;
         <span id="pav_total_client" class="pav-card__subtitle--client"><%= @total_client_pending %> côté client</span>
       </p>
@@ -92,8 +91,8 @@
 <%# Missions table %>
 <div class="missions-table-card" data-controller="mission-filter">
   <div class="missions-table-card__header">
-    <h2 class="missions-table-card__title">Toutes mes missions en cours</h2>
-    <%= link_to missions_path, class: "ms-2 btn btn-secondary vesta-btn rounded-pill text-white" do %>
+    <h2 class="missions-table-card__title"><i class="fa-solid fa-bullseye text-info"></i> Toutes mes missions en cours</h2>
+    <%= link_to missions_path, class: "ms-2 btn btn-outline-danger vesta-btn rounded-pill" do %>
         <i class="fa-solid fa-eye d-inline-block me-2"></i>
         Voir les missions
     <% end %>

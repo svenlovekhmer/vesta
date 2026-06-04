@@ -22,8 +22,32 @@
           <% end %>
         </div>
         <div class="step-timeline__content">
-          <p class="step-timeline__title <%= "text-muted fw-normal" unless %w[Validée En\ cours].include?(status) %>"><%= step.title %></p>
-          <p class="step-timeline__description"><%= step.description %></p>
+          <div data-controller="inline-edit"
+               data-inline-edit-model-value="step"
+               data-inline-edit-url-value="<%= step_path(step) %>"
+               data-inline-edit-param-value="title">
+            <p class="step-timeline__title <%= "text-muted fw-normal" unless %w[Validée En\ cours].include?(status) %> log-item__editable mb-0"
+               data-inline-edit-target="text"
+               data-action="click->inline-edit#edit"
+               title="Cliquer pour modifier"><%= step.title %></p>
+            <input type="text"
+                   class="form-control form-control-sm d-none log-item__edit-input"
+                   data-inline-edit-target="input"
+                   data-action="blur->inline-edit#save keydown->inline-edit#keydown" />
+          </div>
+          <div data-controller="inline-edit"
+               data-inline-edit-model-value="step"
+               data-inline-edit-url-value="<%= step_path(step) %>"
+               data-inline-edit-param-value="description">
+            <p class="step-timeline__description log-item__editable mb-0"
+               data-inline-edit-target="text"
+               data-action="click->inline-edit#edit"
+               title="Cliquer pour modifier"><%= step.description %></p>
+            <textarea class="form-control form-control-sm d-none log-item__edit-input"
+                      rows="2"
+                      data-inline-edit-target="input"
+                      data-action="blur->inline-edit#save keydown->inline-edit#keydown"></textarea>
+          </div>
         </div>
       </div>
     <% end %>

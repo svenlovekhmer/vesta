@@ -17,7 +17,6 @@ puts "Creating statuses..."
 mission_statuses = {
   en_attente:  MissionStatus.create!(title: "En attente"),
   en_cours:    MissionStatus.create!(title: "En cours"),
-  en_revision: MissionStatus.create!(title: "En révision"),
   terminee:    MissionStatus.create!(title: "Terminée")
 }
 
@@ -130,7 +129,7 @@ missions_data = [
   {
     title: "Rénovation complète maison – Isabelle Petit",
     client: clients[2],
-    status: mission_statuses[:en_revision],
+    status: mission_statuses[:en_cours],
     steps: [
       { title: "Brief client",         description: "Réunion initiale avec la famille",                      position: 1, status: :validee,  validate_at: 2.months.ago },
       { title: "Étude de faisabilité", description: "Étude structurelle et diagnostic énergétique",         position: 2, status: :validee,  validate_at: 6.weeks.ago },

@@ -2,6 +2,14 @@ class DecisionLogsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_decision_log
 
+  def update
+    if @decision_log.update(decision_log_params)
+      head :ok
+    else
+      render json: { errors: @decision_log.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def resolve_modal
     render layout: false
   end
@@ -38,6 +46,10 @@ class DecisionLogsController < ApplicationController
   def set_decision_log
     mission_ids = current_user.missions.select(:id)
     @decision_log = DecisionLog.where(mission_id: mission_ids).find(params[:id])
+  end
+
+  def decision_log_params
+    params.require(:decision_log).permit(:title, :description)
   end
 
   def build_entry(remaining)
