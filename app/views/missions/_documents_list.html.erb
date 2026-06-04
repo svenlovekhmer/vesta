@@ -1,0 +1,47 @@
+<% docs_by_step = documents.group_by(&:step) %>
+<% has_docs = documents.any? %>
+
+<% if has_docs %>
+  <div class="documents-list">
+    <%# Sections par étape, dans l'ordre de la mission %>
+    <% mission.steps.each do |step| %>
+      <% step_docs = docs_by_step[step] %>
+      <% next unless step_docs&.any? %>
+      <div class="documents-group">
+        <div class="documents-group__header">
+          <span class="documents-group__step-label">
+            <%= step.title %>
+          </span>
+          <span class="documents-group__count"><%= step_docs.count %> doc<%= step_docs.count > 1 ? "s" : "" %></span>
+        </div>
+        <div class="documents-group__rows">
+          <% step_docs.each do |doc| %>
+            <%= render "documents/document", document: doc %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Documents sans étape %>
+    <% unattached = docs_by_step[nil] %>
+    <% if unattached&.any? %>
+      <div class="documents-group">
+        <div class="documents-group__header">
+          <span class="documents-group__step-label text-muted">Sans étape</span>
+          <span class="documents-group__count"><%= unattached.count %> doc<%= unattached.count > 1 ? "s" : "" %></span>
+        </div>
+        <div class="documents-group__rows">
+          <% unattached.each do |doc| %>
+            <%= render "documents/document", document: doc %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="documents-empty">
+    <i class="fa-regular fa-folder-open documents-empty__icon"></i>
+    <p class="documents-empty__title">Aucun document pour l'instant</p>
+    <p class="documents-empty__subtitle">Ajoutez des fichiers produits au fil des étapes de votre mission.</p>
+  </div>
+<% end %>

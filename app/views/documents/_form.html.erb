@@ -1,0 +1,39 @@
+<div class="document-upload-card" data-controller="document-upload">
+  <%= form_with url: mission_documents_path(mission), scope: :document do |f| %>
+
+    <%# Drop zone %>
+    <div class="drop-zone"
+         data-document-upload-target="dropZone"
+         data-action="dragover->document-upload#dragover
+                      dragleave->document-upload#dragleave
+                      drop->document-upload#drop
+                      click->document-upload#openPicker">
+      <i class="fa-solid fa-cloud-arrow-up drop-zone__icon"></i>
+      <p class="drop-zone__text">Glissez vos fichiers ici</p>
+      <p class="drop-zone__sub">ou <span class="drop-zone__link">parcourir</span></p>
+      <%= f.file_field :files,
+                       multiple: true,
+                       class: "d-none",
+                       data: { document_upload_target: "fileInput",
+                               action: "change->document-upload#pick" } %>
+    </div>
+
+    <%# Preview & submit (hidden until files are selected) %>
+    <div class="drop-zone__preview d-none" data-document-upload-target="preview">
+      <div class="drop-zone__step-row">
+        <label class="drop-zone__step-label">Associer à une étape</label>
+        <%= f.select :step_id,
+                     [["— Sans étape —", ""]] + mission.steps.map { |s| [s.title, s.id] },
+                     {},
+                     { class: "form-select form-select-sm" } %>
+      </div>
+      <ul class="drop-zone__file-list" data-document-upload-target="fileList"></ul>
+      <div class="drop-zone__submit-row">
+        <%= f.submit "Ajouter →",
+                     class: "btn btn-danger vesta-btn rounded-pill px-4",
+                     data: { document_upload_target: "submitBtn" } %>
+      </div>
+    </div>
+
+  <% end %>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_04_110631) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_04_141532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_110631) do
     t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
+  create_table "decision_log_documents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "decision_log_id", null: false
+    t.bigint "document_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["decision_log_id", "document_id"], name: "idx_on_decision_log_id_document_id_83ef36bef1", unique: true
+    t.index ["decision_log_id"], name: "index_decision_log_documents_on_decision_log_id"
+    t.index ["document_id"], name: "index_decision_log_documents_on_document_id"
+  end
+
   create_table "decision_logs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "decided_at"
@@ -79,11 +89,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_110631) do
 
   create_table "documents", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "file_type"
-    t.string "file_url"
+    t.bigint "mission_id", null: false
     t.string "name"
-    t.bigint "step_id", null: false
+    t.bigint "step_id"
     t.datetime "updated_at", null: false
+    t.index ["mission_id"], name: "index_documents_on_mission_id"
     t.index ["step_id"], name: "index_documents_on_step_id"
   end
 
@@ -343,8 +353,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_04_110631) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "clients", "users"
+  add_foreign_key "decision_log_documents", "decision_logs"
+  add_foreign_key "decision_log_documents", "documents"
   add_foreign_key "decision_logs", "missions"
   add_foreign_key "decision_logs", "users", column: "owner_id"
+  add_foreign_key "documents", "missions"
   add_foreign_key "documents", "steps"
   add_foreign_key "gmail_connections", "users"
   add_foreign_key "mission_step_blockers", "decision_logs"
