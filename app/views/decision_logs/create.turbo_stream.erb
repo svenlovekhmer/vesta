@@ -1,0 +1,15 @@
+<% if @decision_log.persisted? %>
+  <%= turbo_stream.update "modal", "" %>
+
+  <%= turbo_stream.replace "pav_section_#{@mission.id}" do %>
+    <%= render "missions/pav_section",
+          mission:       @mission,
+          pending_logs:  @pending_logs,
+          vesta_count:   @entry[:vesta_count],
+          client_count:  @entry[:client_count] %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "modal" do %>
+    <%= render "decision_logs/new_pav_form", decision_log: @decision_log, mission: @mission %>
+  <% end %>
+<% end %>

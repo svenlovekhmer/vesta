@@ -1,0 +1,48 @@
+<div class="modal-header border-0 pb-1">
+  <h5 class="modal-title fw-semibold">
+    <i class="fa-regular fa-circle-pause text-danger me-2"></i>Nouveau point à valider
+  </h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+</div>
+
+<%= simple_form_for decision_log, url: decision_logs_path, data: { turbo_stream: true } do |f| %>
+  <div class="modal-body pt-4">
+    <%= f.hidden_field :mission_id, value: mission.id %>
+
+    <div class="mb-4">
+      <p class="form-label">Par qui ?</p>
+      <div class="pav-owner-toggle">
+        <input type="radio" name="decision_log[owner_type]" id="owner_provider" value="provider" autocomplete="off" required
+               <%= "checked" unless decision_log.owner_type == "client" %>>
+        <label for="owner_provider">
+          <i class="fa-solid fa-user-tie"></i> Moi
+        </label>
+        <input type="radio" name="decision_log[owner_type]" id="owner_client" value="client" autocomplete="off" required
+               <%= "checked" if decision_log.owner_type == "client" %>>
+        <label for="owner_client">
+          <i class="fa-solid fa-user"></i> Client
+        </label>
+      </div>
+    </div>
+
+    <%= f.input :title,
+          label: "Titre",
+          placeholder: "Ex. Choix du carrelage cuisine",
+          required: true,
+          autofocus: true %>
+
+    <%= f.input :description,
+          label: "Description",
+          as: :text,
+          input_html: { rows: 2 },
+          placeholder: "Précisez le contexte ou les options envisagées…",
+          required: false %>
+  </div>
+
+  <div class="modal-footer border-0 pt-1">
+    <button type="button" class="cancel-btn border-0 bg-transparent" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
+    <%= f.submit "Ajouter", class: "btn btn-danger vesta-btn text-white rounded-pill" %>
+  </div>
+<% end %>
