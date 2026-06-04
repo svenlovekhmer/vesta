@@ -1,41 +1,86 @@
 <nav class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
-    <% if user_signed_in? %>
-      <%= link_to interviews_path, class: "navbar-brand" do %>
-        <%= image_tag "logo.png" %>
-      <% end %>
-    <% else %>
-      <%= link_to root_path, class: "navbar-brand" do %>
-        <%= image_tag "logo.png" %>
-      <% end %>
+    <%= link_to dashboard_path, class: "navbar-brand" do %>
+      <%= image_tag "logo.svg" %>
+      <span class="ms-2">Vesta</span>
     <% end %>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item me-3">
-            <%= link_to "Mes entretiens", interviews_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="avatar-text"><%= current_user.email[0..1].upcase %></span>
-          </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Profil", profile_path, class: "dropdown-item" %>
-              <%= link_to "Déconnexion", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item me-3">
+        <%= link_to "Connection", new_user_session_path, class: "btn btn-danger vesta-btn text-white rounded-pill" %>
+      </li>
+    </ul>
   </div>
 </nav>
 
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="d-flex flex-column justify-content-center h-100">
+        <h1>Gérez vos <em class="text-danger">chantiers</em>, enchantez vos clients.</h1>
+        <p class="text-muted">L'espace collaboratif dédié aux architectes d'intérieur et professionnels du bâtiment. Centralisez vos plans, suivis et validations en toute élégance.</p>
+        <div class="d-flex justify-content-center gap-4 mt-4">
+          <%= link_to "Démarrer mon projet", dashboard_path, class: "btn btn btn-danger vesta-btn rounded-pill text-white" %>
+          <%= link_to "Voir un exemple de suivi", dashboard_path, class: "btn btn-outline-secondary vesta-btn rounded-pill" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <%= image_tag "hero.png", class: "img-fluid" %>
+    </div>
+  </div>
+</div>
 
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-<%= link_to "Se connecter", dashboard_path %>
+<div class="container-fluid bg-light py-5">
+  <div class="container">
+    <h2 class="mb-4">Pilotez vos réalisations en toute sérénité.</h2>
+    <div class="row mb-4">
+      <div class="col-12 col-lg-8 mb-4 d-flex">
+        <div class="card p-5">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <i class="fa-solid fa-screwdriver-wrench fa-2x text-danger"></i>
+            <h4>Suivi de chantier</h4>
+          </div>
+          <p class="text-muted">Offrez à vos clients un journal de bord illustré. Une timeline interactive pour suivre l'avancement des travaux étape par étape.</p>
+          <hr class="my-4" />
+          <div class="d-flex gap-4 mt-4">
+            <span class="home-badge home-badge--gray"><i class="fa-solid fa-circle"></i> Démolition</span>
+            <span class="home-badge home-badge--gray"><i class="fa-solid fa-circle"></i> Cloisonnement</span>
+            <span class="home-badge home-badge--gray"><i class="fa-solid fa-circle inactive"></i> Electricité</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4 ml-lg-4 mb-4">
+        <div class="card-gray p-5">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <i class="fa-solid fa-compass-drafting fa-2x text-danger"></i>
+            <h4>Plans et devis</h4>
+          </div>
+          <div class="d-flex flex-column justify-content-center gap-4 mt-4">
+            <p class="text-muted">Centralisez vos plans techniques, descriptifs et devis. Un accès unique pour éviter les erreurs de version sur le terrain.</p>
+            <span class="home-badge home-badge--white"><i class="fa-solid fa-arrows-turn-to-dots"></i> Plan_Implantation_v4.dwg</span>
+            <span class="home-badge home-badge--white"><i class="fa-solid fa-file-invoice-dollar"></i> Devis_Menuiserie_Signe.pdf</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card p-5 mb-4">
+      <div class="row align-items-center">
+        <div class="col-12 col-lg-8">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <i class="fa-solid fa-palette fa-2x text-danger"></i>
+            <h4>Validation de choix (matériaux, finitions)</h4>
+          </div>
+          <p class="text-muted">Partagez vos inspirations, échantillons et références avec vos clients. Un espace de validation pour éviter les malentendus sur les choix esthétiques.</p>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="home-badge--black">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Valider votre choix</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
