@@ -4,10 +4,21 @@ export default class extends Controller {
   static targets = ["text", "input"]
   static values = { url: String, param: String, model: String }
 
+  connect() {
+    this.#pencil = document.createElement("i")
+    this.#pencil.className = "fa-solid fa-pen-to-square inline-edit__pencil"
+    this.textTarget.insertAdjacentElement("beforeend", this.#pencil)
+  }
+
+  disconnect() {
+    this.#pencil?.remove()
+  }
+
   edit() {
     this.#originalValue = this.textTarget.textContent.trim()
     this.inputTarget.value = this.#originalValue
     this.textTarget.classList.add("d-none")
+    this.#pencil.classList.add("d-none")
     this.inputTarget.classList.remove("d-none")
     this.inputTarget.focus()
     this.inputTarget.select()
@@ -40,6 +51,7 @@ export default class extends Controller {
     } finally {
       this.#saving = false
       this.inputTarget.classList.add("d-none")
+      this.#pencil.classList.remove("d-none")
       this.textTarget.classList.remove("d-none")
     }
   }
@@ -49,6 +61,7 @@ export default class extends Controller {
       this.#saving = true  // prevent blur from firing a save
       this.inputTarget.value = this.#originalValue
       this.inputTarget.classList.add("d-none")
+      this.#pencil.classList.remove("d-none")
       this.textTarget.classList.remove("d-none")
       this.#saving = false
     } else if (event.key === "Enter" && this.inputTarget.tagName !== "TEXTAREA") {
@@ -59,4 +72,5 @@ export default class extends Controller {
 
   #saving = false
   #originalValue = ""
+  #pencil = null
 }
