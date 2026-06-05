@@ -1,6 +1,6 @@
 class MissionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_mission, only: %i[show update destroy]
+  before_action :set_mission, only: %i[show update destroy confirm_destroy]
   before_action -> { add_breadcrumb "Tableau de bord", root_path }
   before_action -> { add_breadcrumb "Missions", missions_path }
   before_action -> { add_breadcrumb @mission.title }, only: [:show]
@@ -39,6 +39,9 @@ class MissionsController < ApplicationController
     else
       render json: { errors: @mission.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  def confirm_destroy
   end
 
   def destroy
