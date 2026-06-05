@@ -1,0 +1,36 @@
+<turbo-frame id="modal">
+  <div class="modal-header border-0 pb-1">
+    <h5 class="modal-title fw-semibold">
+      <i class="fa-solid fa-link text-danger me-2"></i>Lier à une étape
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <% available_steps = @steps.reject { |s| s.step_status.title == "Validée" || @linked_step_ids.include?(s.id) } %>
+    <% if available_steps.any? %>
+      <p class="text-muted small mb-3">Sélectionnez l'étape à bloquer par ce point.</p>
+      <div class="d-flex flex-column gap-2">
+        <% available_steps.each do |step| %>
+          <%= button_to mission_step_blockers_path,
+                method: :post,
+                params: { decision_log_id: @decision_log.id, step_id: step.id, mission_id: @mission.id },
+                class: "btn btn-outline-secondary text-start link-step-btn",
+                form: { data: { turbo_stream: true, turbo_frame: "_top" } } do %>
+            <span class="step-link-dot step-link-dot--<%= step.step_status.title.parameterize %>"></span>
+            <%= step.title %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted text-center py-3 mb-0">
+        <i class="fa-solid fa-circle-check d-block mb-2" style="font-size: 1.5rem;"></i>
+        Toutes les étapes disponibles sont déjà liées.
+      </p>
+    <% end %>
+  </div>
+  <div class="modal-footer border-0">
+    <button type="button" class="cancel-btn border-0 bg-transparent" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
+  </div>
+</turbo-frame>

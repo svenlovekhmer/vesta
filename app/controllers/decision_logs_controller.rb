@@ -1,6 +1,7 @@
 class DecisionLogsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_decision_log, only: [:update, :destroy, :resolve_modal, :resolve]
+  before_action :set_decision_log, only: [:update, :destroy, :resolve_modal, :resolve,
+                                          :confirm_destroy, :link_step_modal, :add_document_modal]
 
   def new_modal
     @mission = current_user.missions.find(params[:mission_id])
@@ -78,6 +79,23 @@ class DecisionLogsController < ApplicationController
     respond_to do |format|
       format.turbo_stream
     end
+  end
+
+  def confirm_destroy
+  end
+
+  def link_step_modal
+    @mission = @decision_log.mission
+    @steps = @mission.steps.includes(:step_status)
+    @linked_step_ids = @decision_log.mission_step_blockers
+                                    .where(blocking_status: "blocking")
+                                    .pluck(:step_id)
+  end
+
+  def add_document_modal
+    @mission = @decision_log.mission
+    @documents = @mission.documents.with_attached_file.order(created_at: :desc)
+    @linked_document_ids = @decision_log.document_ids
   end
 
   def resolve_modal

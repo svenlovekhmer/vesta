@@ -33,6 +33,10 @@ Rails.application.routes.draw do
     member do
       get  :resolve_modal
       patch :resolve
+      get :confirm_destroy
+      get :link_step_modal
+      get :add_document_modal
     end
   end
+  resources :decision_log_documents, only: [:create]
 end

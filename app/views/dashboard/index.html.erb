@@ -94,6 +94,8 @@
                 <% if current_step %>&middot; <%= current_step.title %><% end %>
               </span>
             </div>
+            <% oldest_log_date = entry[:logs].map(&:created_at).min %>
+            <div class="pav-row__date-since"><i class="fa-regular fa-clock"></i> depuis le <%= format_date_fr(oldest_log_date) %></div>
             <%= render "dashboard/pav_sync_label", mission: m, state: :neutral %>
             <div class="pav-row__badges">
               <span id="pav_vesta_badge_<%= m.id %>" class="pav-badge pav-badge--vesta <%= entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
@@ -108,7 +110,7 @@
 
           <div class="pav-row__detail" data-mission-accordion-target="detail">
             <% entry[:logs].each do |log| %>
-              <%= render "decision_logs/pav_log_item", log: log, profile: profile %>
+              <%= render "decision_logs/pav_log_item_readonly", log: log, profile: profile %>
             <% end %>
           </div>
         </div>

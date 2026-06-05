@@ -1,4 +1,4 @@
-<span id="pav_sync_label_<%= mission.id %>"
+<div id="pav_sync_label_<%= mission.id %>"
       class="pav-sync-label text-secondary"
       data-pav-sync-target="syncLabel"
       data-synced-at="<%= mission.last_synced_at&.iso8601 %>"
@@ -12,4 +12,4 @@
   <% else %>
     <i class="ti ti-clock"></i> jamais synchronisé
   <% end %>
-</span>
+</div>
