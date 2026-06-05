@@ -53,10 +53,10 @@
             </span>
           </td>
           <td data-row-link-exempt="true">
-            <%= button_to mission_path(mission), method: :delete,
+            <%= link_to confirm_destroy_mission_path(mission),
                 title: "Supprimer",
-                form: { class: "d-inline", data: { turbo_confirm: "Supprimer la mission \"#{mission.title}\" ? Cette action est irréversible." } },
-                class: "log-item__action-btn log-item__action-btn--delete" do %>
+                class: "log-item__action-btn log-item__action-btn--delete",
+                data: { turbo_frame: "modal" } do %>
               <i class="fa-solid fa-trash-can"></i>
             <% end %>
           </td>

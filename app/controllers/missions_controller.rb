@@ -1,6 +1,6 @@
 class MissionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_mission, only: %i[show destroy]
+  before_action :set_mission, only: %i[show update destroy confirm_destroy]
   before_action -> { add_breadcrumb "Tableau de bord", root_path }
   before_action -> { add_breadcrumb "Missions", missions_path }
   before_action -> { add_breadcrumb @mission.title }, only: [:show]
@@ -31,6 +31,17 @@ class MissionsController < ApplicationController
       @step_templates_json = build_templates_json(@step_templates)
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def update
+    if @mission.update(mission_params.slice(:title))
+      render json: { title: @mission.title }
+    else
+      render json: { errors: @mission.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def confirm_destroy
   end
 
   def destroy

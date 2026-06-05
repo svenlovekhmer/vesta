@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#index", as: :dashboard
   resources :missions, only: [:index, :new, :create, :show, :destroy] do
     resources :documents, only: [:create]
+    member do
+      get :confirm_destroy
+    end
   end
   resources :clients, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
