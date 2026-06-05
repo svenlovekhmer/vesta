@@ -11,6 +11,7 @@ class GmailSyncJob < ApplicationJob
 
     if messages.empty?
       @client.update!(gmail_synthesis: nil, gmail_messages_count: 0, gmail_last_synced_at: Time.current)
+      @mission.update!(last_synced_at: Time.current)
       broadcast_panel
       return
     end
@@ -25,6 +26,7 @@ class GmailSyncJob < ApplicationJob
       gmail_last_synced_at: Time.current
     )
 
+    @mission.update!(last_synced_at: Time.current)
     @mission.decision_logs.where(source: "gmail_ai").destroy_all
     (result["decided"] || []).compact.each_with_index do |item, i|
       @mission.decision_logs.create!(title: item["text"], owner_type: item["owner"],
@@ -39,6 +41,7 @@ class GmailSyncJob < ApplicationJob
     broadcast_panel
   rescue StandardError => e
     Rails.logger.error("GmailSyncJob failed: #{e.message}")
+    broadcast_pav_label_error
     if e.message.include?("token") || e.message.include?("invalid_request")
       broadcast_reconnect
     else
@@ -49,9 +52,12 @@ class GmailSyncJob < ApplicationJob
   private
 
   def fetch_emails(token)
+    query = "(from:#{@client.email} OR to:#{@client.email})"
+    query += " after:#{@mission.last_synced_at.to_i}" if @mission.last_synced_at.present?
+
     list_resp = Faraday.get("https://gmail.googleapis.com/gmail/v1/users/me/messages") do |req|
       req.headers["Authorization"] = "Bearer #{token}"
-      req.params["q"]          = "(from:#{@client.email} OR to:#{@client.email})"
+      req.params["q"]          = query
       req.params["maxResults"] = 50
     end
     data        = JSON.parse(list_resp.body)
@@ -148,6 +154,15 @@ class GmailSyncJob < ApplicationJob
         locals: { mission: mission, profile: profile, decided_logs: decided }
       )
     )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "pav_sync_label_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "dashboard/pav_sync_label",
+        locals: { mission: mission, state: :fresh }
+      )
+    )
   end
 
   def broadcast_reconnect
@@ -170,6 +185,20 @@ class GmailSyncJob < ApplicationJob
         locals: { mission: @mission.reload, current_user: @user, sync_error: message }
       )
     )
+  end
+
+  def broadcast_pav_label_error
+    return unless @mission
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "pav_sync_label_#{@mission.id}",
+      html: ApplicationController.render(
+        partial: "dashboard/pav_sync_label",
+        locals: { mission: @mission, state: :error }
+      )
+    )
+  rescue => e
+    Rails.logger.error("broadcast_pav_label_error failed: #{e.message}")
   end
 
   def stream_key

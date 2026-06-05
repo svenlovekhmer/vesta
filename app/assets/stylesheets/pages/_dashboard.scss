@@ -322,6 +322,31 @@
   &--remind   { background: #f0f0f0; color: #888; }
 }
 
+// ─── PAV sync label ───────────────────────────────────────────────────────────
+
+.pav-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pav-sync-label {
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+@keyframes pav-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pav-sync-label__spin {
+  animation: pav-spin 1s linear infinite;
+  display: inline-block;
+}
+
 // ─── Resolve modal ────────────────────────────────────────────────────────────
 
 .resolve-options {
