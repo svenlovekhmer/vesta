@@ -51,12 +51,37 @@
           data: { turbo_frame: "modal" } do %>
       <i class="fa-solid fa-circle-check d-inline-block pe-1"></i> Valider
     <% end %>
-    <%= button_to decision_log_path(log),
-          method: :delete,
-          class: "log-item__action-btn log-item__action-btn--delete",
-          title: "Supprimer",
-          form: { class: "d-inline", data: { turbo_confirm: "Supprimer ce point à valider ?" } } do %>
-      <i class="fa-solid fa-trash-can"></i>
-    <% end %>
+    <div class="dropdown">
+      <button class="log-item__action-btn log-item__action-btn--menu"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li>
+          <%= link_to link_step_modal_decision_log_path(log),
+                class: "dropdown-item",
+                data: { turbo_frame: "modal" } do %>
+            <i class="fa-solid fa-link me-2"></i> Lier à une étape
+          <% end %>
+        </li>
+        <li>
+          <%= link_to add_document_modal_decision_log_path(log),
+                class: "dropdown-item",
+                data: { turbo_frame: "modal" } do %>
+            <i class="fa-solid fa-paperclip me-2"></i> Ajouter un document
+          <% end %>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <%= link_to confirm_destroy_decision_log_path(log),
+                class: "dropdown-item text-danger",
+                data: { turbo_frame: "modal" } do %>
+            <i class="fa-solid fa-trash-can me-2"></i> Supprimer
+          <% end %>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
