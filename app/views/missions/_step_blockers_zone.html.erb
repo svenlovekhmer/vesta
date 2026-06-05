@@ -5,7 +5,7 @@
   <span class="step-link-drop-hint">
     <i class="fa-solid fa-arrow-down" style="font-size:9px"></i> Déposer ici
   </span>
-  <% step.mission_step_blockers.select { |b| b.blocking_status == "blocking" }.each do |blocker| %>
+  <% step.mission_step_blockers.select { |b| b.blocking_status == "blocking" && b.decision_log.present? }.each do |blocker| %>
     <span class="step-blocker-badge">
       <span data-action="click->step-link#highlight"
             data-decision-log-id="<%= blocker.decision_log_id %>">

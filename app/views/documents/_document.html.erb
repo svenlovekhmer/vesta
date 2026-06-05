@@ -6,6 +6,16 @@
      elsif ct.include?("sheet") || ct.include?("excel")      then ["fa-file-excel", "text-success"]
      else                                                          ["fa-file",       "text-secondary"]
      end %>
+
+<%# Phase icon (Tabler) for the step associated with this document %>
+<% phase_icons_ti = { 1=>"flag", 2=>"ruler", 3=>"pencil-ruler",
+                       4=>"hammer", 5=>"palette", 6=>"package", 7=>"circle-check" } %>
+<% step_icon_ti = document.step ? "ti ti-#{phase_icons_ti.fetch(document.step.position, "circle")}" : "" %>
+
+<%# Find the active blocker + its parent decision log (all preloaded) %>
+<% active_log = document.decision_logs.find { |dl| dl.mission_step_blockers.any? { |b| b.blocking_status == "blocking" } }
+   active_blocker = active_log&.mission_step_blockers&.find { |b| b.blocking_status == "blocking" } %>
+
 <div id="document_<%= document.id %>" class="document-row">
   <i class="fa-regular <%= icon %> <%= icon_color %> document-row__icon"></i>
   <div class="document-row__body">
@@ -17,6 +27,42 @@
       <%= number_to_human_size(document.file.byte_size) %> &middot; il y a <%= time_ago_in_words(document.created_at) %>
     </span>
   </div>
+
+  <div id="doc_blocker_area_<%= document.id %>">
+    <% if active_blocker %>
+      <% status_label = active_log.status == "pending" ? "En attente" : "Actée" %>
+      <% created_label = "Créé il y a #{time_ago_in_words(active_log.created_at, locale: :fr)}" %>
+      <button type="button"
+              class="doc-blocker__state"
+              data-bs-toggle="modal"
+              data-bs-target="#doc-blocker-modal"
+              data-mode="read"
+              data-step-name="<%= document.step&.title || 'Sans étape' %>"
+              data-step-icon="<%= step_icon_ti %>"
+              data-doc-name="<%= document.name %>"
+              data-doc-id="<%= document.id %>"
+              data-blocker-id="<%= active_blocker.id %>"
+              data-blocker-title="<%= active_blocker.decision_log_title %>"
+              data-blocker-status="<%= status_label %>"
+              data-blocker-time="<%= created_label %>">
+        <span class="doc-blocker__dot"></span>Bloqué · voir
+      </button>
+    <% else %>
+      <button type="button"
+              class="doc-blocker__btn"
+              data-bs-toggle="modal"
+              data-bs-target="#doc-blocker-modal"
+              data-mission-id="<%= document.mission_id %>"
+              data-step-id="<%= document.step_id %>"
+              data-step-name="<%= document.step&.title || 'Sans étape' %>"
+              data-step-icon="<%= step_icon_ti %>"
+              data-doc-id="<%= document.id %>"
+              data-doc-name="<%= document.name %>">
+        <i class="ti ti-lock" style="font-size:12px"></i>Bloquer
+      </button>
+    <% end %>
+  </div>
+
   <%= button_to document_path(document),
                 method: :delete,
                 class: "document-row__delete btn-reset",

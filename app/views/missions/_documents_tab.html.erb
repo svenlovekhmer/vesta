@@ -8,4 +8,7 @@
   <div id="documents_list">
     <%= render "missions/documents_list", mission: mission, documents: documents %>
   </div>
+
+  <%# Shared modal for "Point bloquant" on existing doc rows %>
+  <%= render "documents/doc_blocker_modal" %>
 </div>

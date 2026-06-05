@@ -35,12 +35,19 @@ class MissionStepBlockersController < ApplicationController
       .where(missions: { id: current_user.missions.select(:id) }, blocking_status: "blocking")
       .find(params[:id])
 
-    @step = blocker.step
+    @step         = blocker.step
     @decision_log = blocker.decision_log
     blocker.destroy
 
     @step.mission_step_blockers.reload
     @decision_log.mission_step_blockers.reload
+
+    if params[:document_id].present?
+      @document = Document.joins(:mission)
+                          .where(missions: { id: current_user.missions.select(:id) })
+                          .includes(:step)
+                          .find_by(id: params[:document_id])
+    end
 
     respond_to do |format|
       format.turbo_stream

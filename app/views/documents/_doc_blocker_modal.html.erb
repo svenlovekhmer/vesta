@@ -1,0 +1,92 @@
+<%# Shared modal – doc_blocker_modal_controller populates it before Bootstrap shows it %>
+<div class="modal fade" id="doc-blocker-modal" tabindex="-1"
+     data-controller="doc-blocker-modal"
+     data-action="show.bs.modal->doc-blocker-modal#populate
+                 blocker-modal:populate@window->doc-blocker-modal#populateFromEvent">
+  <div class="modal-dialog modal-sm doc-blocker-dialog">
+    <div class="modal-content doc-blocker-modal-content">
+
+      <%# ── Header ─────────────────────────────────────────────────────── %>
+      <div class="doc-blocker-modal-header">
+        <div class="doc-blocker-modal-icon">
+          <i class="ti ti-lock"></i>
+        </div>
+        <h5 class="doc-blocker-modal-title" data-doc-blocker-modal-target="modalTitle">
+          Bloquer cette étape
+        </h5>
+        <button type="button" class="btn-close doc-blocker-modal-close"
+                data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+
+      <%# ── Context band: step badge + filename ────────────────────────── %>
+      <div class="doc-blocker-context-band">
+        <span class="doc-blocker-step-badge" data-doc-blocker-modal-target="stepBadge"></span>
+        <span class="doc-blocker-context-sep">·</span>
+        <span class="doc-blocker-context-file" data-doc-blocker-modal-target="filename"></span>
+      </div>
+
+      <%# ── Create section ─────────────────────────────────────────────── %>
+      <div data-doc-blocker-modal-target="createSection">
+        <%= form_with url: decision_logs_path, scope: :decision_log,
+                      data: { turbo_stream: true,
+                              action: "turbo:submit-end->doc-blocker-modal#onSubmitEnd" } do |f| %>
+          <%= f.hidden_field :mission_id, data: { doc_blocker_modal_target: "missionId" } %>
+          <%= f.hidden_field :owner_type, value: "provider" %>
+          <input type="hidden" name="decision_log[step_id]"
+                 data-doc-blocker-modal-target="stepId">
+          <input type="hidden" name="decision_log[document_id]"
+                 data-doc-blocker-modal-target="documentId">
+
+          <div class="doc-blocker-modal-body">
+            <%= f.text_field :title,
+                             placeholder: "Ex : Validation plans par le client avant…",
+                             class: "form-control doc-blocker-input",
+                             required: true,
+                             data: { doc_blocker_modal_target: "titleInput" } %>
+          </div>
+
+          <div class="doc-blocker-modal-footer">
+            <button type="button" class="doc-blocker-btn-cancel"
+                    data-bs-dismiss="modal">Annuler</button>
+            <%= f.submit nil,
+                         value: "Créer le blocage",
+                         class: "doc-blocker-btn-create",
+                         data: { doc_blocker_modal_target: "submitBtn" } %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# ── Read section ────────────────────────────────────────────────── %>
+      <div class="d-none" data-doc-blocker-modal-target="readSection">
+        <div class="doc-blocker-modal-body">
+          <div class="doc-blocker-existing-card">
+            <div class="doc-blocker-existing-card__icon">
+              <i class="ti ti-alert-triangle"></i>
+            </div>
+            <div class="doc-blocker-existing-card__body">
+              <p class="doc-blocker-existing-card__title"
+                 data-doc-blocker-modal-target="existingTitle"></p>
+              <div class="doc-blocker-existing-card__meta">
+                <span class="doc-blocker-status-pill"
+                      data-doc-blocker-modal-target="existingStatus"></span>
+                <span class="doc-blocker-existing-card__sep">·</span>
+                <span class="doc-blocker-existing-card__time"
+                      data-doc-blocker-modal-target="existingTime"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-blocker-modal-footer">
+          <button type="button" class="doc-blocker-btn-unblock"
+                  data-action="click->doc-blocker-modal#unblock">
+            <i class="ti ti-lock-open"></i> Débloquer
+          </button>
+          <button type="button" class="doc-blocker-btn-close"
+                  data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
