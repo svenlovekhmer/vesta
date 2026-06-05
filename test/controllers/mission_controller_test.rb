@@ -4,7 +4,7 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user  = User.create!(email: "sven@test.com",  password: "password123")
     @other = User.create!(email: "other@test.com", password: "password123")
-    MissionStatus.find_or_create_by!(title: "En attente")
+    MissionStatus.find_or_create_by!(title: "À démarrer")
   end
 
   # ── Accès ──────────────────────────────────────────────────────────────────
@@ -94,13 +94,13 @@ class MissionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "La mission a été créée avec succès.", flash[:notice]
   end
 
-  test "create assigne automatiquement le statut 'En attente'" do
+  test "create assigne automatiquement le statut 'À démarrer'" do
     client = Client.create!(user: @user, first_name: "Alice", last_name: "A", email: "alice@test.com", phone_number: "0600000000")
 
     sign_in @user
     post missions_path, params: { mission: { title: "Nouvelle mission", client_id: client.id } }
 
-    assert_equal "En attente", Mission.last.mission_status.title
+    assert_equal "À démarrer", Mission.last.mission_status.title
   end
 
   test "create avec un titre manquant affiche le formulaire avec une erreur" do

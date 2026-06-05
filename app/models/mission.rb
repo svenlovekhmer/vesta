@@ -15,7 +15,7 @@ class Mission < ApplicationRecord
   def auto_update_status!
     statuses = steps.map { |s| s.step_status.title }
     new_status_title = if statuses.all? { |t| t == "À faire" }
-                         "En attente"
+                         "À démarrer"
                        elsif statuses.all? { |t| t == "Validée" }
                          "Terminée"
                        else
