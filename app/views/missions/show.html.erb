@@ -1,7 +1,19 @@
 <div class="container-fluid mission-show">
-  <h1 class="mission-show--title"><%= @mission.title %></h1>
+  <h1 class="mission-show--title"
+      data-controller="inline-edit"
+      data-inline-edit-model-value="mission"
+      data-inline-edit-url-value="<%= mission_path(@mission) %>"
+      data-inline-edit-param-value="title">
+    <span data-inline-edit-target="text"
+          data-action="click->inline-edit#edit"
+          title="Cliquer pour modifier"><%= @mission.title %></span>
+    <input type="text"
+           class="form-control d-none mission-show--title-input"
+           data-inline-edit-target="input"
+           data-action="blur->inline-edit#save keydown->inline-edit#keydown" />
+  </h1>
   <div class="mission-show--subtitle">
-    <div><%= mission_status_badge(@mission.mission_status) %></div>
+    <div id="mission_status_badge"><%= mission_status_badge(@mission.mission_status) %></div>
     <div>Client : <%= "#{@mission.client.first_name} #{@mission.client.last_name}" %></div>
     <div>Dernière activité il y a <%= time_ago_in_words(@mission.last_activity_at, locale: :fr) %></div>
   </div>

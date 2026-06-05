@@ -25,7 +25,7 @@
   </div>
   <div class="col-md-3">
     <div class="stat-card">
-      <p class="stat-card__number"><%= @missions.count { |m| m.mission_status.title == "En attente" } %></p>
+      <p class="stat-card__number"><%= @missions.count { |m| m.mission_status.title == "À démarrer" } %></p>
       <p class="stat-card__label">en attente <strong>client</strong></p>
     </div>
   </div>

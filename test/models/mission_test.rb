@@ -3,7 +3,7 @@ require "test_helper"
 class MissionTest < ActiveSupport::TestCase
   setup do
     @user   = User.create!(email: "mission_test@test.com", password: "password123")
-    @status = MissionStatus.find_or_create_by!(title: "En attente")
+    @status = MissionStatus.find_or_create_by!(title: "À démarrer")
     @client = Client.create!(user: @user, first_name: "Alice", last_name: "Test", email: "alice_mt@test.com", phone_number: "0600000000")
     @template = StepTemplate.create!(user: @user, name: "Tpl", description: "D")
     StepStatus.find_or_create_by!(title: "À faire")

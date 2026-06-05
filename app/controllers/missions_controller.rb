@@ -21,7 +21,7 @@ class MissionsController < ApplicationController
 
   def create
     @mission = Mission.new(mission_params)
-    @mission.mission_status = MissionStatus.find_by(title: "En attente")
+    @mission.mission_status = MissionStatus.find_by(title: "À démarrer")
     if @mission.save
       save_steps_as_template
       redirect_to mission_path(@mission), notice: "La mission a été créée avec succès."

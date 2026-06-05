@@ -45,7 +45,7 @@
 .missions-title {
   @extend .mb-4;
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .missions-table-card {
@@ -206,7 +206,7 @@
   color: $blue;
 }
 
-.mission-badge--en-attente {
+.mission-badge--a-demarrer {
   background: rgba($orange, 0.12);
   color: $orange;
 }
@@ -214,11 +214,6 @@
 .mission-badge--terminee {
   background: rgba($green, 0.15);
   color: darken($green, 10%);
-}
-
-.mission-badge--en-revision {
-  background: rgba(#7c3aed, 0.1);
-  color: #7c3aed;
 }
 
 // Mission row
