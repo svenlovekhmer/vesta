@@ -66,6 +66,8 @@
                 <% if current_step %>&middot; <%= current_step.title %><% end %>
               </span>
             </div>
+            <% oldest_log_date = entry[:logs].map(&:created_at).min %>
+            <div class="pav-row__date-since"><i class="fa-regular fa-clock"></i> depuis le <%= format_date_fr(oldest_log_date) %></div>
             <div class="pav-row__badges">
               <span id="pav_vesta_badge_<%= m.id %>" class="pav-badge pav-badge--vesta <%= entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
                 &bull; <%= entry[:vesta_count] %> <%= profile&.first_name %>
