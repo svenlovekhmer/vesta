@@ -9,12 +9,44 @@ class DecisionLogsController < ApplicationController
   end
 
   def create
-    @mission = current_user.missions.find(params.dig(:decision_log, :mission_id))
+    @mission     = current_user.missions.find(params.dig(:decision_log, :mission_id))
+    step_id      = blocker_create_params[:step_id].presence
+    document_id  = blocker_create_params[:document_id].presence
+    @blocker_mode = step_id.present?
+
     @decision_log = @mission.decision_logs.build(create_params)
-    @decision_log.save
+
+    ActiveRecord::Base.transaction do
+      @decision_log.save!
+      if step_id
+        step = @mission.steps.find(step_id)
+        MissionStepBlocker.create!(
+          mission:             @mission,
+          step:                step,
+          decision_log:        @decision_log,
+          blocking_status:     "blocking",
+          step_title:          step.title,
+          decision_log_title:  @decision_log.title
+        )
+      end
+      if document_id
+        doc = @mission.documents.find(document_id)
+        DecisionLogDocument.create!(decision_log: @decision_log, document: doc)
+      end
+    end
+
     @pending_logs = @mission.decision_logs.where(status: "pending").to_a
-    @entry = build_entry(@pending_logs)
-    respond_to { |f| f.turbo_stream }
+    @entry        = build_entry(@pending_logs)
+
+    respond_to do |f|
+      f.turbo_stream { render @blocker_mode ? "create_blocker" : "create" }
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    @decision_log.errors.add(:base, e.message) unless @decision_log.errors.any?
+    @blocker_mode = step_id.present?
+    respond_to do |f|
+      f.turbo_stream { render @blocker_mode ? "create_blocker" : "create" }
+    end
   end
 
   def update
@@ -90,6 +122,10 @@ class DecisionLogsController < ApplicationController
 
   def create_params
     params.require(:decision_log).permit(:title, :description, :owner_type)
+  end
+
+  def blocker_create_params
+    params.require(:decision_log).permit(:step_id, :document_id)
   end
 
   def build_entry(remaining)

@@ -7,3 +7,25 @@
     <%= render "mission_step_blockers/linked_pill", blocker: b %>
   <% end %>
 <% end %>
+
+<% if @document.present? %>
+  <% phase_icons_ti = { 1=>"flag", 2=>"ruler", 3=>"pencil-ruler",
+                         4=>"hammer", 5=>"palette", 6=>"package", 7=>"circle-check" } %>
+  <% step_icon_ti = @document.step ? "ti ti-#{phase_icons_ti.fetch(@document.step.position, "circle")}" : "" %>
+  <%= turbo_stream.replace "doc_blocker_area_#{@document.id}" do %>
+    <div id="doc_blocker_area_<%= @document.id %>">
+      <button type="button"
+              class="doc-blocker__btn"
+              data-bs-toggle="modal"
+              data-bs-target="#doc-blocker-modal"
+              data-mission-id="<%= @document.mission_id %>"
+              data-step-id="<%= @document.step_id %>"
+              data-step-name="<%= @document.step&.title || 'Sans étape' %>"
+              data-step-icon="<%= step_icon_ti %>"
+              data-doc-id="<%= @document.id %>"
+              data-doc-name="<%= @document.name %>">
+        <i class="ti ti-lock" style="font-size:12px"></i>Bloquer
+      </button>
+    </div>
+  <% end %>
+<% end %>

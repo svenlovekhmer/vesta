@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["fileInput", "dropZone", "preview", "fileList", "submitBtn"]
+  static targets = ["fileInput", "dropZone", "preview", "fileList", "submitBtn", "stepInput"]
 
   #files = new DataTransfer()
 
@@ -23,7 +23,6 @@ export default class extends Controller {
     this.#addFiles(event.dataTransfer.files)
   }
 
-  // Click on the drop zone opens the file picker via the hidden input
   openPicker(event) {
     if (event.target === this.fileInputTarget) return
     this.fileInputTarget.click()
@@ -44,6 +43,13 @@ export default class extends Controller {
     this.#sync()
   }
 
+  // ── Step selection (listens to step-selector:selected bubbling up) ────
+
+  onStepSelected(event) {
+    const { stepId } = event.detail
+    this.stepInputTarget.value = stepId || ""
+  }
+
   // ── Private ───────────────────────────────────────────────────────────
 
   #addFiles(fileList) {
@@ -57,6 +63,7 @@ export default class extends Controller {
 
     if (files.length === 0) {
       this.previewTarget.classList.add("d-none")
+      this.dispatch("filesChanged", { detail: { fileNames: [] } })
       return
     }
 
@@ -76,6 +83,7 @@ export default class extends Controller {
 
     const n = files.length
     this.submitBtnTarget.value = `Ajouter ${n} fichier${n > 1 ? "s" : ""} →`
+    this.dispatch("filesChanged", { detail: { fileNames: files.map(f => f.name) } })
   }
 
   #icon(contentType) {
