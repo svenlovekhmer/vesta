@@ -1,0 +1,35 @@
+<% current_step    = mission.steps.find { |s| s.step_status.title == "En cours" } %>
+<% oldest_log_date = logs.filter_map(&:created_at).min %>
+
+<div id="pav_row_<%= mission.id %>" class="pav-row" data-mission-accordion-target="row">
+  <div class="pav-row__summary"
+       data-action="click->mission-accordion#toggle"
+       data-mission-accordion-target="summary">
+    <div class="pav-row__identity">
+      <span class="pav-row__mission-title"><%= mission.title %></span>
+      <span class="pav-row__meta">
+        <%= mission.client.first_name %> <%= mission.client.last_name %>
+        <% if current_step %>&middot; <%= current_step.title %><% end %>
+      </span>
+    </div>
+    <% if oldest_log_date %>
+    <div class="pav-row__date-since"><i class="fa-regular fa-clock"></i> depuis le <%= format_date_fr(oldest_log_date) %></div>
+    <% end %>
+    <%= render "dashboard/pav_sync_label", mission: mission, state: :neutral %>
+    <div class="pav-row__badges">
+      <span id="pav_vesta_badge_<%= mission.id %>" class="pav-badge pav-badge--vesta <%= vesta_count > 0 ? '' : 'pav-badge--inactive' %>">
+        &bull; <%= vesta_count %> <%= profile&.first_name %>
+      </span>
+      <span id="pav_client_badge_<%= mission.id %>" class="pav-badge pav-badge--client <%= client_count > 0 ? '' : 'pav-badge--inactive' %>">
+        &bull; <%= client_count %> client
+      </span>
+      <span class="pav-chevron" data-mission-accordion-target="chevron">›</span>
+    </div>
+  </div>
+
+  <div class="pav-row__detail" data-mission-accordion-target="detail">
+    <% logs.each do |log| %>
+      <%= render "decision_logs/pav_log_item_readonly", log: log, profile: profile %>
+    <% end %>
+  </div>
+</div>

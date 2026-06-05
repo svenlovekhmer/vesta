@@ -1,5 +1,7 @@
 <% profile = current_user.profile %>
 
+<%= turbo_stream_from "dashboard_#{current_user.id}" %>
+
 <div data-controller="pav-sync">
 <div class="dashboard-header">
   <div>
@@ -76,18 +78,23 @@
   </div>
   <div class="col-md-3">
     <div class="stat-card stat-card--provider">
-      <p class="stat-card__number"><%= @total_vesta_pending %></p>
+      <p id="kpi_vesta_count" class="stat-card__number"><%= @total_vesta_pending %></p>
       <p class="stat-card__label">points à valider <strong>de mon côté</strong></p>
     </div>
   </div>
   <div class="col-md-3">
     <div class="stat-card stat-card--client">
-      <p class="stat-card__number"><%= @total_client_pending %></p>
+      <p id="kpi_client_count" class="stat-card__number"><%= @total_client_pending %></p>
       <p class="stat-card__label">points à valider <strong>côté client</strong></p>
     </div>
   </div>
 
 </div>
+
+<%# Turbo subscriptions pour les syncs par mission %>
+<% @missions.each do |m| %>
+  <%= turbo_stream_from "gmail_sync_#{m.id}" %>
+<% end %>
 
 <%# Points à valider %>
 <% if @pending_logs_by_mission.any? %>
@@ -104,46 +111,14 @@
       </div>
     </div>
 
-    <% @pending_logs_by_mission.each do |entry| %>
-      <%= turbo_stream_from "gmail_sync_#{entry[:mission].id}" %>
-    <% end %>
-
     <div class="pav-list" data-controller="mission-accordion">
       <% @pending_logs_by_mission.each do |entry| %>
-        <% m = entry[:mission] %>
-        <% current_step = m.steps.find { |s| s.step_status.title == "En cours" } %>
-
-        <div id="pav_row_<%= m.id %>" class="pav-row" data-mission-accordion-target="row">
-          <div class="pav-row__summary"
-               data-action="click->mission-accordion#toggle"
-               data-mission-accordion-target="summary">
-            <div class="pav-row__identity">
-              <span class="pav-row__mission-title"><%= m.title %></span>
-              <span class="pav-row__meta">
-                <%= m.client.first_name %> <%= m.client.last_name %>
-                <% if current_step %>&middot; <%= current_step.title %><% end %>
-              </span>
-            </div>
-            <% oldest_log_date = entry[:logs].map(&:created_at).min %>
-            <div class="pav-row__date-since"><i class="fa-regular fa-clock"></i> depuis le <%= format_date_fr(oldest_log_date) %></div>
-            <%= render "dashboard/pav_sync_label", mission: m, state: :neutral %>
-            <div class="pav-row__badges">
-              <span id="pav_vesta_badge_<%= m.id %>" class="pav-badge pav-badge--vesta <%= entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
-                &bull; <%= entry[:vesta_count] %> <%= profile&.first_name %>
-              </span>
-              <span id="pav_client_badge_<%= m.id %>" class="pav-badge pav-badge--client <%= entry[:client_count] > 0 ? '' : 'pav-badge--inactive' %>">
-                &bull; <%= entry[:client_count] %> client
-              </span>
-              <span class="pav-chevron" data-mission-accordion-target="chevron">›</span>
-            </div>
-          </div>
-
-          <div class="pav-row__detail" data-mission-accordion-target="detail">
-            <% entry[:logs].each do |log| %>
-              <%= render "decision_logs/pav_log_item_readonly", log: log, profile: profile %>
-            <% end %>
-          </div>
-        </div>
+        <%= render "dashboard/pav_row",
+              mission:      entry[:mission],
+              logs:         entry[:logs],
+              vesta_count:  entry[:vesta_count],
+              client_count: entry[:client_count],
+              profile:      profile %>
       <% end %>
     </div>
   </div>

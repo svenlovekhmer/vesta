@@ -165,6 +165,57 @@ class GmailSyncJob < ApplicationJob
         locals: { mission: mission, state: :fresh }
       )
     )
+
+    broadcast_dashboard_kpis(profile)
+    broadcast_pav_row(mission, pending, profile)
+  end
+
+  def broadcast_pav_row(mission, pending_logs, profile)
+    vesta_count  = pending_logs.count { |dl| dl.owner_type == "provider" }
+    client_count = pending_logs.count { |dl| dl.owner_type == "client" }
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "pav_row_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "dashboard/pav_row",
+        locals: {
+          mission:      mission,
+          logs:         pending_logs,
+          vesta_count:  vesta_count,
+          client_count: client_count,
+          profile:      profile
+        }
+      )
+    )
+  end
+
+  def broadcast_dashboard_kpis(profile)
+    pending      = DecisionLog.joins(mission: :client).where(clients: { user_id: @user.id }, status: "pending")
+    total_vesta  = pending.where(owner_type: "provider").count
+    total_client = pending.where(owner_type: "client").count
+    full_name    = [profile&.first_name, profile&.last_name].compact.join(" ")
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "dashboard_#{@user.id}",
+      target: "kpi_vesta_count",
+      html: "<p id='kpi_vesta_count' class='stat-card__number'>#{total_vesta}</p>"
+    )
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "dashboard_#{@user.id}",
+      target: "kpi_client_count",
+      html: "<p id='kpi_client_count' class='stat-card__number'>#{total_client}</p>"
+    )
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "dashboard_#{@user.id}",
+      target: "pav_total_vesta",
+      html: "<span id='pav_total_vesta' class='pav-card__subtitle--vesta'>#{total_vesta} côté #{full_name}</span>"
+    )
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "dashboard_#{@user.id}",
+      target: "pav_total_client",
+      html: "<span id='pav_total_client' class='pav-card__subtitle--client'>#{total_client} côté client</span>"
+    )
   end
 
   def broadcast_reconnect
