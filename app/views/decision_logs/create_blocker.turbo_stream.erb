@@ -1,18 +1,18 @@
 <% if @decision_log.persisted? %>
 
-  <%# Replace the inline blocker form with a confirmation pill %>
+  <%# Close the inline blocker form (upload card right column) %>
   <%= turbo_stream.replace "blocker_form_#{@mission.id}" do %>
     <div class="blocker-confirmation" id="blocker_form_<%= @mission.id %>">
       <i class="fa-solid fa-circle-check"></i> Point bloquant ajouté
     </div>
   <% end %>
 
-  <%# If this came from a doc-row button, also swap that button area %>
-  <% if (doc_id = params.dig(:decision_log, :document_id)).present? %>
-    <%= turbo_stream.replace "doc_blocker_area_#{doc_id}" do %>
-      <span class="doc-blocker-pill">
-        <i class="fa-solid fa-triangle-exclamation"></i> Point bloquant
-      </span>
+  <%# Swap action footer on the relevant doc card %>
+  <% if @blocker_doc.present? %>
+    <%= turbo_stream.replace "doc-card-action-#{@blocker_doc.id}" do %>
+      <div class="doc-card__action" id="doc-card-action-<%= @blocker_doc.id %>">
+        <%= render "documents/doc_card_action", document: @blocker_doc %>
+      </div>
     <% end %>
   <% end %>
 
@@ -27,7 +27,6 @@
 
 <% else %>
 
-  <%# Show errors inline %>
   <%= turbo_stream.replace "blocker_form_#{@mission.id}" do %>
     <div class="blocker-inline__error" id="blocker_form_<%= @mission.id %>">
       <%= @decision_log.errors.full_messages.first %>

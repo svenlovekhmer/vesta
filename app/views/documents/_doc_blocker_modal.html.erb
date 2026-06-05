@@ -1,7 +1,8 @@
 <%# Shared modal – doc_blocker_modal_controller populates it before Bootstrap shows it %>
 <div class="modal fade" id="doc-blocker-modal" tabindex="-1"
      data-controller="doc-blocker-modal"
-     data-action="show.bs.modal->doc-blocker-modal#populate">
+     data-action="show.bs.modal->doc-blocker-modal#populate
+                 blocker-modal:populate@window->doc-blocker-modal#populateFromEvent">
   <div class="modal-dialog modal-sm doc-blocker-dialog">
     <div class="modal-content doc-blocker-modal-content">
 

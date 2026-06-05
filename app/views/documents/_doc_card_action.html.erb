@@ -1,0 +1,38 @@
+<%# Standalone action-footer partial — computes its own blocker state from preloaded associations %>
+<% active_log = document.decision_logs.find { |dl|
+     dl.mission_step_blockers.any? { |b| b.blocking_status == "blocking" }
+   }
+   active_blocker = active_log&.mission_step_blockers&.find { |b| b.blocking_status == "blocking" } %>
+<% phase_icons_ti = { 1=>"flag", 2=>"ruler", 3=>"pencil-ruler",
+                       4=>"hammer", 5=>"palette", 6=>"package", 7=>"circle-check" } %>
+<% step_icon_ti = document.step ? "ti ti-#{phase_icons_ti.fetch(document.step.position, "circle")}" : "" %>
+
+<% if active_blocker %>
+  <% status_label  = active_log.status == "pending" ? "En attente" : "Actée" %>
+  <% created_label = "Créé il y a #{time_ago_in_words(active_log.created_at, locale: :fr)}" %>
+  <button type="button"
+          class="doc-card__bloque-state"
+          data-action="click->blocker-modal#openReadMode"
+          data-blocker-modal-step-name-param="<%= document.step&.title || 'Sans étape' %>"
+          data-blocker-modal-step-icon-param="<%= step_icon_ti %>"
+          data-blocker-modal-doc-id-param="<%= document.id %>"
+          data-blocker-modal-doc-name-param="<%= document.name %>"
+          data-blocker-modal-blocker-id-param="<%= active_blocker.id %>"
+          data-blocker-modal-blocker-title-param="<%= active_blocker.decision_log_title %>"
+          data-blocker-modal-blocker-status-param="<%= status_label %>"
+          data-blocker-modal-blocker-time-param="<%= created_label %>">
+    <span class="doc-card__bloque-dot"></span><span>Bloqué · voir</span>
+  </button>
+<% else %>
+  <button type="button"
+          class="doc-card__bloquer-btn"
+          data-action="click->blocker-modal#open"
+          data-blocker-modal-mission-id-param="<%= document.mission_id %>"
+          data-blocker-modal-step-id-param="<%= document.step_id %>"
+          data-blocker-modal-step-name-param="<%= document.step&.title || 'Sans étape' %>"
+          data-blocker-modal-step-icon-param="<%= step_icon_ti %>"
+          data-blocker-modal-doc-id-param="<%= document.id %>"
+          data-blocker-modal-doc-name-param="<%= document.name %>">
+    <i class="ti ti-lock"></i>Bloquer
+  </button>
+<% end %>

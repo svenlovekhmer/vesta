@@ -38,6 +38,13 @@ class DecisionLogsController < ApplicationController
     @pending_logs = @mission.decision_logs.where(status: "pending").to_a
     @entry        = build_entry(@pending_logs)
 
+    if @blocker_mode && document_id.present?
+      @blocker_doc = Document.joins(:mission)
+                             .where(missions: { id: current_user.missions.select(:id) })
+                             .includes(:step, decision_logs: :mission_step_blockers)
+                             .find_by(id: document_id)
+    end
+
     respond_to do |f|
       f.turbo_stream { render @blocker_mode ? "create_blocker" : "create" }
     end

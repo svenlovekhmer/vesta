@@ -9,26 +9,28 @@ export default class extends Controller {
     "existingTitle", "existingStatus", "existingTime"
   ]
 
+  // Triggered by Bootstrap's show.bs.modal (old data-bs-toggle buttons)
   populate(event) {
     const btn = event.relatedTarget
     if (!btn) return
+    this.#populateShared({
+      mode:          btn.dataset.mode          || "create",
+      stepName:      btn.dataset.stepName      || "Sans étape",
+      stepIcon:      btn.dataset.stepIcon      || "",
+      docName:       btn.dataset.docName       || "",
+      missionId:     btn.dataset.missionId     || "",
+      stepId:        btn.dataset.stepId        || "",
+      docId:         btn.dataset.docId         || "",
+      blockerId:     btn.dataset.blockerId     || "",
+      blockerTitle:  btn.dataset.blockerTitle  || "",
+      blockerStatus: btn.dataset.blockerStatus || "",
+      blockerTime:   btn.dataset.blockerTime   || ""
+    })
+  }
 
-    const mode     = btn.dataset.mode     || "create"
-    const stepName = btn.dataset.stepName || "Sans étape"
-    const stepIcon = btn.dataset.stepIcon || ""
-    const docName  = btn.dataset.docName  || ""
-
-    // Step badge: icon (if present) + name
-    this.stepBadgeTarget.innerHTML = stepIcon
-      ? `<i class="${stepIcon}"></i> ${stepName}`
-      : stepName
-    this.filenameTarget.textContent = docName
-
-    if (mode === "read") {
-      this.#showRead(btn)
-    } else {
-      this.#showCreate(btn)
-    }
+  // Triggered by blocker-modal controller via window custom event
+  populateFromEvent(event) {
+    this.#populateShared(event.detail)
   }
 
   onSubmitEnd(event) {
@@ -55,30 +57,45 @@ export default class extends Controller {
 
   // ── Private ──────────────────────────────────────────────────────────────
 
-  #showCreate(btn) {
+  #populateShared(data) {
+    const stepIcon = data.stepIcon || ""
+    const stepName = data.stepName || "Sans étape"
+
+    this.stepBadgeTarget.innerHTML = stepIcon
+      ? `<i class="${stepIcon}"></i> ${stepName}`
+      : stepName
+    this.filenameTarget.textContent = data.docName || ""
+
+    if ((data.mode || "create") === "read") {
+      this.#showRead(data)
+    } else {
+      this.#showCreate(data)
+    }
+  }
+
+  #showCreate(data) {
     this.modalTitleTarget.textContent = "Bloquer cette étape"
     this.createSectionTarget.classList.remove("d-none")
     this.readSectionTarget.classList.add("d-none")
 
-    this.missionIdTarget.value  = btn.dataset.missionId || ""
-    this.stepIdTarget.value     = btn.dataset.stepId    || ""
-    this.documentIdTarget.value = btn.dataset.docId     || ""
+    this.missionIdTarget.value  = data.missionId || ""
+    this.stepIdTarget.value     = data.stepId    || ""
+    this.documentIdTarget.value = data.docId     || ""
     this.titleInputTarget.value = ""
 
     this.element.addEventListener("shown.bs.modal", () => this.titleInputTarget.focus(), { once: true })
   }
 
-  #showRead(btn) {
+  #showRead(data) {
     this.modalTitleTarget.textContent = "Point bloquant"
     this.createSectionTarget.classList.add("d-none")
     this.readSectionTarget.classList.remove("d-none")
 
-    this.existingTitleTarget.textContent  = btn.dataset.blockerTitle  || ""
-    this.existingStatusTarget.textContent = btn.dataset.blockerStatus || "En attente"
-    this.existingTimeTarget.textContent   = btn.dataset.blockerTime   || ""
+    this.existingTitleTarget.textContent  = data.blockerTitle  || ""
+    this.existingStatusTarget.textContent = data.blockerStatus || "En attente"
+    this.existingTimeTarget.textContent   = data.blockerTime   || ""
 
-    // Store for the unblock fetch
-    this._blockerId = btn.dataset.blockerId || ""
-    this._docId     = btn.dataset.docId     || ""
+    this._blockerId = data.blockerId || ""
+    this._docId     = data.docId     || ""
   }
 }
