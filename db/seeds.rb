@@ -117,17 +117,13 @@ missions_data = [
     title: "Aménagement bureau à domicile – Thomas Moreau",
     client: clients[1],
     status: mission_statuses[:a_demarrer],
-    # Brief validated; all other steps pending — waiting for client confirmation before proceeding
+    # Mission not yet started — all steps to do, no decisions yet
     steps: [
-      { title: "Brief client",         description: "Appel de découverte du projet",                         position: 1, status: :validee,  validate_at: 1.week.ago },
-      { title: "Étude de faisabilité", description: "Visite du domicile et prise de mesures",               position: 2, status: :a_faire,  validate_at: nil },
-      { title: "Plans & rendus 3D",    description: "Proposition d'aménagement de la pièce 20m²",           position: 3, status: :a_faire,  validate_at: nil }
+      { title: "Brief client",         description: "Appel de découverte du projet",                         position: 1, status: :a_faire, validate_at: nil },
+      { title: "Étude de faisabilité", description: "Visite du domicile et prise de mesures",               position: 2, status: :a_faire, validate_at: nil },
+      { title: "Plans & rendus 3D",    description: "Proposition d'aménagement de la pièce 20m²",           position: 3, status: :a_faire, validate_at: nil }
     ],
-    decision_logs: [
-      { title: "Choix revêtement sol",       description: "Parquet ou béton ciré ?",                  status: "pending", owner_type: "provider" },
-      { title: "Validation devis mobilier",  description: "Devis mobilier bureau à valider.",          status: "pending", owner_type: "client" },
-      { title: "Périmètre une pièce",        description: "Projet limité à une seule pièce, 20m².",   status: "decided", owner_type: "client", decided_by: "Thomas Moreau", decided_at: 1.week.ago, step_position: 1 }
-    ]
+    decision_logs: []
   },
   {
     title: "Rénovation complète maison – Isabelle Petit",
