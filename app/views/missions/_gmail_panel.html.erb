@@ -32,9 +32,12 @@
         </div>
       </div>
     <% else %>
-      <span class="text-muted fw-bold" style="font-size: 0.85rem;">
-        Gmail non connecté
-      </span>
+      <%= button_to user_google_oauth2_omniauth_authorize_path,
+          method: :post,
+          data: { turbo: false },
+          class: "sidebar-profile__gmail-button" do %>
+        <i class="fa-brands fa-google"></i> Connecter Gmail
+      <% end %>
     <% end %>
   </div>
 
