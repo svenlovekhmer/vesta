@@ -241,6 +241,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  width: 40%;
 }
 
 .pav-row__mission-title {
@@ -258,6 +259,8 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  width: 20%;
+  justify-content: flex-end;
 }
 
 // Badges
@@ -327,8 +330,9 @@
 
 .pav-card__actions {
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
 .pav-sync-label {
