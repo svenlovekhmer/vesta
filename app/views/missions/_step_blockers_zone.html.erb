@@ -10,7 +10,7 @@
       <span data-action="click->step-link#highlight"
             data-decision-log-id="<%= blocker.decision_log_id %>">
         <i class="fa-regular fa-circle-pause d-inline-block me-2" ></i>
-        À valider · <strong><%= blocker.decision_log.title&.truncate(22) %></strong>
+        À valider · <strong><%= blocker.decision_log.title&.truncate(20) %></strong>
       </span>
       <span class="step-blocker-badge__remove"
             data-action="click->step-link#unlink"
