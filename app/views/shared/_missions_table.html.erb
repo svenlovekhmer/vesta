@@ -14,7 +14,12 @@
         <% steps_done  = mission.steps.count { |s| s.step_status.title == "Validée" } %>
         <% progress    = steps_total > 0 ? (steps_done.to_f / steps_total * 100).round : 0 %>
         <% status_slug = mission.mission_status.title.parameterize %>
-        <tr data-mission-filter-target="row" data-status="<%= status_slug %>">
+        <tr data-mission-filter-target="row"
+            data-status="<%= status_slug %>"
+            data-controller="row-link"
+            data-row-link-href-value="<%= mission_path(mission) %>"
+            data-action="click->row-link#navigate"
+            style="cursor: pointer;">
           <td class="missions-table__mission-cell">
             <p class="missions-table__mission-title">
               <%= link_to mission.title, mission_path(mission) %>
@@ -47,11 +52,11 @@
               &bull; <%= mission.mission_status.title %>
             </span>
           </td>
-          <td>
-            <%= button_to mission_path(mission), method: :delete,
+          <td data-row-link-exempt="true">
+            <%= link_to confirm_destroy_mission_path(mission),
                 title: "Supprimer",
-                form: { class: "d-inline", data: { turbo_confirm: "Supprimer la mission \"#{mission.title}\" ? Cette action est irréversible." } },
-                class: "log-item__action-btn log-item__action-btn--delete" do %>
+                class: "log-item__action-btn log-item__action-btn--delete",
+                data: { turbo_frame: "modal" } do %>
               <i class="fa-solid fa-trash-can"></i>
             <% end %>
           </td>

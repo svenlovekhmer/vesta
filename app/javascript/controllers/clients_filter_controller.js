@@ -71,7 +71,6 @@ export default class extends Controller {
 
       return this.sortDirection === "desc" ? diff : -diff
     })
-    console.log("after", sortedCards.map(card => card.dataset.createdAt))
     sortedCards.forEach((card) => list.appendChild(card))
   }
 }

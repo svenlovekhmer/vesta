@@ -15,9 +15,9 @@ StepStatus.destroy_all
 puts "Creating statuses..."
 
 mission_statuses = {
-  en_attente:  MissionStatus.create!(title: "En attente"),
-  en_cours:    MissionStatus.create!(title: "En cours"),
-  terminee:    MissionStatus.create!(title: "Terminée")
+  a_demarrer: MissionStatus.create!(title: "À démarrer"),
+  en_cours:   MissionStatus.create!(title: "En cours"),
+  terminee:   MissionStatus.create!(title: "Terminée")
 }
 
 step_statuses = {
@@ -93,11 +93,13 @@ clients = [
 
 puts "Creating missions..."
 
+# step_position: links a decided decision log to the step at that position via MissionStepBlocker
 missions_data = [
   {
     title: "Rénovation appartement Haussman – Marie Laurent",
     client: clients[0],
     status: mission_statuses[:en_cours],
+    # Brief and feasibility done; plans in progress — coherent with "En cours"
     steps: [
       { title: "Brief client",         description: "Premier rendez-vous de cadrage",                        position: 1, status: :validee,  validate_at: 3.weeks.ago },
       { title: "Étude de faisabilité", description: "Analyse de l'espace et contraintes structurelles",      position: 2, status: :validee,  validate_at: 2.weeks.ago },
@@ -108,47 +110,46 @@ missions_data = [
     decision_logs: [
       { title: "Délai menuiserie – 8 semaines",   description: "Délai artisan menuisier confirmé à 8 semaines.",        status: "pending", owner_type: "provider" },
       { title: "Budget travaux V3 – 45 000 €",    description: "Budget recadré à 45 000€ suite à l'étude de faisabilité.", status: "pending", owner_type: "client" },
-      { title: "Conservation des moulures",        description: "Client souhaite conserver les moulures d'origine.",       status: "decided", owner_type: "client", decided_by: "Marie Laurent", decided_at: 3.weeks.ago }
+      { title: "Conservation des moulures",        description: "Client souhaite conserver les moulures d'origine.",       status: "decided", owner_type: "client", decided_by: "Marie Laurent", decided_at: 3.weeks.ago, step_position: 1 }
     ]
   },
   {
     title: "Aménagement bureau à domicile – Thomas Moreau",
     client: clients[1],
-    status: mission_statuses[:en_attente],
+    status: mission_statuses[:a_demarrer],
+    # Mission not yet started — all steps to do, no decisions yet
     steps: [
-      { title: "Brief client",         description: "Appel de découverte du projet",                         position: 1, status: :validee,  validate_at: 1.week.ago },
-      { title: "Étude de faisabilité", description: "Visite du domicile et prise de mesures",               position: 2, status: :a_faire,  validate_at: nil },
-      { title: "Plans & rendus 3D",    description: "Proposition d'aménagement de la pièce 20m²",           position: 3, status: :a_faire,  validate_at: nil }
+      { title: "Brief client",         description: "Appel de découverte du projet",                         position: 1, status: :a_faire, validate_at: nil },
+      { title: "Étude de faisabilité", description: "Visite du domicile et prise de mesures",               position: 2, status: :a_faire, validate_at: nil },
+      { title: "Plans & rendus 3D",    description: "Proposition d'aménagement de la pièce 20m²",           position: 3, status: :a_faire, validate_at: nil }
     ],
-    decision_logs: [
-      { title: "Choix revêtement sol",       description: "Parquet ou béton ciré ?",                  status: "pending", owner_type: "provider" },
-      { title: "Validation devis mobilier",  description: "Devis mobilier bureau à valider.",          status: "pending", owner_type: "client" },
-      { title: "Périmètre une pièce",        description: "Projet limité à une seule pièce, 20m².",   status: "decided", owner_type: "client", decided_by: "Thomas Moreau", decided_at: 1.week.ago }
-    ]
+    decision_logs: []
   },
   {
     title: "Rénovation complète maison – Isabelle Petit",
     client: clients[2],
     status: mission_statuses[:en_cours],
+    # Plans submitted; client reviewing — validation step in progress, appel d'offres blocked until approval
     steps: [
-      { title: "Brief client",         description: "Réunion initiale avec la famille",                      position: 1, status: :validee,  validate_at: 2.months.ago },
-      { title: "Étude de faisabilité", description: "Étude structurelle et diagnostic énergétique",         position: 2, status: :validee,  validate_at: 6.weeks.ago },
-      { title: "Plans & rendus 3D",    description: "Plans complets maison 160m² sur 2 niveaux",            position: 3, status: :validee,  validate_at: 1.month.ago },
+      { title: "Brief client",         description: "Réunion initiale avec la famille",                         position: 1, status: :validee,  validate_at: 2.months.ago },
+      { title: "Étude de faisabilité", description: "Étude structurelle et diagnostic énergétique",            position: 2, status: :validee,  validate_at: 6.weeks.ago },
+      { title: "Plans & rendus 3D",    description: "Plans complets maison 160m² sur 2 niveaux",               position: 3, status: :validee,  validate_at: 1.month.ago },
       { title: "Validation client",    description: "Ajustements demandés sur la cuisine et la salle de bain", position: 4, status: :en_cours, validate_at: nil },
-      { title: "Appel d'offres",       description: "En attente de validation avant envoi aux artisans",    position: 5, status: :bloquee,  validate_at: nil },
-      { title: "Suivi de chantier",    description: "Démarrage prévu après validation",                     position: 6, status: :a_faire,  validate_at: nil },
-      { title: "Réception des travaux",description: "Remise des clés prévue en fin d'année",               position: 7, status: :a_faire,  validate_at: nil }
+      { title: "Appel d'offres",       description: "En attente de validation avant envoi aux artisans",       position: 5, status: :bloquee,  validate_at: nil },
+      { title: "Suivi de chantier",    description: "Démarrage prévu après validation",                        position: 6, status: :a_faire,  validate_at: nil },
+      { title: "Réception des travaux",description: "Remise des clés prévue en fin d'année",                  position: 7, status: :a_faire,  validate_at: nil }
     ],
     decision_logs: [
-      { title: "Révision plan cuisine",  description: "Révision demandée par le client.",                          status: "pending", owner_type: "client" },
-      { title: "Extension urbanisme",    description: "Extension de 20m² validée par les services d'urbanisme.",   status: "decided", owner_type: "provider", decided_by: "Sven Dupont",     decided_at: 6.weeks.ago },
-      { title: "Choix matériaux",        description: "Parquet chêne et carrelage grès pour les pièces humides.",  status: "decided", owner_type: "client",   decided_by: "Isabelle Petit",  decided_at: 1.month.ago }
+      { title: "Révision plan cuisine",  description: "Révision demandée par le client sur l'agencement de la cuisine.", status: "pending", owner_type: "client" },
+      { title: "Extension urbanisme",    description: "Extension de 20m² validée par les services d'urbanisme.",         status: "decided", owner_type: "provider", decided_by: "Sven Dupont",    decided_at: 6.weeks.ago, step_position: 2 },
+      { title: "Choix matériaux",        description: "Parquet chêne et carrelage grès pour les pièces humides.",        status: "decided", owner_type: "client",   decided_by: "Isabelle Petit", decided_at: 1.month.ago, step_position: 3 }
     ]
   },
   {
     title: "Décoration salon & salle à manger – Nicolas Bernard",
     client: clients[3],
     status: mission_statuses[:terminee],
+    # All steps validated — coherent with "Terminée"
     steps: [
       { title: "Brief client",         description: "Identification du style souhaité",                     position: 1, status: :validee, validate_at: 3.months.ago },
       { title: "Étude de faisabilité", description: "État des lieux et budget déco",                        position: 2, status: :validee, validate_at: 3.months.ago - 1.week },
@@ -157,10 +158,11 @@ missions_data = [
       { title: "Suivi de chantier",    description: "Coordination livraisons et pose",                      position: 5, status: :validee, validate_at: 1.month.ago },
       { title: "Réception des travaux",description: "Visite finale et satisfaction client confirmée",       position: 6, status: :validee, validate_at: 3.weeks.ago }
     ],
+    # No pending decisions on a finished mission
     decision_logs: [
-      { title: "Validation palette couleurs", description: "Choix final des couleurs à confirmer.",         status: "pending", owner_type: "provider" },
-      { title: "Style Japandi retenu",        description: "Style Japandi minimaliste avec bois naturel.",  status: "decided", owner_type: "client",   decided_by: "Nicolas Bernard", decided_at: 3.months.ago },
-      { title: "Budget final : 8 500€",       description: "Budget dans les limites prévues.",              status: "decided", owner_type: "provider", decided_by: "Sven Dupont",     decided_at: 3.weeks.ago }
+      { title: "Style Japandi retenu",        description: "Style Japandi minimaliste avec bois naturel.",  status: "decided", owner_type: "client",   decided_by: "Nicolas Bernard", decided_at: 3.months.ago,  step_position: 1 },
+      { title: "Validation palette couleurs", description: "Palette finale : blanc cassé, beige et chêne clair.", status: "decided", owner_type: "provider", decided_by: "Sven Dupont", decided_at: 2.months.ago, step_position: 4 },
+      { title: "Budget final : 8 500€",       description: "Budget respecté, dans les limites prévues.",   status: "decided", owner_type: "provider", decided_by: "Sven Dupont",     decided_at: 3.weeks.ago,   step_position: 6 }
     ]
   }
 ]
@@ -174,8 +176,9 @@ missions_data.each do |mission_data|
     portal_token: SecureRandom.hex(10)
   )
 
+  steps_by_position = {}
   mission_data[:steps].each do |step_attrs|
-    Step.create!(
+    step = Step.create!(
       mission: mission,
       title: step_attrs[:title],
       description: step_attrs[:description],
@@ -183,18 +186,28 @@ missions_data.each do |mission_data|
       step_status: step_statuses[step_attrs[:status]],
       validate_at: step_attrs[:validate_at]
     )
+    steps_by_position[step_attrs[:position]] = step
   end
 
   mission_data[:decision_logs].each do |log_attrs|
-    DecisionLog.create!(
-      mission:    mission,
-      title:      log_attrs[:title],
+    log = DecisionLog.create!(
+      mission:     mission,
+      title:       log_attrs[:title],
       description: log_attrs[:description],
-      status:     log_attrs[:status],
-      owner_type: log_attrs[:owner_type],
-      decided_by: log_attrs[:decided_by],
-      decided_at: log_attrs[:decided_at]
+      status:      log_attrs[:status],
+      owner_type:  log_attrs[:owner_type],
+      decided_by:  log_attrs[:decided_by],
+      decided_at:  log_attrs[:decided_at]
     )
+
+    if log_attrs[:step_position]
+      MissionStepBlocker.create!(
+        mission:         mission,
+        step:            steps_by_position[log_attrs[:step_position]],
+        decision_log:    log,
+        blocking_status: "resolved"
+      )
+    end
   end
 end
 
@@ -208,3 +221,4 @@ puts "  #{Client.count} clients"
 puts "  #{Mission.count} missions"
 puts "  #{Step.count} steps"
 puts "  #{DecisionLog.count} decision logs"
+puts "  #{MissionStepBlocker.count} step blockers"

@@ -3,7 +3,7 @@ module ApplicationHelper
     title = mission_status.title
     icon_html = case title
                 when "En cours"    then tag.i(class: "fa-solid fa-circle text-success me-2")
-                when "En attente"  then tag.i(class: "fa-solid fa-circle text-danger me-2")
+                when "À démarrer"  then tag.i(class: "fa-solid fa-circle text-danger me-2")
                 when "Terminée"    then tag.i(class: "fa-solid fa-circle-check text-success me-2")
                 end
     safe_join([icon_html, title])

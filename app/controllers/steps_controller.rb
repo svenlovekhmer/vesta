@@ -5,6 +5,9 @@ class StepsController < ApplicationController
   def update
     if @step.update(step_params)
       advance_next_step if @step.step_status.title == "Validée"
+      previous_status = @step.mission.mission_status
+      @step.mission.auto_update_status!
+      @mission_status_changed = @step.mission.reload.mission_status != previous_status
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to mission_path(@step.mission) }

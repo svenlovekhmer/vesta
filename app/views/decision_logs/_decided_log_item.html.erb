@@ -8,5 +8,13 @@
   <div class="log-item__content">
     <span class="log-item__title"><%= log.title %></span>
     <span class="log-item__description"><%= log.description %></span>
+    <% if (blocker = log.mission_step_blockers.find { |b| b.step.present? }) %>
+      <div class="log-item__linked-pill">
+        <span class="decision-log-linked-pill decision-log-linked-pill--static">
+          <i class="fa-solid fa-link" style="font-size:9px"></i>
+          <%= blocker.step.title&.truncate(22) %>
+        </span>
+      </div>
+    <% end %>
   </div>
 </div>

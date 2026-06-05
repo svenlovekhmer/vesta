@@ -12,6 +12,19 @@ class Mission < ApplicationRecord
 
   validates :title, presence: true
 
+  def auto_update_status!
+    statuses = steps.map { |s| s.step_status.title }
+    new_status_title = if statuses.all? { |t| t == "À faire" }
+                         "À démarrer"
+                       elsif statuses.all? { |t| t == "Validée" }
+                         "Terminée"
+                       else
+                         "En cours"
+                       end
+    new_status = MissionStatus.find_by!(title: new_status_title)
+    update!(mission_status: new_status) unless mission_status == new_status
+  end
+
   def last_activity_at
     timestamps = [updated_at] + steps.map(&:updated_at) + decision_logs.map(&:updated_at)
     timestamps.compact.max
