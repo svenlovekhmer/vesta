@@ -85,7 +85,7 @@ end
 puts "Creating clients..."
 
 clients = [
-  { first_name: "Marie",    last_name: "Laurent",  email: "marie.laurent@email.com", phone_number: "0601020304" },
+  { first_name: "Marie",    last_name: "Laurent",  email: "alexandre.theol@gmail.com", phone_number: "0601020304" },
   { first_name: "Thomas",   last_name: "Moreau",   email: "thomas.moreau@email.com", phone_number: "0601020305" },
   { first_name: "Isabelle", last_name: "Petit",    email: "isabelle.petit@email.com", phone_number: "0601020306" },
   { first_name: "Nicolas",  last_name: "Bernard",  email: "nicolas.bernard@email.com", phone_number: "0601020307" }
