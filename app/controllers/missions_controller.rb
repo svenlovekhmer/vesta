@@ -7,7 +7,7 @@ class MissionsController < ApplicationController
   before_action -> { add_breadcrumb "Nouvelle mission" }, only: %i[new create]
 
   def index
-    @missions = current_user.missions
+    @missions = current_user.missions.sort_by { |m| m.created_at }.reverse
   end
 
   def new
