@@ -1,0 +1,16 @@
+[data-controller~="inline-edit"] {
+  cursor: pointer;
+
+  .inline-edit__pencil {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    font-size: 1rem;
+    color: $gray;
+    margin-left: 6px;
+    pointer-events: none;
+  }
+
+  &:hover .inline-edit__pencil {
+    opacity: 1;
+  }
+}
