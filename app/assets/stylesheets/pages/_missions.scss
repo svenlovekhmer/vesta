@@ -528,6 +528,11 @@
   cursor: pointer;
 
   &:hover { background: #fac775; }
+
+  &--static {
+    cursor: default;
+    &:hover { background: #faeeda; }
+  }
 }
 
 .log-item--dragging { opacity: .4; }
