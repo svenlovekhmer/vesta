@@ -79,7 +79,7 @@
 
           <div class="pav-row__detail" data-mission-accordion-target="detail">
             <% entry[:logs].each do |log| %>
-              <%= render "decision_logs/pav_log_item", log: log, profile: profile %>
+              <%= render "decision_logs/pav_log_item_readonly", log: log, profile: profile %>
             <% end %>
           </div>
         </div>
