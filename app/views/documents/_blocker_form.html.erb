@@ -1,0 +1,47 @@
+<%# Hidden until a step is selected – blocker_inline_controller shows it %>
+<div id="blocker_form_<%= mission.id %>" class="blocker-inline d-none" data-blocker-inline-target="panel">
+
+  <button type="button"
+          class="blocker-inline__toggle"
+          data-action="click->blocker-inline#toggle"
+          data-blocker-inline-target="toggleBtn">
+    <i class="fa-solid fa-plus"></i> Ajouter un point bloquant
+  </button>
+
+  <div class="blocker-inline__form d-none" data-blocker-inline-target="form">
+    <%= form_with url: decision_logs_path,
+                  scope: :decision_log,
+                  data: { turbo_stream: true } do |f| %>
+
+      <%= f.hidden_field :mission_id, value: mission.id %>
+      <%= f.hidden_field :owner_type, value: "provider" %>
+      <input type="hidden" name="decision_log[step_id]"
+             data-blocker-inline-target="stepIdInput">
+
+      <div class="blocker-inline__notice d-none" data-blocker-inline-target="fileNotice">
+        <i class="fa-solid fa-paperclip"></i>
+        <span data-blocker-inline-target="fileNoticeName"></span>
+        sera joint à ce point bloquant
+      </div>
+
+      <div class="blocker-inline__field">
+        <%= f.text_field :title,
+                         placeholder: "Titre du point bloquant…",
+                         class: "form-control form-control-sm blocker-inline__input",
+                         required: true,
+                         data: { blocker_inline_target: "titleInput" } %>
+      </div>
+
+      <div class="blocker-inline__actions">
+        <button type="button"
+                class="blocker-inline__cancel"
+                data-action="click->blocker-inline#cancel">
+          Annuler
+        </button>
+        <%= f.submit "Créer", class: "btn btn-sm blocker-inline__submit" %>
+      </div>
+
+    <% end %>
+  </div>
+
+</div>

@@ -50,18 +50,12 @@ class MissionsController < ApplicationController
   end
 
   def show
-    pending = @mission.decision_logs.reverse.select { |dl| dl.status == "pending" }
-    @pending_logs        = pending
-    @vesta_pending_count = pending.count { |dl| dl.owner_type == "provider" }
-    @client_pending_count = pending.count { |dl| dl.owner_type == "client" }
-
-    @decided_logs = @mission.decision_logs
-                            .select { |dl| dl.status == "decided" }
-                            .sort_by { |dl| dl.decided_at || dl.created_at.to_date }
-                            .reverse
-
+    set_decision_log_vars
     @step_statuses = StepStatus.all
-    @documents = @mission.documents.with_attached_file.includes(:step).order(created_at: :desc)
+    @documents = @mission.documents
+                         .with_attached_file
+                         .includes(:step, decision_logs: :mission_step_blockers)
+                         .order(created_at: :desc)
   end
 
   private
@@ -76,21 +70,28 @@ class MissionsController < ApplicationController
                            .find(params[:id])
   end
 
+  def set_decision_log_vars
+    pending = @mission.decision_logs.reverse.select { |dl| dl.status == "pending" }
+    @pending_logs         = pending
+    @vesta_pending_count  = pending.count { |dl| dl.owner_type == "provider" }
+    @client_pending_count = pending.count { |dl| dl.owner_type == "client" }
+    @decided_logs = @mission.decision_logs
+                            .select { |dl| dl.status == "decided" }
+                            .sort_by { |dl| dl.decided_at || dl.created_at.to_date }
+                            .reverse
+  end
+
   def save_steps_as_template
     return if @mission.steps.empty?
     return if steps_match_existing_template?
 
     client = @mission.client
     template = current_user.step_templates.create!(
-      name: "Modèle #{client.first_name} #{client.last_name}",
-      is_default: "false"
+      name: "Modèle #{client.first_name} #{client.last_name}", is_default: "false"
     )
 
     @mission.steps.each do |step|
-      template.step_template_items.create!(
-        title: step.title,
-        position: step.position.to_s
-      )
+      template.step_template_items.create!(title: step.title, position: step.position.to_s)
     end
   end
 

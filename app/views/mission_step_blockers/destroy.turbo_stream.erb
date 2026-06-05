@@ -7,3 +7,11 @@
     <%= render "mission_step_blockers/linked_pill", blocker: b %>
   <% end %>
 <% end %>
+
+<% if @document.present? %>
+  <%= turbo_stream.replace "doc-card-action-#{@document.id}" do %>
+    <div class="doc-card__action" id="doc-card-action-<%= @document.id %>">
+      <%= render "documents/doc_card_action", document: @document %>
+    </div>
+  <% end %>
+<% end %>

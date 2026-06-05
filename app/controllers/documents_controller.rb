@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
       doc.save
     end
 
-    @documents = @mission.documents.with_attached_file.includes(:step).order(created_at: :desc)
+    @documents = @mission.documents.with_attached_file.includes(:step, decision_logs: :mission_step_blockers).order(created_at: :desc)
     respond_to { |f| f.turbo_stream }
   end
 
@@ -24,7 +24,7 @@ class DocumentsController < ApplicationController
                         .find(params[:id])
     @mission = @document.mission
     @document.destroy
-    @documents = @mission.documents.with_attached_file.includes(:step).order(created_at: :desc)
+    @documents = @mission.documents.with_attached_file.includes(:step, decision_logs: :mission_step_blockers).order(created_at: :desc)
     respond_to { |f| f.turbo_stream }
   end
 end
