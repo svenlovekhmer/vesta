@@ -15,3 +15,4 @@ const hideFlashAlerts = () => {
 
 document.addEventListener("turbo:load", hideFlashAlerts)
 document.addEventListener("turbo:render", hideFlashAlerts)
+

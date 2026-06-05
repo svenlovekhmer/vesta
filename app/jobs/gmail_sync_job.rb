@@ -6,23 +6,25 @@ class GmailSyncJob < ApplicationJob
     @mission = Mission.find(mission_id)
     @user    = User.find(user_id)
 
-    token    = @user.gmail_connection.fresh_access_token!
-    messages = fetch_emails(token)
+    token        = @user.gmail_connection.fresh_access_token!
+    new_messages = fetch_emails(token, since: @mission.last_synced_at)
 
-    if messages.empty?
-      @client.update!(gmail_synthesis: nil, gmail_messages_count: 0, gmail_last_synced_at: Time.current)
+    if new_messages.empty?
+      @client.update!(gmail_last_synced_at: Time.current)
       @mission.update!(last_synced_at: Time.current)
       broadcast_panel
       return
     end
 
+    all_messages = fetch_emails(token)
+
     show_streaming_area
-    synthesis = stream_synthesis(messages)
-    result    = analyze_decisions(messages)
+    synthesis = stream_synthesis(all_messages)
+    result    = analyze_decisions(all_messages)
 
     @client.update!(
       gmail_synthesis: synthesis,
-      gmail_messages_count: messages.count,
+      gmail_messages_count: @client.gmail_messages_count.to_i + new_messages.count,
       gmail_last_synced_at: Time.current
     )
 
@@ -51,9 +53,9 @@ class GmailSyncJob < ApplicationJob
 
   private
 
-  def fetch_emails(token)
+  def fetch_emails(token, since: nil)
     query = "(from:#{@client.email} OR to:#{@client.email})"
-    query += " after:#{@mission.last_synced_at.to_i}" if @mission.last_synced_at.present?
+    query += " after:#{since.to_i}" if since.present?
 
     list_resp = Faraday.get("https://gmail.googleapis.com/gmail/v1/users/me/messages") do |req|
       req.headers["Authorization"] = "Bearer #{token}"

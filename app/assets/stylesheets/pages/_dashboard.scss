@@ -1,6 +1,10 @@
 // ─── Dashboard header ─────────────────────────────────────────────────────────
 
 .dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
@@ -14,6 +18,83 @@
   color: #888;
   font-size: 0.9rem;
   margin: 0;
+}
+
+.dashboard-header__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.dashboard-header__helper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  small {
+    color: #aaa;
+    font-size: 0.78rem;
+  }
+}
+
+// ─── "Comment ça marche ?" trigger ────────────────────────────────────────────
+
+.hiw-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #bbb;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $red;
+  }
+}
+
+// ─── "Comment ça marche ?" dark dropdown ──────────────────────────────────────
+
+.hiw-dropdown {
+  background: #1c1c1e;
+  border: 1px solid #2e2e30;
+  border-radius: 12px;
+  min-width: 280px;
+  max-width: 300px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hiw-dropdown__title {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.hiw-dropdown__desc {
+  color: #888;
+}
+
+.hiw-dropdown__step-text {
+  color: #ccc;
+  padding-top: 1px;
+}
+
+.hiw-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  min-width: 1.4rem;
+  border-radius: 50%;
+  background: #2e2e30;
+  color: #ddd;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 #pav_card {

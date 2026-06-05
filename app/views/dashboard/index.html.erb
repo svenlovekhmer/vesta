@@ -1,11 +1,62 @@
+<% profile = current_user.profile %>
+
+<div data-controller="pav-sync">
 <div class="dashboard-header">
   <div>
     <h1 class="dashboard-header__title">Tableau de bord</h1>
     <p class="dashboard-header__subtitle">
-      <% profile = current_user.profile %>
       Bonjour <%= profile&.first_name || current_user.email.split("@").first %> &mdash;
       <%= @missions.count %> mission<%= @missions.count > 1 ? "s" : "" %> en cours
     </p>
+  </div>
+
+  <div class="dashboard-header__actions">
+    <% if current_user.gmail_connection.present? %>
+      <div data-pav-sync-target="syncBtn">
+        <%= button_to sync_all_missions_path,
+              method: :post,
+              data: { action: "click->pav-sync#syncAll" },
+              class: "btn btn-danger vesta-btn text-white rounded-pill" do %>
+          <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Analyser les échanges
+        <% end %>
+      </div>
+      <div data-pav-sync-target="syncLoader" class="d-none">
+        <div class="spinner-grow spinner-grow-sm text-danger me-1" role="status"></div>
+        <span class="small text-muted">IA — <span data-pav-sync-target="syncWord" class="gmail-sync__word fw-semibold text-dark"></span></span>
+      </div>
+    <% else %>
+      <%= button_to user_google_oauth2_omniauth_authorize_path,
+          method: :post,
+          data: { turbo: false },
+          class: "btn btn-outline-danger vesta-btn rounded-pill" do %>
+        <i class="fa-brands fa-google me-1"></i> Connecter Gmail
+      <% end %>
+    <% end %>
+
+    <div class="dashboard-header__helper">
+      <small class="text-muted">Crée une synthèse IA et identifie les nouvelles décisions par mission</small>
+      <div class="dropdown">
+        <button type="button" class="hiw-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-circle-question"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end hiw-dropdown p-3">
+          <p class="fw-bold mb-2 hiw-dropdown__title">Comment ça marche ?</p>
+          <p class="small mb-3 hiw-dropdown__desc">Vesta lit les emails Gmail de chaque mission et génère automatiquement une synthèse et les décisions à prendre.</p>
+          <div class="d-flex flex-column gap-2">
+            <% [
+              "Récupère les derniers échanges avec tes clients",
+              "Identifie les décisions validées et en attente",
+              "Met à jour la synthèse de chaque mission"
+            ].each_with_index do |step, i| %>
+              <div class="d-flex align-items-start gap-2">
+                <span class="hiw-step-num"><%= i + 1 %></span>
+                <span class="small hiw-dropdown__step-text"><%= step %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -39,7 +90,7 @@
 
 <%# Points à valider %>
 <% if @pending_logs_by_mission.any? %>
-  <div id="pav_card" class="pav-card mb-4" data-controller="pav-sync">
+  <div id="pav_card" class="pav-card mb-4">
     <div class="pav-card__header">
       <div class="pav-card__title-group">
         <h2 class="pav-card__title"><i class="fa-regular fa-circle-pause text-danger"></i> Points à valider</h2>
@@ -49,27 +100,6 @@
           <span id="pav_total_vesta" class="pav-card__subtitle--vesta"><%= @total_vesta_pending %> côté <%= profile&.first_name %> <%= profile&.last_name %></span> &middot;
           <span id="pav_total_client" class="pav-card__subtitle--client"><%= @total_client_pending %> côté client</span>
         </p>
-        <% if current_user.gmail_connection.present? %>
-          <div data-pav-sync-target="syncBtn">
-            <%= button_to sync_all_missions_path,
-                  method: :post,
-                  data: { action: "click->pav-sync#syncAll" },
-                  class: "btn btn-danger vesta-btn text-white rounded-pill" do %>
-              <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Synchroniser
-            <% end %>
-          </div>
-          <div data-pav-sync-target="syncLoader" class="d-none">
-            <div class="spinner-grow spinner-grow-sm text-danger me-1" role="status"></div>
-            <span class="small text-muted">IA — <span data-pav-sync-target="syncWord" class="gmail-sync__word fw-semibold text-dark"></span></span>
-          </div>
-        <% else %>
-          <%= button_to user_google_oauth2_omniauth_authorize_path,
-              method: :post,
-              data: { turbo: false },
-              class: "sidebar-profile__gmail-button" do %>
-            <i class="fa-brands fa-google"></i> Connecter Gmail pour synchroniser
-          <% end %>
-        <% end %>
       </div>
     </div>
 
@@ -127,4 +157,5 @@
   </div>
 
   <%= render "shared/missions_table", missions: @missions.select { |m| m.mission_status.title == "En cours" } %>
+</div>
 </div>
