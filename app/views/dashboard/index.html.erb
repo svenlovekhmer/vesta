@@ -13,28 +13,29 @@
 <div class="row g-3 mb-4">
   <div class="col-md-3">
     <div class="stat-card">
+      <p class="stat-card__number"><%= @stats[:clients] %></p>
+      <p class="stat-card__label">clients</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
       <p class="stat-card__number"><%= @stats[:active] %></p>
       <p class="stat-card__label">missions <strong>actives</strong></p>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="stat-card stat-card--highlight">
-      <p class="stat-card__number text-primary"><%= @missions.sum { |m| m.steps.count { |s| s.step_status.title == "Bloquée" } } %></p>
-      <p class="stat-card__label">à <strong>traiter</strong></p>
+    <div class="stat-card stat-card--provider">
+      <p class="stat-card__number"><%= @total_vesta_pending %></p>
+      <p class="stat-card__label">points à valider <strong>de mon côté</strong></p>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="stat-card">
-      <p class="stat-card__number"><%= @missions.count { |m| m.mission_status.title == "À démarrer" } %></p>
-      <p class="stat-card__label">en attente <strong>client</strong></p>
+    <div class="stat-card stat-card--client">
+      <p class="stat-card__number"><%= @total_client_pending %></p>
+      <p class="stat-card__label">points à valider <strong>côté client</strong></p>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="stat-card">
-      <p class="stat-card__number"><%= @stats[:clients] %></p>
-      <p class="stat-card__label"><strong>clients</strong></p>
-    </div>
-  </div>
+
 </div>
 
 <%# Points à valider %>

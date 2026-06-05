@@ -41,6 +41,9 @@
   margin: 0;
 }
 
+.stat-card--provider .stat-card__number { color: $provider-blue; }
+.stat-card--client   .stat-card__number { color: $client-blue; }
+
 // ─── Missions table card ──────────────────────────────────────────────────────
 .missions-title {
   @extend .mb-4;
