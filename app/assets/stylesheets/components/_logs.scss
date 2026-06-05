@@ -42,15 +42,15 @@
     }
 
     &[value="provider"]:checked + label {
-      border-color: $orange;
-      background: rgba($orange, 0.07);
-      color: $orange;
+      border-color: $provider-blue;
+      background: rgba($provider-blue, 0.07);
+      color: $provider-blue;
     }
 
     &[value="client"]:checked + label {
-      border-color: $light-red;
-      background: rgba($light-red, 0.07);
-      color: $light-red;
+      border-color: $client-blue;
+      background: rgba($client-blue, 0.07);
+      color: $client-blue;
     }
   }
 
@@ -92,8 +92,8 @@
   font-size: .8rem;
 }
 
-.pav-card__subtitle--vesta  { color: $orange; font-weight: 600; }
-.pav-card__subtitle--client { color: $light-red; font-weight: 600; }
+.pav-card__subtitle--vesta  { color: $provider-blue; font-weight: 600; }
+.pav-card__subtitle--client { color: $client-blue; font-weight: 600; }
 
 
 // ─── Shared log list / item ─────────────────────────────────────────────────
@@ -125,8 +125,8 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 
-  &--provider    { background: rgba($orange, 0.12); color: $orange; }
-  &--client      { background: rgba($light-red, 0.10); color: $light-red; }
+  &--provider    { background: rgba($provider-blue, 0.12); color: $provider-blue; }
+  &--client      { background: rgba($client-blue, 0.10); color: $client-blue; }
   &--third_party { background: rgba(#888, 0.10); color: #888; }
 }
 
