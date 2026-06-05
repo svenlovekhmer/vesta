@@ -313,8 +313,8 @@
       flex-shrink: 0;
       &--none     { background: transparent; border: 1.5px solid #ced4da; }
       &--a-faire  { background: #6c757d; }
-      &--en-cours { background: #0d6efd; }
-      &--validee  { background: #198754; }
+      &--en-cours { background: $status-en-cours; }
+      &--validee  { background: $status-done; }
       &--bloquee  { background: $red; }
     }
 
@@ -926,8 +926,8 @@
       flex-shrink: 0;
       &--none     { background: transparent; border: 1.5px solid #ced4da; }
       &--a-faire  { background: #6c757d; }
-      &--en-cours { background: #0d6efd; }
-      &--validee  { background: #198754; }
+      &--en-cours { background: $status-en-cours; }
+      &--validee  { background: $status-done; }
       &--bloquee  { background: $red; }
     }
 

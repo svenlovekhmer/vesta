@@ -29,7 +29,7 @@
          data-inline-edit-model-value="step"
          data-inline-edit-url-value="<%= step_path(step) %>"
          data-inline-edit-param-value="title">
-      <p class="step-timeline__title <%= "text-muted fw-normal" unless %w[Validée En\ cours].include?(status) %> log-item__editable mb-0"
+      <p class="step-timeline__title log-item__editable mb-0"
          data-inline-edit-target="text"
          data-action="click->inline-edit#edit"
          title="Cliquer pour modifier"><%= step.title %></p>

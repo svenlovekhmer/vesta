@@ -30,11 +30,12 @@ $grey_timeline: #dee2e6;
     background: $white;
 
     &--done {
-      @extend .bg-success, .text-white;
+      @extend .text-white;
       font-size: 0.85rem;
+      background: $status-done;
     }
 
-    &--active  { border: 2.5px solid $green; }
+    &--active  { border: 2.5px solid $status-done; }
     &--pending { border: 2.5px solid $grey_timeline; }
   }
 
@@ -74,16 +75,16 @@ $grey_timeline: #dee2e6;
 
 .step-status-select {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 20px;
   padding: 2px 2rem 2px 10px;
   width: auto;
   cursor: pointer;
   border-width: 1.5px;
 
-  &--validee    { color: #198754; border-color: #198754; background-color: #f0faf4; }
-  &--en-cours   { color: #0d6efd; border-color: #0d6efd; background-color: #f0f4ff; }
-  &--a-faire    { color: #6c757d; border-color: #dee2e6; background-color: #f8f9fa; }
+  &--validee    { color: $status-done; border-color: $status-done; background-color: #f0faf4; }
+  &--en-cours   { color: $status-en-cours; border-color: $status-en-cours; background-color: #f5f3ff; }
+  &--a-faire    { color: #6c757d; border-color: #dee2e6; background-color: #f8f9fa; font-weight: 500; }
   &--bloquee    { color: $red;    border-color: $red;    background-color: #fff5f5; }
 }
 
