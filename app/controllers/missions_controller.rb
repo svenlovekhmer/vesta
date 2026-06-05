@@ -49,6 +49,14 @@ class MissionsController < ApplicationController
     redirect_to missions_path, notice: "La mission a été supprimée."
   end
 
+  def sync_all
+    missions = active_missions_for_sync
+    missions.each { |m| GmailSyncJob.perform_later(m.client_id, m.id, current_user.id) }
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: loading_sync_streams(missions) }
+    end
+  end
+
   def show
     set_decision_log_vars
     @step_statuses = StepStatus.all
@@ -59,6 +67,23 @@ class MissionsController < ApplicationController
   end
 
   private
+
+  def active_missions_for_sync
+    current_user.missions
+                .includes(:client)
+                .joins(:mission_status)
+                .where.not(mission_statuses: { title: "Terminée" })
+  end
+
+  def loading_sync_streams(missions)
+    missions.map do |m|
+      turbo_stream.replace(
+        "pav_sync_label_#{m.id}",
+        partial: "dashboard/pav_sync_label",
+        locals: { mission: m, state: :loading }
+      )
+    end
+  end
 
   def set_mission
     @mission = current_user.missions

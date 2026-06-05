@@ -1,12 +1,7 @@
 module ApplicationHelper
   def mission_status_badge(mission_status)
-    title = mission_status.title
-    icon_html = case title
-                when "En cours"    then tag.i(class: "fa-solid fa-circle text-success me-2")
-                when "À démarrer"  then tag.i(class: "fa-solid fa-circle text-danger me-2")
-                when "Terminée"    then tag.i(class: "fa-solid fa-circle-check text-success me-2")
-                end
-    safe_join([icon_html, title])
+    slug = mission_status.title.parameterize
+    tag.span("• #{mission_status.title}", class: "mission-badge mission-badge--#{slug}")
   end
 
   def user_initials(user)

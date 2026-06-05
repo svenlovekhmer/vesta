@@ -39,16 +39,43 @@
 
 <%# Points à valider %>
 <% if @pending_logs_by_mission.any? %>
-  <div id="pav_card" class="pav-card mb-4">
+  <div id="pav_card" class="pav-card mb-4" data-controller="pav-sync">
     <div class="pav-card__header">
       <div class="pav-card__title-group">
         <h2 class="pav-card__title"><i class="fa-regular fa-circle-pause text-danger"></i> Points à valider</h2>
       </div>
-      <p class="pav-card__subtitle">
-        <span id="pav_total_vesta" class="pav-card__subtitle--vesta"><%= @total_vesta_pending %> côté <%= profile&.first_name %> <%= profile&.last_name %></span> &middot;
-        <span id="pav_total_client" class="pav-card__subtitle--client"><%= @total_client_pending %> côté client</span>
-      </p>
+      <div class="pav-card__actions">
+        <p class="pav-card__subtitle mb-0">
+          <span id="pav_total_vesta" class="pav-card__subtitle--vesta"><%= @total_vesta_pending %> côté <%= profile&.first_name %> <%= profile&.last_name %></span> &middot;
+          <span id="pav_total_client" class="pav-card__subtitle--client"><%= @total_client_pending %> côté client</span>
+        </p>
+        <% if current_user.gmail_connection.present? %>
+          <div data-pav-sync-target="syncBtn">
+            <%= button_to sync_all_missions_path,
+                  method: :post,
+                  data: { action: "click->pav-sync#syncAll" },
+                  class: "btn btn-danger vesta-btn text-white rounded-pill" do %>
+              <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Synchroniser
+            <% end %>
+          </div>
+          <div data-pav-sync-target="syncLoader" class="d-none">
+            <div class="spinner-grow spinner-grow-sm text-danger me-1" role="status"></div>
+            <span class="small text-muted">IA — <span data-pav-sync-target="syncWord" class="gmail-sync__word fw-semibold text-dark"></span></span>
+          </div>
+        <% else %>
+          <%= button_to user_google_oauth2_omniauth_authorize_path,
+              method: :post,
+              data: { turbo: false },
+              class: "sidebar-profile__gmail-button" do %>
+            <i class="fa-brands fa-google"></i> Connecter Gmail pour synchroniser
+          <% end %>
+        <% end %>
+      </div>
     </div>
+
+    <% @pending_logs_by_mission.each do |entry| %>
+      <%= turbo_stream_from "gmail_sync_#{entry[:mission].id}" %>
+    <% end %>
 
     <div class="pav-list" data-controller="mission-accordion">
       <% @pending_logs_by_mission.each do |entry| %>
@@ -68,6 +95,7 @@
             </div>
             <% oldest_log_date = entry[:logs].map(&:created_at).min %>
             <div class="pav-row__date-since"><i class="fa-regular fa-clock"></i> depuis le <%= format_date_fr(oldest_log_date) %></div>
+            <%= render "dashboard/pav_sync_label", mission: m, state: :neutral %>
             <div class="pav-row__badges">
               <span id="pav_vesta_badge_<%= m.id %>" class="pav-badge pav-badge--vesta <%= entry[:vesta_count] > 0 ? '' : 'pav-badge--inactive' %>">
                 &bull; <%= entry[:vesta_count] %> <%= profile&.first_name %>

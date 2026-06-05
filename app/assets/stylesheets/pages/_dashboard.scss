@@ -153,8 +153,8 @@
 .missions-progress__bar {
   border-radius: 99px;
 
-  &--full { --bs-progress-bar-bg: #{$green}; }
-  &--mid  { --bs-progress-bar-bg: #{$blue}; }
+  &--full { --bs-progress-bar-bg: #{$status-done}; }
+  &--mid  { --bs-progress-bar-bg: #{$status-en-cours}; }
   &--low  { --bs-progress-bar-bg: #{$orange}; }
 }
 
@@ -195,25 +195,26 @@
 
 .mission-badge {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   padding: 3px 10px;
   border-radius: 20px;
   white-space: nowrap;
 }
 
 .mission-badge--en-cours {
-  background: rgba($blue, 0.1);
-  color: $blue;
+  background: rgba($status-en-cours, 0.12);
+  color: $status-en-cours;
 }
 
 .mission-badge--a-demarrer {
-  background: rgba($orange, 0.12);
-  color: $orange;
+  font-weight: 500;
+  background: rgba($secondary, 0.1);
+  color: rgba($secondary, 0.6);
 }
 
 .mission-badge--terminee {
-  background: rgba($green, 0.15);
-  color: darken($green, 10%);
+  background: rgba($status-done, 0.12);
+  color: $status-done;
 }
 
 // Mission row
@@ -240,7 +241,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  width: 25%;
+  width: 40%;
 }
 
 .pav-row__mission-title {
@@ -268,7 +269,8 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
-  margin-left: auto;
+  width: 20%;
+  justify-content: flex-end;
 }
 
 // Badges
@@ -332,6 +334,32 @@
 
   &--validate { background: rgba($green, 0.15); color: darken($green, 15%); }
   &--remind   { background: #f0f0f0; color: #888; }
+}
+
+// ─── PAV sync label ───────────────────────────────────────────────────────────
+
+.pav-card__actions {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 2rem;
+}
+
+.pav-sync-label {
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+@keyframes pav-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pav-sync-label__spin {
+  animation: pav-spin 1s linear infinite;
+  display: inline-block;
 }
 
 // ─── Resolve modal ────────────────────────────────────────────────────────────
