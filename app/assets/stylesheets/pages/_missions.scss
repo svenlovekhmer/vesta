@@ -718,16 +718,8 @@
 }
 
 .step-link-hint {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-size: 13px;
   font-weight: 500;
-  color: $red;
-  background: rgba($red, .06);
-  border: 1px solid rgba($red, .2);
-  border-radius: 8px;
-  padding: 8px 14px;
   margin-bottom: 12px;
 }
 

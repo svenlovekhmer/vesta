@@ -21,10 +21,9 @@
       <% end %>
     </div>
     <% if pending_logs.any? %>
-      <div class="step-link-hint">
-        <i class="fa-solid fa-maximize"></i>
-        Glissez une décision vers une étape pour la lier
-      </div>
+      <span class="step-link-hint">
+        Vous pouvez lier vos points à valider avec une des étapes de votre mission.<br>Soit en drag&drop avec l'icône <i class="fa-solid fa-maximize d-inline-block mx-1"></i> soit via l'icône <i class="fa-solid fa-ellipsis-vertical d-inline-block ms-1"></i>
+      </span>
       <div class="log-list">
         <% pending_logs.each do |log| %>
           <%= render "decision_logs/pav_log_item", log: log, profile: profile %>

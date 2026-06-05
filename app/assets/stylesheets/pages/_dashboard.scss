@@ -268,8 +268,8 @@
   border-radius: 20px;
   white-space: nowrap;
 
-  &--vesta    { background: rgba($orange, 0.12); color: $orange; }
-  &--client   { background: rgba($light-red, 0.10); color: $light-red; }
+  &--vesta    { background: rgba($provider-blue, 0.12); color: $provider-blue; }
+  &--client   { background: rgba($client-blue, 0.10); color: $client-blue; }
   &--inactive { background: #f0f0f0; color: #bbb; }
 }
 
