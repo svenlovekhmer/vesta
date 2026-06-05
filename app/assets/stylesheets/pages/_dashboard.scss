@@ -16,6 +16,12 @@
   margin: 0;
 }
 
+#pav_card {
+  .log-item__drag-handle {
+    display: none;
+  }
+}
+
 // ─── Stat cards ───────────────────────────────────────────────────────────────
 
 .stat-card {
