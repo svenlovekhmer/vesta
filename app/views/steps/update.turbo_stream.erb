@@ -16,3 +16,9 @@
                step_statuses: step_statuses %>
   <% end %>
 <% end %>
+
+<% if @mission_status_changed %>
+  <%= turbo_stream.replace "mission_status_badge" do %>
+    <div id="mission_status_badge"><%= mission_status_badge(@step.mission.mission_status) %></div>
+  <% end %>
+<% end %>
