@@ -1,32 +1,30 @@
 <%= simple_form_for(client, html: { id: "client_form", novalidate: true }) do |f| %>
-  <div class="card">
-    <div class="form-group mb-3">
-      <%= f.input :first_name,
-          label: "Prénom",
-          placeholder: "Entrez le prénom",
-          required: true,
-          input_html: { class: "rounded-4" } %>
-    </div>
-    <div class="form-group mb-3">
-      <%= f.input :last_name,
-          label: "Nom",
-          placeholder: "Entrez le nom",
-          required: true,
-          input_html: { class: "rounded-4" } %>
-    </div>
-    <div class="form-group mb-3">
-      <%= f.input :email,
-          label: "Email",
-          placeholder: "Entrez l'email",
-          required: true,
-          input_html: { class: "rounded-4" } %>
-    </div>
-    <div class="form-group mb-3">
-      <%= f.input :phone_number,
-          label: "Téléphone",
-          placeholder: "Entrez le numéro de téléphone",
-          required: true,
-          input_html: { class: "rounded-4" } %>
-    </div>
+  <div class="form-group mb-3">
+    <%= f.input :first_name,
+        label: "Prénom",
+        placeholder: "Entrez le prénom",
+        required: true,
+        input_html: { class: "rounded-4" } %>
+  </div>
+  <div class="form-group mb-3">
+    <%= f.input :last_name,
+        label: "Nom",
+        placeholder: "Entrez le nom",
+        required: true,
+        input_html: { class: "rounded-4" } %>
+  </div>
+  <div class="form-group mb-3">
+    <%= f.input :email,
+        label: "Email",
+        placeholder: "Entrez l'email",
+        required: true,
+        input_html: { class: "rounded-4" } %>
+  </div>
+  <div class="form-group mb-3">
+    <%= f.input :phone_number,
+        label: "Téléphone",
+        placeholder: "Entrez le numéro de téléphone",
+        required: true,
+        input_html: { class: "rounded-4" } %>
   </div>
 <% end %>

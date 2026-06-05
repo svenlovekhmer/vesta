@@ -11,19 +11,17 @@
       <%= link_to "tel:#{client.phone_number}", class: "btn btn-outline-danger rounded-circle" do %>
         <i class="fa-solid fa-phone"></i>
       <% end %>
-      <%= link_to mission_path(client), class: "ms-2 btn btn-danger vesta-btn rounded-pill text-white" do %>
-        <i class="fa-solid fa-eye d-inline-block me-2"></i>
-        Voir les missions
-      <% end %>
     </div>
-    <div class="ms-auto">
+    <div class="ms-auto d-flex gap-1">
       <%= link_to edit_client_path(client),
-            class: "btn btn-outline-secondary rounded-pill me-2",
+            class: "log-item__action-btn",
+            title: "Modifier",
             data: { turbo_frame: "modal" } do %>
         <i class="fa-solid fa-pen-to-square"></i>
       <% end %>
       <%= link_to confirm_destroy_client_path(client),
-            class: "btn btn-outline-danger rounded-pill",
+            class: "log-item__action-btn log-item__action-btn--delete",
+            title: "Supprimer",
             data: { turbo_frame: "modal" } do %>
         <i class="fa-solid fa-trash"></i>
       <% end %>
