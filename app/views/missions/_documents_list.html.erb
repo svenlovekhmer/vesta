@@ -14,9 +14,9 @@
           </span>
           <span class="documents-group__count"><%= step_docs.count %> doc<%= step_docs.count > 1 ? "s" : "" %></span>
         </div>
-        <div class="documents-group__rows">
+        <div class="documents-group__grid">
           <% step_docs.each do |doc| %>
-            <%= render "documents/document", document: doc %>
+            <%= render "documents/doc_card", document: doc %>
           <% end %>
         </div>
       </div>
@@ -30,9 +30,9 @@
           <span class="documents-group__step-label text-muted">Sans étape</span>
           <span class="documents-group__count"><%= unattached.count %> doc<%= unattached.count > 1 ? "s" : "" %></span>
         </div>
-        <div class="documents-group__rows">
+        <div class="documents-group__grid">
           <% unattached.each do |doc| %>
-            <%= render "documents/document", document: doc %>
+            <%= render "documents/doc_card", document: doc %>
           <% end %>
         </div>
       </div>

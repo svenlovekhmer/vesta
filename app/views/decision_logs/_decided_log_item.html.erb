@@ -11,8 +11,8 @@
     <% if (blocker = log.mission_step_blockers.find { |b| b.step.present? }) %>
       <div class="log-item__linked-pill">
         <span class="decision-log-linked-pill decision-log-linked-pill--static">
-          <i class="fa-solid fa-link" style="font-size:9px"></i>
-          <%= blocker.step.title&.truncate(22) %>
+          <i class="fa-solid fa-list-check d-inline-block me-2"></i>
+          Étape · <strong><%= blocker.step.title&.truncate(20) %></strong>
         </span>
       </div>
     <% end %>

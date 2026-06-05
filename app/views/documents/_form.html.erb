@@ -1,37 +1,95 @@
-<div class="document-upload-card" data-controller="document-upload">
+<% phase_icons = { 1=>"fa-flag", 2=>"fa-ruler", 3=>"fa-pencil-ruler",
+                    4=>"fa-hard-hat", 5=>"fa-swatchbook",
+                    6=>"fa-box-open", 7=>"fa-circle-check" } %>
+
+<div class="document-upload-card"
+     data-controller="document-upload"
+     data-action="step-selector:selected->document-upload#onStepSelected">
   <%= form_with url: mission_documents_path(mission), scope: :document do |f| %>
 
-    <%# Drop zone %>
-    <div class="drop-zone"
-         data-document-upload-target="dropZone"
-         data-action="dragover->document-upload#dragover
-                      dragleave->document-upload#dragleave
-                      drop->document-upload#drop
-                      click->document-upload#openPicker">
-      <i class="fa-solid fa-cloud-arrow-up drop-zone__icon"></i>
-      <p class="drop-zone__text">Glissez vos fichiers ici</p>
-      <p class="drop-zone__sub">ou <span class="drop-zone__link">parcourir</span></p>
-      <%= f.file_field :files,
-                       multiple: true,
-                       class: "d-none",
-                       data: { document_upload_target: "fileInput",
-                               action: "change->document-upload#pick" } %>
-    </div>
+    <input type="hidden" name="document[step_id]" id="document_step_id" value=""
+           data-document-upload-target="stepInput">
 
-    <%# Preview & submit (hidden until files are selected) %>
-    <div class="drop-zone__preview d-none" data-document-upload-target="preview">
-      <div class="drop-zone__step-row">
-        <label class="drop-zone__step-label">Associer à une étape</label>
-        <%= f.select :step_id,
-                     [["— Sans étape —", ""]] + mission.steps.map { |s| [s.title, s.id] },
-                     {},
-                     { class: "form-select form-select-sm" } %>
+    <div class="upload-split">
+
+      <%# ── Left: drop zone + staged file list ─────────────────────────── %>
+      <div class="upload-split__left">
+        <div class="drop-zone"
+             data-document-upload-target="dropZone"
+             data-action="dragover->document-upload#dragover
+                          dragleave->document-upload#dragleave
+                          drop->document-upload#drop
+                          click->document-upload#openPicker">
+          <i class="fa-solid fa-cloud-arrow-up drop-zone__icon"></i>
+          <p class="drop-zone__text">Glissez vos fichiers ici</p>
+          <p class="drop-zone__sub">ou <span class="drop-zone__link">parcourir</span></p>
+          <%= f.file_field :files, multiple: true, class: "d-none",
+                           data: { document_upload_target: "fileInput",
+                                   action: "change->document-upload#pick" } %>
+        </div>
+
+        <div class="drop-zone__preview d-none" data-document-upload-target="preview">
+          <ul class="drop-zone__file-list" data-document-upload-target="fileList"></ul>
+          <div class="drop-zone__submit-row">
+            <%= f.submit "Ajouter →",
+                         class: "btn btn-danger vesta-btn rounded-pill px-4",
+                         data: { document_upload_target: "submitBtn" } %>
+          </div>
+        </div>
       </div>
-      <ul class="drop-zone__file-list" data-document-upload-target="fileList"></ul>
-      <div class="drop-zone__submit-row">
-        <%= f.submit "Ajouter →",
-                     class: "btn btn-danger vesta-btn rounded-pill px-4",
-                     data: { document_upload_target: "submitBtn" } %>
+
+      <%# ── Right: step selector + blocker inline form ──────────────────── %>
+      <div class="upload-split__right">
+
+        <p class="upload-split__right-label">Associer à une étape</p>
+
+        <%# Step selector (new controller) %>
+        <div class="step-selector"
+             data-controller="step-selector">
+          <button type="button"
+                  class="step-selector__trigger"
+                  data-action="click->step-selector#toggle">
+            <span class="step-selector__dot" data-step-selector-target="triggerDot"></span>
+            <span class="step-selector__label" data-step-selector-target="triggerLabel">— Sans étape —</span>
+            <i class="fa-solid fa-chevron-down step-selector__caret"></i>
+          </button>
+          <ul class="step-selector__menu" data-step-selector-target="menu">
+            <li>
+              <button type="button" class="step-selector__item"
+                      data-action="click->step-selector#select"
+                      data-step-id="" data-step-name="— Sans étape —">
+                <span class="step-selector__item-dot step-selector__item-dot--none"></span>
+                <span class="step-selector__item-title">— Sans étape —</span>
+              </button>
+            </li>
+            <% mission.steps.each do |step| %>
+              <% status_slug = step.step_status.title.parameterize %>
+              <% icon_cls = phase_icons.fetch(step.position, "fa-circle") %>
+              <li>
+                <button type="button" class="step-selector__item"
+                        data-action="click->step-selector#select"
+                        data-step-id="<%= step.id %>"
+                        data-step-name="<%= step.title %>">
+                  <span class="step-selector__item-dot step-selector__item-dot--<%= status_slug %>"></span>
+                  <i class="fa-solid <%= icon_cls %> step-selector__item-icon"></i>
+                  <span class="step-selector__item-title"><%= step.title %></span>
+                  <% if step.documents.size > 0 %>
+                    <span class="step-selector__item-badge"><%= step.documents.size %></span>
+                  <% end %>
+                </button>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <%# Blocker inline form (shown after step is selected) %>
+        <div data-controller="blocker-inline"
+             data-blocker-inline-mission-id-value="<%= mission.id %>"
+             data-action="step-selector:selected@window->blocker-inline#onStepSelected
+                          document-upload:filesChanged@window->blocker-inline#onFilesChanged">
+          <%= render "documents/blocker_form", mission: mission %>
+        </div>
+
       </div>
     </div>
 

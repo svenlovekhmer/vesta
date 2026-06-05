@@ -1,0 +1,78 @@
+<% ct = document.file.content_type.to_s %>
+<% is_image = ct.start_with?("image/") %>
+<% is_pdf   = ct.include?("pdf") %>
+<% thumb_mod = is_pdf ? "pdf" : (is_image ? "image" : "default") %>
+
+<% phase_icons_ti = { 1=>"flag", 2=>"ruler", 3=>"pencil-ruler",
+                       4=>"hammer", 5=>"palette", 6=>"package", 7=>"circle-check" } %>
+<% step_icon_ti = document.step ? "ti ti-#{phase_icons_ti.fetch(document.step.position, "circle")}" : "" %>
+
+<%# Active blocker detection (uses preloaded associations) %>
+<% active_log = document.decision_logs.find { |dl|
+     dl.mission_step_blockers.any? { |b| b.blocking_status == "blocking" }
+   }
+   active_blocker = active_log&.mission_step_blockers&.find { |b| b.blocking_status == "blocking" } %>
+
+<div class="doc-card" data-controller="blocker-modal">
+
+  <%# ── Thumbnail ───────────────────────────────────────────────────────── %>
+  <a href="<%= rails_blob_path(document.file, disposition: :attachment) %>"
+     class="doc-card__thumb doc-card__thumb--<%= thumb_mod %>"
+     target="_blank"
+     tabindex="-1">
+
+    <% if is_image %>
+      <%= image_tag rails_blob_path(document.file),
+                    class: "doc-card__img", loading: "lazy", alt: document.name %>
+    <% elsif is_pdf %>
+      <% begin %>
+        <% preview_url = url_for(document.file.preview(resize_to_limit: [300, 225])) %>
+        <%= image_tag preview_url, class: "doc-card__img", loading: "lazy", alt: document.name %>
+      <% rescue %>
+        <div class="doc-card__placeholder">
+          <i class="ti ti-file-type-pdf"></i>
+          <span class="doc-card__ext">PDF</span>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="doc-card__placeholder">
+        <i class="ti ti-file-text"></i>
+        <span class="doc-card__ext">
+          <%= document.file.filename.extension_without_delimiter.upcase.presence || "—" %>
+        </span>
+      </div>
+    <% end %>
+
+    <% if active_blocker %>
+      <span class="doc-card__blocker-pill">
+        <i class="ti ti-lock-check"></i> Bloqué
+      </span>
+    <% end %>
+  </a>
+
+  <%# Delete button — absolutely positioned at top-right, revealed on card hover %>
+  <%= button_to document_path(document),
+                method: :delete,
+                class: "doc-card__delete",
+                form: { class: "doc-card__delete-form", data: { turbo_confirm: false } } do %>
+    <i class="ti ti-x"></i>
+  <% end %>
+
+  <%# ── Meta footer ────────────────────────────────────────────────────── %>
+  <div class="doc-card__meta">
+    <a href="<%= rails_blob_path(document.file, disposition: :attachment) %>"
+       class="doc-card__name" target="_blank" title="<%= document.name %>">
+      <%= document.name %>
+    </a>
+    <div class="doc-card__info">
+      <span class="doc-card__size"><%= number_to_human_size(document.file.byte_size) %></span>
+      <span class="doc-card__time">il y a <%= time_ago_in_words(document.created_at) %></span>
+    </div>
+  </div>
+
+  <%# ── Action footer ──────────────────────────────────────────────────── %>
+  <div class="doc-card__action" id="doc-card-action-<%= document.id %>">
+    <%= render "documents/doc_card_action", document: document %>
+  </div>
+
+</div>

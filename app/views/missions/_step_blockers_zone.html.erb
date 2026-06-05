@@ -5,16 +5,16 @@
   <span class="step-link-drop-hint">
     <i class="fa-solid fa-arrow-down" style="font-size:9px"></i> Déposer ici
   </span>
-  <% step.mission_step_blockers.select { |b| b.blocking_status == "blocking" }.each do |blocker| %>
+  <% step.mission_step_blockers.select { |b| b.blocking_status == "blocking" && b.decision_log.present? }.each do |blocker| %>
     <span class="step-blocker-badge">
       <span data-action="click->step-link#highlight"
             data-decision-log-id="<%= blocker.decision_log_id %>">
-        <i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i>
-        <%= blocker.decision_log.title&.truncate(22) %>
+        <i class="fa-regular fa-circle-pause d-inline-block me-2" ></i>
+        À valider · <strong><%= blocker.decision_log.title&.truncate(22) %></strong>
       </span>
       <span class="step-blocker-badge__remove"
             data-action="click->step-link#unlink"
-            data-blocker-id="<%= blocker.id %>">×</span>
+            data-blocker-id="<%= blocker.id %>"><i class="fa-solid fa-xmark d-inline-block ms-2"></i></span>
     </span>
   <% end %>
 </div>

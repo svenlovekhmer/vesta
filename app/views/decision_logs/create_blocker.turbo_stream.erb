@@ -1,0 +1,36 @@
+<% if @decision_log.persisted? %>
+
+  <%# Close the inline blocker form (upload card right column) %>
+  <%= turbo_stream.replace "blocker_form_#{@mission.id}" do %>
+    <div class="blocker-confirmation" id="blocker_form_<%= @mission.id %>">
+      <i class="fa-solid fa-circle-check"></i> Point bloquant ajouté
+    </div>
+  <% end %>
+
+  <%# Swap action footer on the relevant doc card %>
+  <% if @blocker_doc.present? %>
+    <%= turbo_stream.replace "doc-card-action-#{@blocker_doc.id}" do %>
+      <div class="doc-card__action" id="doc-card-action-<%= @blocker_doc.id %>">
+        <%= render "documents/doc_card_action", document: @blocker_doc %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%# Refresh pav_section so the new log appears in Progression tab %>
+  <%= turbo_stream.replace "pav_section_#{@mission.id}" do %>
+    <%= render "missions/pav_section",
+          mission:       @mission,
+          pending_logs:  @pending_logs,
+          vesta_count:   @entry[:vesta_count],
+          client_count:  @entry[:client_count] %>
+  <% end %>
+
+<% else %>
+
+  <%= turbo_stream.replace "blocker_form_#{@mission.id}" do %>
+    <div class="blocker-inline__error" id="blocker_form_<%= @mission.id %>">
+      <%= @decision_log.errors.full_messages.first %>
+    </div>
+  <% end %>
+
+<% end %>
