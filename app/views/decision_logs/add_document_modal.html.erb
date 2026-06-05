@@ -1,0 +1,39 @@
+<turbo-frame id="modal">
+  <div class="modal-header border-0 pb-1">
+    <h5 class="modal-title fw-semibold">
+      <i class="fa-solid fa-paperclip text-danger me-2"></i>Lier un document
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <% available_docs = @documents.reject { |d| @linked_document_ids.include?(d.id) } %>
+    <% if available_docs.any? %>
+      <p class="text-muted small mb-3">Sélectionnez un document de la mission à associer.</p>
+      <div class="d-flex flex-column gap-2">
+        <% available_docs.each do |doc| %>
+          <%= button_to decision_log_documents_path,
+                method: :post,
+                params: { decision_log_id: @decision_log.id, document_id: doc.id },
+                class: "btn btn-outline-secondary text-start link-step-btn",
+                form: { data: { turbo_stream: true, turbo_frame: "_top" } } do %>
+            <i class="fa-solid fa-file-invoice-dollar me-2 text-muted"></i>
+            <%= doc.name %>
+            <% if doc.step.present? %>
+              <span class="text-muted ms-1 small">· <%= doc.step.title %></span>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted text-center py-3 mb-0">
+        <i class="fa-solid fa-folder-open d-block mb-2" style="font-size: 1.5rem;"></i>
+        Aucun document disponible sur cette mission.
+      </p>
+    <% end %>
+  </div>
+  <div class="modal-footer border-0">
+    <button type="button" class="cancel-btn border-0 bg-transparent" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
+  </div>
+</turbo-frame>

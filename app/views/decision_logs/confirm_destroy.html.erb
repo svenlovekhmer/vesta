@@ -1,0 +1,22 @@
+<turbo-frame id="modal">
+  <div class="modal-header border-0 pb-1">
+    <h5 class="modal-title fw-semibold">
+      <i class="fa-solid fa-trash-can text-danger me-2"></i>Supprimer ce point à valider
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <p>Êtes-vous sûr de vouloir supprimer <strong><%= @decision_log.title %></strong> ?</p>
+    <p class="text-muted small mb-0">Cette action est irréversible.</p>
+  </div>
+  <div class="modal-footer border-0">
+    <button type="button" class="cancel-btn border-0 bg-transparent" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
+    <%= button_to decision_log_path(@decision_log), method: :delete,
+          class: "btn btn-danger vesta-btn rounded-pill text-white",
+          form: { data: { turbo_stream: true } } do %>
+      Supprimer
+    <% end %>
+  </div>
+</turbo-frame>

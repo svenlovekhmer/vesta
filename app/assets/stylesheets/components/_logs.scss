@@ -209,3 +209,37 @@
   font-size: inherit;
   padding: 1px 4px;
 }
+
+.log-item__action-btn--menu {
+  &::after { display: none; }
+}
+
+.link-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #495057;
+  border-color: #dee2e6;
+
+  &:hover {
+    background: rgba($red, 0.05);
+    border-color: $red;
+    color: $red;
+  }
+}
+
+.step-link-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &--a-faire     { background: #dee2e6; }
+  &--en-cours    { background: $blue; }
+  &--validee     { background: $green; }
+  &--bloquee     { background: $red; }
+}
