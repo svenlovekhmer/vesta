@@ -2,9 +2,30 @@
 
 .pav-card {
   @extend .card;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 18px 40px -22px rgba(20, 25, 40, 0.30);
+  transform: translateY(-2px);
+  transition: box-shadow 250ms ease, transform 250ms ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: $red;
+    pointer-events: none;
+  }
 
   &__header {
     @extend .d-flex, .align-items-center, .justify-content-between, .mb-3;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+    transition: none;
   }
 }
 
@@ -94,6 +115,21 @@
 
 .pav-card__subtitle--vesta  { color: $provider-blue; font-weight: 600; }
 .pav-card__subtitle--client { color: $client-blue; font-weight: 600; }
+
+.pav-badge--urgent {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 50px;
+  background: $red;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
 
 
 // ─── Shared log list / item ─────────────────────────────────────────────────
