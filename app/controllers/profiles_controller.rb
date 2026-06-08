@@ -1,7 +1,8 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-
   before_action :set_profile
+  before_action -> { add_breadcrumb "Tableau de bord", root_path }
+  before_action -> { add_breadcrumb "Profil" }
 
   def edit
   end

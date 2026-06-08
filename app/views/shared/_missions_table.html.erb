@@ -16,6 +16,8 @@
         <% status_slug = mission.mission_status.title.parameterize %>
         <tr data-mission-filter-target="row"
             data-status="<%= status_slug %>"
+            data-title="<%= "#{mission.title} #{mission.client.first_name} #{mission.client.last_name}".downcase %>"
+            data-created-at="<%= mission.created_at.to_i %>"
             data-controller="row-link"
             data-row-link-href-value="<%= mission_path(mission) %>"
             data-action="click->row-link#navigate"

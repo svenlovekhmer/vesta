@@ -1,34 +1,56 @@
-<h1 class="missions-title">Liste des missions</h1>
-<div class="missions-table-card" data-controller="mission-filter">
-  <div class="missions-table-card__header">
-    <h2 class="missions-table-card__title">Toutes mes missions</h2>
-    <div class="missions-table-tabs">
-      <button class="missions-table-tabs__tab active"
-              data-mission-filter-target="tab"
-              data-filter="all"
-              data-action="click->mission-filter#filter">
-        Toutes
-      </button>
-      <button class="missions-table-tabs__tab"
-              data-mission-filter-target="tab"
-              data-filter="en-cours"
-              data-action="click->mission-filter#filter">
-        En cours
-      </button>
-      <button class="missions-table-tabs__tab"
-              data-mission-filter-target="tab"
-              data-filter="a-demarrer"
-              data-action="click->mission-filter#filter">
-        À démarrer
-      </button>
-      <button class="missions-table-tabs__tab"
-              data-mission-filter-target="tab"
-              data-filter="terminee"
-              data-action="click->mission-filter#filter">
-        Terminées
-      </button>
-    </div>
+<div data-controller="mission-filter">
+  <div class="clients-toolbar">
+    <input
+      type="text"
+      class="clients-search-input"
+      placeholder="Rechercher une mission..."
+      data-mission-filter-target="search"
+      data-action="input->mission-filter#search">
+
+    <button
+      type="button"
+      class="clients-sort-btn"
+      data-mission-filter-target="sortButton"
+      data-action="click->mission-filter#toggleSort">
+      <i class="fa-solid fa-arrow-down-short-wide"></i>
+    </button>
+
+    <%= link_to new_mission_path, class: "btn btn-outline-danger vesta-btn rounded-pill" do %>
+      <i class="fa-solid fa-plus"></i> Ajouter une mission
+    <% end %>
   </div>
 
-  <%= render "shared/missions_table" %>
+  <div class="missions-table-card">
+    <div class="missions-table-card__header">
+      <h2 class="missions-table-card__title">Toutes mes missions</h2>
+      <div class="missions-table-tabs">
+        <button class="missions-table-tabs__tab active"
+                data-mission-filter-target="tab"
+                data-filter="all"
+                data-action="click->mission-filter#filterByTab">
+          Toutes
+        </button>
+        <button class="missions-table-tabs__tab"
+                data-mission-filter-target="tab"
+                data-filter="en-cours"
+                data-action="click->mission-filter#filterByTab">
+          En cours
+        </button>
+        <button class="missions-table-tabs__tab"
+                data-mission-filter-target="tab"
+                data-filter="en-attente"
+                data-action="click->mission-filter#filterByTab">
+          À démarrer
+        </button>
+        <button class="missions-table-tabs__tab"
+                data-mission-filter-target="tab"
+                data-filter="terminee"
+                data-action="click->mission-filter#filterByTab">
+          Terminées
+        </button>
+      </div>
+    </div>
+
+    <%= render "shared/missions_table" %>
+  </div>
 </div>
