@@ -4,12 +4,18 @@ module ApplicationHelper
     tag.span("• #{mission_status.title}", class: "mission-badge mission-badge--#{slug}")
   end
 
-  def user_initials(user)
-    profile = user.profile
-    if profile&.first_name.present? && profile&.last_name.present?
-      "#{profile.first_name[0]}#{profile.last_name[0]}".upcase
+  def user_initials(record)
+    first, last = if record.respond_to?(:profile)
+      profile = record.profile
+      [ profile&.first_name, profile&.last_name ]
     else
-      user.email[0..1].upcase
+      [ record.try(:first_name), record.try(:last_name) ]
+    end
+
+    if first.present? && last.present?
+      "#{first[0]}#{last[0]}".upcase
+    else
+      record.email[0..1].upcase
     end
   end
 
