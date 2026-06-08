@@ -1,22 +1,18 @@
-<div id="gmail_panel_<%= mission.id %>" class="bg-white border rounded-4 p-3 mb-4">
-  <div class="d-flex justify-content-between align-items-center">
-    <div>
-      <h6 class="mb-1">
-        <i class="fa-brands fa-google me-2"></i>
-        Emails du client
-      </h6>
-      <small class="text-muted">Analyse des échanges avec <%= mission.client.email %></small>
+<div id="gmail_panel_<%= mission.id %>">
+  <div class="ai-synthesis-panel">
+    <div class="ai-synthesis-panel__toggle ai-synthesis-panel__toggle--loading">
+      <span class="ai-synthesis-panel__toggle-left">
+        <div class="spinner-grow spinner-grow-sm text-danger me-2" role="status" aria-hidden="true"></div>
+        <span class="fw-semibold small">Synthèse IA — Analyse en cours...</span>
+      </span>
     </div>
-    <div class="d-flex align-items-center gap-2">
-      <div class="spinner-grow spinner-grow-sm text-danger" role="status"></div>
-      <span class="small text-muted fw-medium">Analyse IA en cours...</span>
-    </div>
-  </div>
 
-  <div id="gmail_synthesis_area_<%= mission.client.id %>" class="mt-3 pt-3 border-top">
-    <p class="fw-semibold mb-1 small text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Synthèse IA</p>
-    <p class="small mb-0">
-      <span id="gmail_synthesis_stream_<%= mission.client.id %>"></span><span class="gmail-cursor">▋</span>
-    </p>
+    <div class="collapse show" id="ai_synthesis_collapse_<%= mission.id %>">
+      <div class="ai-synthesis-panel__body" id="gmail_synthesis_area_<%= mission.client.id %>">
+        <p class="small mb-0">
+          <span id="gmail_synthesis_stream_<%= mission.client.id %>"></span><span class="gmail-cursor">▋</span>
+        </p>
+      </div>
+    </div>
   </div>
 </div>

@@ -45,6 +45,68 @@
 .mission-show {
   @extend .p-1;
 
+  // ── Header layout ────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__header-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  &__header-btns {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__gmail-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: #444;
+  }
+
+  &__gmail-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  // ── 2-col work area ──────────────────────────────────────────────────────
+
+  &__work-area {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__col-left {
+    flex: 0 0 320px;
+    min-width: 0;
+  }
+
+  &__col-right {
+    flex: 1;
+    min-width: 0;
+  }
+
   &--title {
     @extend %mission-title;
 
@@ -1297,4 +1359,65 @@
   border-radius: 50%;
   background: #534AB7;
   flex-shrink: 0;
+}
+
+// ── AI synthesis collapsible panel ───────────────────────────────────────────
+
+.ai-synthesis-panel {
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.ai-synthesis-panel__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: #fafafa;
+  border: none;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+
+  &:hover { background: #f4f4f4; }
+
+  &--loading {
+    cursor: default;
+    border-bottom-color: #e9ecef;
+    &:hover { background: #fafafa; }
+  }
+
+  &[aria-expanded="true"] {
+    border-bottom-color: #e9ecef;
+    background: #f4f4f4;
+
+    .ai-synthesis-panel__chevron { transform: rotate(180deg); }
+  }
+}
+
+.ai-synthesis-panel__toggle-left {
+  display: flex;
+  align-items: center;
+}
+
+.ai-synthesis-panel__chevron {
+  font-size: 0.7rem;
+  color: #adb5bd;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ai-synthesis-panel__legend {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  padding: 0.3rem 1.25rem;
+}
+
+.ai-synthesis-panel__body {
+  padding: 1rem 1.25rem;
 }
