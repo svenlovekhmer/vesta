@@ -27,6 +27,11 @@
         Clients
         <span class="sidebar-nav__count"><%= current_user.clients.count %></span>
       <% end %>
+      <%= link_to step_templates_path, class: "sidebar-nav__link #{current_page?(step_templates_path) ? 'active' : ''}" do %>
+        <i class="fa-solid fa-layer-group"></i>
+        Templates
+        <span class="sidebar-nav__count"><%= current_user.step_templates.count %></span>
+      <% end %>
       <%= link_to edit_profile_path, class: "sidebar-nav__link #{current_page?(edit_profile_path) ? 'active' : ''}" do %>
         <i class="fa-solid fa-user"></i>
         Profil

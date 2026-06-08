@@ -1,0 +1,20 @@
+<turbo-frame id="modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Supprimer le template</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <p>Êtes-vous sûr de vouloir supprimer le template <strong><%= @step_template.name %></strong> ?</p>
+      <p class="text-muted small">Cette action est irréversible. Les missions utilisant ce template ne seront pas affectées.</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary vesta-btn rounded-pill" data-bs-dismiss="modal">
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    </button>
+    <%= button_to "Supprimer", step_template_path(@step_template), method: :delete,
+          class: "btn btn-danger vesta-btn rounded-pill text-white",
+          form: { data: { turbo_frame: "_top" } } %>
+  </div>
+</turbo-frame>

@@ -1,0 +1,65 @@
+<div class="step-templates-index p-1">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="step-templates--title">Templates d'étapes</h1>
+      <p class="step-templates--subtitle">Gérez vos modèles d'étapes réutilisables pour vos missions.</p>
+    </div>
+    <%= link_to new_step_template_path, class: "btn btn-danger vesta-btn rounded-pill text-white" do %>
+      <i class="fa-solid fa-plus d-inline-block me-2"></i> Nouveau template
+    <% end %>
+  </div>
+
+  <% if @step_templates.any? %>
+    <div class="step-templates-list">
+      <% @step_templates.each do |template| %>
+        <div class="step-template-card card mb-3" id="step_template_<%= template.id %>">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="step-template-card__info">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <h2 class="step-template-card__name"><%= template.name %></h2>
+                <% if template.is_default == "true" %>
+                  <span class="badge bg-danger">Par défaut</span>
+                <% end %>
+                <span class="badge bg-light text-dark border">
+                  <i class="fa-solid fa-list-check me-1"></i>
+                  <%= template.step_template_items.size %> étape<%= template.step_template_items.size != 1 ? "s" : "" %>
+                </span>
+              </div>
+              <% if template.description.present? %>
+                <p class="step-template-card__description text-muted mb-0"><%= template.description %></p>
+              <% end %>
+            </div>
+            <div class="step-template-card__actions d-flex gap-2">
+              <%= link_to edit_step_template_path(template), class: "btn btn-sm btn-outline-secondary vesta-btn rounded-pill" do %>
+                <i class="fa-solid fa-pen-to-square me-1"></i> Modifier
+              <% end %>
+              <%= link_to confirm_destroy_step_template_path(template),
+                    class: "btn btn-sm btn-outline-danger vesta-btn rounded-pill",
+                    data: { turbo_frame: "modal" } do %>
+                <i class="fa-solid fa-trash-can me-1"></i> Supprimer
+              <% end %>
+            </div>
+          </div>
+          <% if template.step_template_items.any? %>
+            <div class="step-template-card__items mt-3">
+              <% template.step_template_items.each_with_index do |item, i| %>
+                <span class="step-template-item-pill">
+                  <span class="step-template-item-pill__number"><%= i + 1 %></span>
+                  <%= item.title %>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="step-templates-empty card text-center py-5">
+      <i class="fa-solid fa-layer-group fa-2x text-muted mb-3"></i>
+      <p class="text-muted mb-3">Aucun template créé pour le moment.</p>
+      <%= link_to new_step_template_path, class: "btn btn-danger vesta-btn rounded-pill text-white" do %>
+        <i class="fa-solid fa-plus me-2"></i> Créer mon premier template
+      <% end %>
+    </div>
+  <% end %>
+</div>
