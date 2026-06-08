@@ -39,8 +39,8 @@ puts "Creating profile..."
 
 Profile.create!(
   user: user,
-  first_name: "Sven",
-  last_name: "Dupont",
+  first_name: "Jean",
+  last_name: "Batisseur",
   profession: "Architecte d'intérieur",
   logo_url: nil
 )
