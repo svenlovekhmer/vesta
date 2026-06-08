@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title><%= content_for(:title) || "Espace client · Vesta" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="portal-page">
+    <%= yield %>
+  </body>
+</html>
