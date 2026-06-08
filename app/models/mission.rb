@@ -1,4 +1,6 @@
 class Mission < ApplicationRecord
+  before_create :generate_portal_token
+
   belongs_to :mission_status
   belongs_to :step_template, optional: true # temporary, to be removed when the step templatating will be implemented
   belongs_to :client
@@ -28,5 +30,15 @@ class Mission < ApplicationRecord
   def last_activity_at
     timestamps = [updated_at] + steps.map(&:updated_at) + decision_logs.map(&:updated_at)
     timestamps.compact.max
+  end
+
+  private
+
+  def generate_portal_token
+    self.portal_token = SecureRandom.urlsafe_base64(32)
+  end
+
+  def regenerate_portal_token!
+    update!(portal_token: SecureRandom.urlsafe_base64(32))
   end
 end

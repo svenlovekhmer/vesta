@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :confirm_destroy
     end
   end
+  get "/portal/:token", to: "portals#show", as: :mission_portal
   resources :clients, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     member do
       get :confirm_destroy
