@@ -1,32 +1,102 @@
 // ─── Points à valider card ─────────────────────────────────────────────────
 
+$attn-tint: mix($amber, white, 7%);   // fond bandeau ~7 % ambre
+$attn-ring: mix($amber, white, 32%);  // bordure ~32 % ambre
+
 .pav-card {
   @extend .card;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 18px 40px -22px rgba(20, 25, 40, 0.30);
-  transform: translateY(-2px);
-  transition: box-shadow 250ms ease, transform 250ms ease;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 5px;
-    height: 100%;
-    background: $red;
-    pointer-events: none;
-  }
 
   &__header {
     @extend .d-flex, .align-items-center, .justify-content-between, .mb-3;
   }
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
-    transition: none;
+// ─── Attention treatment (en-tête accentué) ──────────────────────────────────
+
+.pav-card--attention {
+  overflow: hidden;               // épouse les coins arrondis de la carte
+  border-color: $attn-ring !important;
+
+  > .pav-card__header {
+    position: relative;
+    margin-top: -1.5rem;          // annule le p-4 de .card (24 px)
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding: 1.5rem;
+    background: $attn-tint;
+    border-bottom: 1px solid $attn-ring;
+
+    &::before {                   // liseré vertical gauche — pseudo, sans impact layout
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: $amber;
+    }
   }
+}
+
+// Icône avec couleur contextuelle
+.pav-card__ico {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;     // force le carré → ping parfaitement circulaire
+  height: 1.2em;
+  color: $red;                    // état neutre : même rouge que text-danger
+
+  .pav-card--attention & {
+    color: $amber;
+  }
+}
+
+// Onde concentrique (ping)
+.pav-card__ping {
+  position: absolute;
+  left: -6px !important;
+  right: 3px !important;
+  inset: -2px;
+  border-radius: 999px;
+  border: 2px solid $amber;
+  opacity: 0;
+  pointer-events: none;
+  animation: pav-card-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pav-card-ping {
+  0%        { transform: scale(0.85); opacity: 0.55; }
+  70%, 100% { transform: scale(1.9);  opacity: 0;    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pav-card__ping { animation: none !important; }
+}
+
+// Badge « À traiter » — texte sombre (contraste sur fond jaune)
+.pav-card__attn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 14px;
+  background: $amber;
+  color: #3a2a00;
+  border-radius: 999px;
+  padding: 5px 12px 5px 11px;
+  font-size: 12.5px;
+  font-weight: 700;
+  vertical-align: middle;
+  box-shadow: 0 6px 14px -6px rgba($amber, 0.7);
+}
+
+.pav-card__attn-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #3a2a00;
+  flex-shrink: 0;
 }
 
 .pav-card__add-btn {
@@ -115,21 +185,6 @@
 
 .pav-card__subtitle--vesta  { color: $provider-blue; font-weight: 600; }
 .pav-card__subtitle--client { color: $client-blue; font-weight: 600; }
-
-.pav-badge--urgent {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 50px;
-  background: $red;
-  color: #fff;
-  white-space: nowrap;
-  letter-spacing: 0.02em;
-  line-height: 1;
-}
 
 
 // ─── Shared log list / item ─────────────────────────────────────────────────

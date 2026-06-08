@@ -1,10 +1,20 @@
 <% profile = local_assigns.fetch(:profile) { current_user.profile } %>
+<% has_pending = pending_logs.any? %>
 <div id="pav_section_<%= mission.id %>">
-  <div class="pav-card border mb-4">
+  <div class="pav-card border mb-4 <%= 'pav-card--attention' if has_pending %>">
     <div class="pav-card__header">
       <div>
         <div class="pav-card__title-group">
-          <h2 class="pav-card__title"><i class="fa-regular fa-circle-pause text-danger"></i> Points à valider</h2>
+          <h2 class="pav-card__title">
+            <span class="pav-card__ico" aria-hidden="true">
+              <i class="fa-regular fa-circle-pause"></i>
+              <% if has_pending %><span class="pav-card__ping"></span><% end %>
+            </span>
+            Points à valider
+            <% if has_pending %>
+              <span class="pav-card__attn-badge"><span class="pav-card__attn-dot" aria-hidden="true"></span>À traiter</span>
+            <% end %>
+          </h2>
         </div>
         <% if pending_logs.any? %>
           <p class="pav-card__subtitle mt-1 mb-0">
