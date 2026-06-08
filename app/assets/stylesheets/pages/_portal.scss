@@ -1,0 +1,395 @@
+// ── Portal page shell ──────────────────────────────────────────────────────
+
+.portal-page {
+  min-height: 100vh;
+  background: $light-gray;
+  font-family: $body-font;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Co-brand topbar ────────────────────────────────────────────────────────
+
+.portal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid #e9ecef;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1rem;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-width: 0;
+  }
+
+  &__vesta-logo {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: $red;
+    flex-shrink: 0;
+  }
+
+  &__sep {
+    color: #dee2e6;
+    font-size: 1.2rem;
+    font-weight: 200;
+    flex-shrink: 0;
+  }
+
+  &__studio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  &__studio-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba($red, 0.1);
+    color: $red;
+    font-weight: 700;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__studio-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #343a40;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__mode {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #adb5bd;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    i { font-size: 0.65rem; }
+  }
+}
+
+// ── Hero section ───────────────────────────────────────────────────────────
+
+.portal-hero {
+  background: #fff;
+  border-bottom: 1px solid #e9ecef;
+  padding: 2rem 0;
+
+  &__inner {
+    padding: 0 2.5rem;
+  }
+
+  &__greeting {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.2rem;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #212529;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  &__pending {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: darken($amber, 20%);
+    background: rgba($amber, 0.1);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+
+  &__ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: $status-done;
+    background: rgba($status-done, 0.08);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+}
+
+// ── Body container ─────────────────────────────────────────────────────────
+
+.portal-body {
+  padding: 2rem 2.5rem;
+}
+
+// ── Info grid ──────────────────────────────────────────────────────────────
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1.25rem;
+
+  &__card {
+    min-width: 0;      // prevent grid blowout
+    overflow: hidden;  // contain any pill/badge that would escape
+  }
+}
+
+.portal-grid__card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #adb5bd;
+  margin-bottom: 1.25rem;
+}
+
+// ── Progress big ───────────────────────────────────────────────────────────
+
+.portal-progress-big {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &__pct {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: #212529;
+    line-height: 1;
+  }
+
+  // extend progress bar to full width (override the 100px default)
+  .missions-progress {
+    width: 100%;
+  }
+
+  &__sub {
+    font-size: 0.82rem;
+    color: #6c757d;
+    margin-bottom: 0;
+  }
+}
+
+// ── Contact card ───────────────────────────────────────────────────────────
+
+.portal-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+
+  &__avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($red, 0.08);
+    color: $red;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  &__name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0;
+  }
+
+  &__role {
+    font-size: 0.78rem;
+    color: #6c757d;
+    margin-bottom: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 44px; // tactile target
+    align-items: center;
+  }
+}
+
+// ── Empty state ────────────────────────────────────────────────────────────
+
+.portal-all-good {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  border-left: 5px solid rgba($status-done, 0.5) !important;
+  border-color: rgba($status-done, 0.2) !important;
+  background: rgba($status-done, 0.03) !important;
+
+  &__icon {
+    font-size: 2.25rem;
+    color: $status-done;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 0.15rem;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.25rem;
+  }
+
+  &__sub {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+  }
+
+  &__next-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #adb5bd;
+    margin-bottom: 0.4rem;
+  }
+
+  &__next-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+    color: #495057;
+  }
+}
+
+// ── PAV checklist items (portal read-only) ─────────────────────────────────
+
+.portal-pav-item {
+  // inherits .log-item layout (flex, align-items-center, gap-3, p-3, border-bottom)
+  align-items: flex-start !important; // multi-line content needs top alignment
+  padding: 0.9rem 1rem !important;
+
+  &__circle {
+    color: $amber;
+    font-size: 1rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 0.1rem;
+  }
+
+  &__since {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba($red, 0.08);
+    color: darken($red, 8%);
+    border-radius: 999px;
+    padding: 2px 9px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  &__waiting-chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: darken($amber, 25%);
+    background: rgba($amber, 0.12);
+    border-radius: 999px;
+    padding: 3px 9px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+// ── Step status badge (read-only, portal) ──────────────────────────────────
+
+.portal-step-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-top: 5px;
+  border: 1.5px solid transparent;
+
+  &--validee  { color: $status-done;     border-color: rgba($status-done, 0.35);     background: rgba($status-done, 0.07); }
+  &--en-cours { color: $status-en-cours; border-color: rgba($status-en-cours, 0.35); background: rgba($status-en-cours, 0.07); }
+  &--a-faire  { color: #6c757d;          border-color: #dee2e6;                      background: #f8f9fa; }
+  &--bloquee  { color: $red;             border-color: rgba($red, 0.3);              background: rgba($red, 0.06); }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────
+
+@media (max-width: 640px) {
+  .portal-topbar {
+    padding: 0 1rem;
+
+    &__studio-name { display: none; }
+  }
+
+  .portal-hero {
+    padding: 1.25rem 0;
+
+    &__inner { padding: 0 1rem; }
+    &__title { font-size: 1.5rem; }
+  }
+
+  .portal-body { padding: 1rem; }
+
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-progress-big__pct { font-size: 2rem; }
+
+  .portal-all-good { flex-direction: column; gap: 0.75rem; }
+}
+
+// ── Accessibility: respect reduced motion ──────────────────────────────────
+// (pav-card__ping already handles this in _logs.scss — no duplication needed)

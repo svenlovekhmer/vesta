@@ -1,1 +1,231 @@
-<h1>Portal for client</h1>
+<%# ── Co-branded topbar ──────────────────────────────────────────────────── %>
+<header class="portal-topbar" role="banner">
+  <div class="portal-topbar__brand">
+    <span class="portal-topbar__vesta-logo" aria-label="Vesta">VESTA</span>
+    <span class="portal-topbar__sep" aria-hidden="true">|</span>
+    <div class="portal-topbar__studio">
+      <div class="portal-topbar__studio-avatar" aria-hidden="true">
+        <%= user_initials(@architect) %>
+      </div>
+      <span class="portal-topbar__studio-name">
+        <%= @profile&.first_name %> <%= @profile&.last_name %>
+        <% if @profile&.profession.present? %>
+          &middot; <%= @profile.profession %>
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <div class="portal-topbar__mode">
+    <i class="fa-solid fa-lock" aria-hidden="true"></i>
+    <span>Espace client &middot; consultation</span>
+  </div>
+</header>
+
+<%# ── Hero ─────────────────────────────────────────────────────────────── %>
+<div class="portal-hero">
+  <div class="portal-hero__inner">
+    <p class="portal-hero__greeting">Bonjour <%= @mission.client.first_name %>,</p>
+    <h1 class="portal-hero__title"><%= @mission.title %></h1>
+    <div class="portal-hero__meta">
+      <%= mission_status_badge(@mission.mission_status) %>
+      <% if @pending_logs.any? %>
+        <span class="portal-hero__pending">
+          <i class="fa-regular fa-circle-pause" aria-hidden="true"></i>
+          <%= @pending_logs.count %> point<%= @pending_logs.count > 1 ? "s" : "" %> en attente de votre retour
+        </span>
+      <% else %>
+        <span class="portal-hero__ok">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          Tout est à jour de votre côté
+        </span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%# ── Main content ─────────────────────────────────────────────────────── %>
+<main class="portal-body" id="main-content">
+
+  <%# ── PAV panel — full width ──────────────────────────────────────────── %>
+  <% if @pending_logs.any? %>
+    <section class="pav-card border mb-4 pav-card--attention" aria-labelledby="pav-panel-title">
+      <div class="pav-card__header">
+        <div>
+          <div class="pav-card__title-group">
+            <h2 class="pav-card__title" id="pav-panel-title">
+              <span class="pav-card__ico" aria-hidden="true">
+                <i class="fa-regular fa-circle-pause"></i>
+                <span class="pav-card__ping"></span>
+              </span>
+              À valider de votre côté
+              <span class="pav-card__attn-badge">
+                <span class="pav-card__attn-dot" aria-hidden="true"></span>
+                À traiter
+              </span>
+            </h2>
+          </div>
+          <p class="pav-card__subtitle mt-1 mb-0">
+            <%= @pending_logs.count %> point<%= @pending_logs.count > 1 ? "s" : "" %> en attente &middot;
+            contactez votre architecte pour valider
+          </p>
+        </div>
+      </div>
+
+      <div class="log-list" role="list">
+        <% @pending_logs.each do |log| %>
+          <div class="log-item portal-pav-item" role="listitem">
+            <span class="portal-pav-item__circle" aria-hidden="true">
+              <i class="fa-regular fa-circle-dot"></i>
+            </span>
+            <div class="log-item__content">
+              <span class="log-item__title"><%= log.title %></span>
+              <% if log.description.present? %>
+                <span class="log-item__description"><%= log.description %></span>
+              <% end %>
+              <span class="portal-pav-item__since">
+                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                Depuis le <%= format_date_fr(log.created_at) %>
+              </span>
+            </div>
+            <span class="portal-pav-item__waiting-chip" aria-label="En attente de votre retour">
+              en attente
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </section>
+
+  <% else %>
+    <%# ── Empty state ──────────────────────────────────────────────────── %>
+    <div class="portal-all-good card mb-4" role="status" aria-label="Tout est à jour">
+      <div class="portal-all-good__icon" aria-hidden="true">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div>
+        <h2 class="portal-all-good__title">Tout est à jour de votre côté</h2>
+        <p class="portal-all-good__sub">
+          Aucun point en attente pour le moment. Votre architecte vous contactera si besoin.
+        </p>
+        <% upcoming = @mission.steps.reject { |s| s.step_status.title == "Validée" }.first(3) %>
+        <% if upcoming.any? %>
+          <p class="portal-all-good__next-label">Prochaines étapes :</p>
+          <ul class="portal-all-good__next-list">
+            <% upcoming.each do |step| %>
+              <li>
+                <span class="portal-step-badge portal-step-badge--<%= step.step_status.title.parameterize %>">
+                  <%= step.step_status.title %>
+                </span>
+                <%= step.title %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# ── Info grid ────────────────────────────────────────────────────────── %>
+  <div class="portal-grid">
+
+    <%# Avancement %>
+    <div class="card portal-grid__card" aria-label="Avancement de la mission">
+      <p class="portal-grid__card-label">
+        <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Avancement
+      </p>
+      <div class="portal-progress-big">
+        <div class="portal-progress-big__pct" aria-label="<%= @progress %> pourcent"><%= @progress %>%</div>
+        <div class="progress missions-progress w-100" style="height: 8px;" role="progressbar"
+             aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar missions-progress__bar missions-progress__bar--<%= @progress == 100 ? "full" : (@progress < 35 ? "low" : "mid") %>"
+               style="width: <%= @progress %>%"></div>
+        </div>
+        <p class="portal-progress-big__sub">
+          <%= @steps_done %> étape<%= @steps_done > 1 ? "s" : "" %> validée<%= @steps_done > 1 ? "s" : "" %>
+          sur <%= @steps_total %>
+        </p>
+      </div>
+    </div>
+
+    <%# Contact architecte %>
+    <div class="card portal-grid__card">
+      <p class="portal-grid__card-label">
+        <i class="fa-solid fa-circle-user" aria-hidden="true"></i> Votre architecte
+      </p>
+      <div class="portal-contact">
+        <div class="portal-contact__avatar" aria-hidden="true">
+          <%= user_initials(@architect) %>
+        </div>
+        <div class="portal-contact__info">
+          <p class="portal-contact__name"><%= @profile&.first_name %> <%= @profile&.last_name %></p>
+          <% if @profile&.profession.present? %>
+            <p class="portal-contact__role"><%= @profile.profession %></p>
+          <% end %>
+        </div>
+        <div class="portal-contact__actions">
+          <a href="mailto:<%= @architect.email %>"
+             class="btn btn-sm btn-danger vesta-btn"
+             aria-label="Écrire à <%= @profile&.first_name %>">
+            <i class="fa-solid fa-envelope me-1" aria-hidden="true"></i>Écrire
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <%# Étapes du projet — full width %>
+    <div class="card portal-grid__card" aria-label="Étapes du projet">
+      <p class="portal-grid__card-label">
+        <i class="fa-solid fa-list-check" aria-hidden="true"></i> Étapes du projet
+      </p>
+      <% if @mission.steps.any? %>
+        <div class="step-timeline mt-2">
+          <% @mission.steps.each_with_index do |step, i| %>
+            <% is_last = i == @mission.steps.size - 1 %>
+            <% slug = step.step_status.title.parameterize %>
+            <% dot_mod = slug == "validee" ? "done" : (slug == "en-cours" ? "active" : "pending") %>
+            <% line_mod = slug == "validee" ? "done" : "pending" %>
+            <div class="step-timeline__item">
+              <div class="step-timeline__indicator">
+                <div class="step-timeline__dot step-timeline__dot--<%= dot_mod %>">
+                  <% if slug == "validee" %>
+                    <i class="fa-solid fa-check" aria-hidden="true"></i>
+                  <% elsif slug == "en-cours" %>
+                    <div class="step-timeline__dot-inner" aria-hidden="true"></div>
+                  <% end %>
+                </div>
+                <% unless is_last %>
+                  <div class="step-timeline__line step-timeline__line--<%= line_mod %>" aria-hidden="true"></div>
+                <% end %>
+              </div>
+              <div class="step-timeline__content">
+                <p class="step-timeline__title"><%= step.title %></p>
+                <% if step.description.present? %>
+                  <p class="step-timeline__description"><%= step.description %></p>
+                <% end %>
+                <span class="portal-step-badge portal-step-badge--<%= slug %>">
+                  <%= step.step_status.title %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-secondary" style="font-size: 0.875rem;">Aucune étape définie pour cette mission.</p>
+      <% end %>
+    </div>
+
+    <%# Décisions actées — full width, conditional %>
+    <% if @decided_logs.any? %>
+      <div class="card portal-grid__card" aria-label="Décisions actées">
+        <p class="portal-grid__card-label">
+          <i class="fa-solid fa-circle-check text-success" aria-hidden="true"></i> Décisions actées
+        </p>
+        <div class="log-list">
+          <% @decided_logs.each do |log| %>
+            <%= render "decision_logs/decided_log_item", log: log, profile: @profile %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div><%# /portal-grid %>
+</main>
