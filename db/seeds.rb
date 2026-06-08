@@ -172,8 +172,7 @@ missions_data.each do |mission_data|
     title: mission_data[:title],
     client: mission_data[:client],
     mission_status: mission_data[:status],
-    step_template: template,
-    portal_token: SecureRandom.hex(10)
+    step_template: template
   )
 
   steps_by_position = {}
