@@ -79,8 +79,7 @@ class GmailSyncJob < ApplicationJob
       stream_key,
       target: "gmail_synthesis_area_#{@client.id}",
       html: <<~HTML
-        <div id="gmail_synthesis_area_#{@client.id}" class="mt-3 pt-3 border-top">
-          <p class="fw-semibold mb-1 small text-muted text-uppercase" style="font-size:0.7rem;letter-spacing:0.05em;">Synthèse IA</p>
+        <div id="gmail_synthesis_area_#{@client.id}" class="ai-synthesis-panel__body">
           <p class="small mb-0">
             <span id="gmail_synthesis_stream_#{@client.id}"></span><span class="gmail-cursor">▋</span>
           </p>
@@ -122,6 +121,15 @@ class GmailSyncJob < ApplicationJob
       target: "gmail_panel_#{mission.id}",
       html: ApplicationController.render(
         partial: "missions/gmail_panel",
+        locals: { mission: mission, current_user: @user }
+      )
+    )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "mission_analyze_btn_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/analyze_btn",
         locals: { mission: mission, current_user: @user }
       )
     )
@@ -219,23 +227,41 @@ class GmailSyncJob < ApplicationJob
   end
 
   def broadcast_reconnect
+    mission = @mission.reload
     Turbo::StreamsChannel.broadcast_replace_to(
       stream_key,
-      target: "gmail_panel_#{@mission.id}",
+      target: "gmail_panel_#{mission.id}",
       html: ApplicationController.render(
         partial: "missions/gmail_panel",
-        locals: { mission: @mission.reload, current_user: @user, reconnect_needed: true }
+        locals: { mission: mission, current_user: @user }
+      )
+    )
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "mission_analyze_btn_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/analyze_btn",
+        locals: { mission: mission, current_user: @user, reconnect_needed: true }
       )
     )
   end
 
   def broadcast_error(message)
+    mission = @mission.reload
     Turbo::StreamsChannel.broadcast_replace_to(
       stream_key,
-      target: "gmail_panel_#{@mission.id}",
+      target: "gmail_panel_#{mission.id}",
       html: ApplicationController.render(
         partial: "missions/gmail_panel",
-        locals: { mission: @mission.reload, current_user: @user, sync_error: message }
+        locals: { mission: mission, current_user: @user }
+      )
+    )
+    Turbo::StreamsChannel.broadcast_replace_to(
+      stream_key,
+      target: "mission_analyze_btn_#{mission.id}",
+      html: ApplicationController.render(
+        partial: "missions/analyze_btn",
+        locals: { mission: mission, current_user: @user, sync_error: message }
       )
     )
   end

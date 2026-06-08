@@ -1,107 +1,50 @@
-<div id="gmail_panel_<%= mission.id %>" class="card mb-4">
-  <div class="d-flex justify-content-between align-items-center">
-    <div>
-      <h6 class="mb-1">
-        <i class="fa-brands fa-google me-2"></i>
-        Emails du client
-      </h6>
-
-      <small class="text-muted">
-        Analyse des échanges avec
-        <%= mission.client.email %>
-      </small>
-    </div>
-
-    <% if current_user.gmail_connection.present? %>
-      <% ai_logs_count = mission.decision_logs.where(source: "gmail_ai").count %>
-      <div data-controller="gmail-sync" data-gmail-sync-ai-count-value="<%= ai_logs_count %>">
-        <div data-gmail-sync-target="btn">
-          <%= button_to sync_emails_client_path(mission.client),
-              method: :post,
-              params: { mission_id: mission.id },
-              data: { action: "click->gmail-sync#handleClick" },
-              class: "btn btn-danger vesta-btn text-white rounded-pill" do %>
-            <i class="fa-solid fa-wand-magic-sparkles me-1"></i>
-            Synchroniser
-          <% end %>
-        </div>
-
-        <div data-gmail-sync-target="loader" class="d-none">
-          <div class="spinner-grow spinner-grow-sm text-danger me-1" role="status"></div>
-          <span class="small text-muted">IA — <span data-gmail-sync-target="word" class="gmail-sync__word fw-semibold text-dark"></span></span>
-        </div>
-      </div>
-    <% else %>
-      <%= button_to user_google_oauth2_omniauth_authorize_path,
-          method: :post,
-          data: { turbo: false },
-          class: "sidebar-profile__gmail-button" do %>
-        <i class="fa-brands fa-google"></i> Connecter Gmail
-      <% end %>
-    <% end %>
-  </div>
-
-  <% if local_assigns[:reconnect_needed] %>
-    <div class="mt-3 pt-3 border-top d-flex align-items-center gap-3">
-      <p class="small text-muted mb-0">Session Gmail expirée.</p>
-      <%= button_to "Reconnecter Gmail", user_google_oauth2_omniauth_authorize_path,
-          method: :post,
-          class: "btn btn-sm btn-outline-danger vesta-btn rounded-pill" %>
-    </div>
-  <% elsif local_assigns[:sync_error].present? %>
-    <div class="mt-3 pt-3 border-top">
-      <p class="small text-danger mb-0"><i class="fa-solid fa-circle-exclamation me-1"></i><%= sync_error %></p>
-    </div>
-  <% end %>
-
+<div id="gmail_panel_<%= mission.id %>">
   <% if mission.client.gmail_synthesis.present? %>
     <% ai_pending = mission.decision_logs.where(source: "gmail_ai", status: "pending") %>
     <% ai_decided = mission.decision_logs.where(source: "gmail_ai", status: "decided") %>
-    <div id="gmail_synthesis_area_<%= mission.client.id %>" class="mt-3 pt-3 border-top">
-      <p class="fw-semibold mb-1 small text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Synthèse IA</p>
-      <p class="small mb-0" style="white-space: pre-line;"><%= mission.client.gmail_synthesis %></p>
 
-      <% if ai_decided.any? || ai_pending.any? %>
-        <div class="row g-3 mt-2">
-          <% if ai_decided.any? %>
-            <div class="col-md-6">
-              <p class="fw-semibold mb-2 small text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">✅ Points validés</p>
-              <ul class="list-unstyled mb-0">
-                <% ai_decided.each do |log| %>
-                  <li class="small mb-1">• <%= log.title %></li>
-                <% end %>
-              </ul>
+    <div class="ai-synthesis-panel">
+      <button class="ai-synthesis-panel__toggle"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#ai_synthesis_collapse_<%= mission.id %>"
+              aria-expanded="false"
+              aria-controls="ai_synthesis_collapse_<%= mission.id %>">
+        <span class="ai-synthesis-panel__toggle-left">
+          <i class="fa-solid fa-wand-magic-sparkles text-danger me-2"></i>
+          <span class="fw-semibold small">Synthèse IA des échanges</span>
+        </span>
+        <i class="fa-solid fa-chevron-down ai-synthesis-panel__chevron"></i>
+      </button>
+
+      <div class="collapse" id="ai_synthesis_collapse_<%= mission.id %>">
+        <div class="ai-synthesis-panel__body" id="gmail_synthesis_area_<%= mission.client.id %>">
+          <p class="small mb-0" style="white-space: pre-line;"><%= mission.client.gmail_synthesis %></p>
+
+          <% if ai_decided.any? || ai_pending.any? %>
+            <div class="row g-3 mt-2">
+              <% if ai_decided.any? %>
+                <div class="col-md-6">
+                  <p class="fw-semibold mb-2 small text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">✅ Points validés</p>
+                  <ul class="list-unstyled mb-0">
+                    <% ai_decided.each do |log| %>
+                      <li class="small mb-1">• <%= log.title %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <% if ai_pending.any? %>
+                <div class="col-md-6">
+                  <p class="fw-semibold mb-2 small text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">⏳ Points en attente</p>
+                  <ul class="list-unstyled mb-0">
+                    <% ai_pending.each do |log| %>
+                      <li class="small mb-1">• <%= log.title %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
             </div>
           <% end %>
-          <% if ai_pending.any? %>
-            <div class="col-md-6">
-              <p class="fw-semibold mb-2 small text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">⏳ Points en attente</p>
-              <ul class="list-unstyled mb-0">
-                <% ai_pending.each do |log| %>
-                  <li class="small mb-1">• <%= log.title %></li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-  <% if mission.client.gmail_last_synced_at.present? %>
-    <div class="mt-4 pt-3 border-top">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <div class="gmail-stat-card">
-            <span class="gmail-stat-card__label">Emails trouvés</span>
-            <strong><%= mission.client.gmail_messages_count || 0 %></strong>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="gmail-stat-card">
-            <span class="gmail-stat-card__label">Dernière synchronisation</span>
-            <strong>il y a <%= time_ago_in_words(mission.client.gmail_last_synced_at) %></strong>
-          </div>
         </div>
       </div>
     </div>

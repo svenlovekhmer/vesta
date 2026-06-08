@@ -1,0 +1,55 @@
+<div id="mission_analyze_btn_<%= mission.id %>">
+  <% if local_assigns[:reconnect_needed] %>
+    <div class="d-flex align-items-center gap-2">
+      <%= button_to "Reconnecter Gmail", user_google_oauth2_omniauth_authorize_path,
+          method: :post,
+          data: { turbo: false },
+          class: "btn btn-outline-danger vesta-btn rounded-pill" do %>
+        <i class="fa-brands fa-google me-1"></i> Reconnecter Gmail
+      <% end %>
+      <small class="text-muted">Session expirée</small>
+    </div>
+  <% elsif local_assigns[:sync_error].present? %>
+    <% ai_logs_count = mission.decision_logs.where(source: "gmail_ai").count %>
+    <div data-controller="gmail-sync" data-gmail-sync-ai-count-value="<%= ai_logs_count %>">
+      <div data-gmail-sync-target="btn">
+        <%= button_to sync_emails_client_path(mission.client),
+            method: :post,
+            params: { mission_id: mission.id },
+            data: { action: "click->gmail-sync#handleClick" },
+            class: "btn btn-outline-danger vesta-btn rounded-pill" do %>
+          <i class="fa-solid fa-circle-exclamation me-1"></i> Réessayer
+        <% end %>
+      </div>
+      <div data-gmail-sync-target="loader" class="d-none">
+        <div class="spinner-grow spinner-grow-sm text-danger me-1" role="status"></div>
+        <span class="small text-muted">IA — <span data-gmail-sync-target="word" class="gmail-sync__word fw-semibold text-dark"></span></span>
+      </div>
+    </div>
+  <% elsif current_user.gmail_connection.present? %>
+    <% ai_logs_count = mission.decision_logs.where(source: "gmail_ai").count %>
+    <div data-controller="gmail-sync" data-gmail-sync-ai-count-value="<%= ai_logs_count %>">
+      <div data-gmail-sync-target="btn">
+        <%= button_to sync_emails_client_path(mission.client),
+            method: :post,
+            params: { mission_id: mission.id },
+            data: { action: "click->gmail-sync#handleClick" },
+            class: "btn btn-danger vesta-btn text-white rounded-pill" do %>
+          <i class="fa-solid fa-wand-magic-sparkles me-1"></i>
+          Analyser les échanges
+        <% end %>
+      </div>
+      <div data-gmail-sync-target="loader" class="d-none">
+        <div class="spinner-grow spinner-grow-sm text-danger me-1" role="status"></div>
+        <span class="small text-muted">IA — <span data-gmail-sync-target="word" class="gmail-sync__word fw-semibold text-dark"></span></span>
+      </div>
+    </div>
+  <% else %>
+    <%= button_to user_google_oauth2_omniauth_authorize_path,
+        method: :post,
+        data: { turbo: false },
+        class: "btn btn-outline-danger vesta-btn rounded-pill" do %>
+      <i class="fa-brands fa-google me-1"></i> Connecter Gmail
+    <% end %>
+  <% end %>
+</div>

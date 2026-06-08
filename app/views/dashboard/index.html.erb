@@ -35,30 +35,7 @@
       <% end %>
     <% end %>
 
-    <div class="dashboard-header__helper">
-      <small class="text-muted">Crée une synthèse IA et identifie les nouvelles décisions par mission</small>
-      <div class="dropdown">
-        <button type="button" class="hiw-trigger" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="fa-solid fa-circle-question"></i>
-        </button>
-        <div class="dropdown-menu dropdown-menu-end hiw-dropdown p-3">
-          <p class="fw-bold mb-2 hiw-dropdown__title">Comment ça marche ?</p>
-          <p class="small mb-3 hiw-dropdown__desc">Vesta lit les emails Gmail de chaque mission et génère automatiquement une synthèse et les décisions à prendre.</p>
-          <div class="d-flex flex-column gap-2">
-            <% [
-              "Récupère les derniers échanges avec tes clients",
-              "Identifie les décisions validées et en attente",
-              "Met à jour la synthèse de chaque mission"
-            ].each_with_index do |step, i| %>
-              <div class="d-flex align-items-start gap-2">
-                <span class="hiw-step-num"><%= i + 1 %></span>
-                <span class="small hiw-dropdown__step-text"><%= step %></span>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render "shared/analyze_helper", scope: :dashboard %>
   </div>
 </div>
 
