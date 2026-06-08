@@ -40,4 +40,9 @@ Rails.application.routes.draw do
     end
   end
   resources :decision_log_documents, only: [:create]
+  resources :step_templates, except: [:show] do
+    member do
+      get :confirm_destroy
+    end
+  end
 end

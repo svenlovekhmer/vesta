@@ -1,0 +1,69 @@
+<%= simple_form_for step_template do |f| %>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="form-group mb-4">
+          <%= f.input :name,
+              label: "Nom du template",
+              placeholder: "ex. Rénovation complète",
+              input_html: { class: "rounded-4" } %>
+        </div>
+        <div class="form-group mb-4">
+          <%= f.input :description,
+              as: :text,
+              label: "Description",
+              placeholder: "Décrivez l'usage de ce template...",
+              input_html: { class: "rounded-4", rows: 3 } %>
+        </div>
+        <div class="form-group">
+          <%= f.input :is_default,
+              as: :boolean,
+              boolean_style: :inline,
+              label: "Template par défaut",
+              checked_value: "true",
+              unchecked_value: "false",
+              hint: "Ce template sera proposé automatiquement lors de la création d'une mission." %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="bg-white border rounded-4 overflow-hidden"
+           data-controller="template-items">
+
+        <div class="bg-light border-bottom p-4">
+          <strong class="new-mission--steps-title">Étapes du template</strong>
+          <span class="new-mission--steps-subtitle text-muted d-block">Définissez les étapes clés de ce modèle.</span>
+        </div>
+
+        <div class="p-4">
+          <div data-template-items-target="list">
+            <%= f.fields_for :step_template_items do |sf| %>
+              <%= render "step_templates/item_fields", sf: sf %>
+            <% end %>
+          </div>
+
+          <button type="button"
+                  class="btn step-add-btn w-100 mt-3"
+                  data-action="template-items#addItem">
+            <i class="fa-solid fa-plus"></i> Ajouter une étape
+          </button>
+        </div>
+
+        <template data-template-items-target="rowTemplate">
+          <%= render "step_templates/item_fields", sf: nil %>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <%= link_to step_templates_path, class: "text-danger cancel-btn" do %>
+      <i class="fa-solid fa-angle-left d-inline-block me-2"></i> Annuler
+    <% end %>
+    <%= f.button :button, type: :submit, class: "btn btn-danger vesta-btn rounded-pill text-white" do %>
+      <i class="fa-regular fa-square-check pe-2 d-inline-block"></i>
+      <%= step_template.persisted? ? "Enregistrer" : "Créer le template" %>
+    <% end %>
+  </div>
+<% end %>

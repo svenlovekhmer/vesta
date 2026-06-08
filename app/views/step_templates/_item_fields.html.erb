@@ -1,0 +1,35 @@
+<% is_template = sf.nil? %>
+<div class="step-card d-flex align-items-center gap-2 mb-2" data-template-items-target="row">
+
+  <% if is_template %>
+    <input type="hidden" name="step_template[step_template_items_attributes][NEW_INDEX][position]" value="">
+    <input type="hidden" name="step_template[step_template_items_attributes][NEW_INDEX][_destroy]" value="false">
+  <% else %>
+    <%= sf.hidden_field :position %>
+    <%= sf.hidden_field :_destroy, value: "false" %>
+    <% if sf.object&.persisted? %>
+      <%= sf.hidden_field :id %>
+    <% end %>
+  <% end %>
+
+  <span class="step-badge flex-shrink-0" data-template-items-target="badge"></span>
+
+  <% if is_template %>
+    <input type="text"
+           class="form-control step-title-input"
+           placeholder="Nom de l'étape"
+           name="step_template[step_template_items_attributes][NEW_INDEX][title]">
+  <% else %>
+    <%= sf.text_field :title,
+          class: "form-control step-title-input",
+          placeholder: "Nom de l'étape",
+          label: false %>
+  <% end %>
+
+  <button type="button"
+          class="btn btn-sm btn-light rounded-circle step-action-btn flex-shrink-0"
+          data-action="template-items#removeItem"
+          title="Supprimer">
+    <i class="fa-solid fa-trash-can"></i>
+  </button>
+</div>

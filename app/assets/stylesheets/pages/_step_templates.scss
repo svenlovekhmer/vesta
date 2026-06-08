@@ -1,0 +1,63 @@
+.step-templates--title {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.step-templates--subtitle {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.step-template-card {
+  padding: 1.25rem 1.5rem;
+
+  &__name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  &__description {
+    font-size: 0.875rem;
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  &__actions {
+    flex-shrink: 0;
+  }
+}
+
+.step-template-item-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: $light-gray;
+  border-radius: 20px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  color: #555;
+
+  &__number {
+    background-color: $red;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+}
+
+.step-templates-empty {
+  max-width: 480px;
+  margin: 3rem auto;
+}
