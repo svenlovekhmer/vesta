@@ -24,6 +24,15 @@
             prompt: "Sélectionnez un client" %>
         </div>
       </div>
+      <div class="card mt-4">
+        <div class="form-group">
+          <%= f.input :description,
+            as: :text,
+            label: "Brief de la mission",
+            placeholder: "Décrivez les objectifs, les contraintes et le périmètre de la mission...",
+            input_html: { class: "rounded-4" } %>
+        </div>
+      </div>
     </div>
     <div class="col-12 col-md-6">
       <div class="bg-white border rounded-4 overflow-hidden new-mission--steps"
@@ -104,19 +113,6 @@
         <template data-steps-target="rowTemplate">
           <%= render "missions/step_fields", sf: nil %>
         </template>
-      </div>
-    </div>
-  </div>
-  <div class="row mt-4">
-    <div class="col-12">
-      <div class="card">
-        <div class="form-group">
-          <%= f.input :description,
-            as: :text,
-            label: "Brief de la mission",
-            placeholder: "Décrivez les objectifs, les contraintes et le périmètre de la mission...",
-            input_html: { class: "rounded-4" } %>
-        </div>
       </div>
     </div>
   </div>

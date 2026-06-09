@@ -87,14 +87,14 @@
         </div>
         <div class="mission-show__col-right">
           <%= render "pav_section", mission: @mission, pending_logs: @pending_logs, vesta_count: @vesta_pending_count, client_count: @client_pending_count %>
+
+          <%# Décisions actées — pleine largeur %>
+          <%= render "decided_section", mission: @mission, decided_logs: @decided_logs %>
+
+          <%# Synthèse IA — repliable, replié par défaut %>
+          <%= render "gmail_panel", mission: @mission, current_user: current_user %>
         </div>
       </div>
-
-      <%# Décisions actées — pleine largeur %>
-      <%= render "decided_section", mission: @mission, decided_logs: @decided_logs %>
-
-      <%# Synthèse IA — repliable, replié par défaut %>
-      <%= render "gmail_panel", mission: @mission, current_user: current_user %>
 
     </div>
 
