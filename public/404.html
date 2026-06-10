@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>Page introuvable — Vesta</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      * { margin: 0; }
+
+      body {
+        background: #ffffff;
+        color: #1a1a1a;
+        font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .container {
+        text-align: center;
+        max-width: 480px;
+      }
+
+      .brand {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #FF385C;
+        margin-bottom: 2.5rem;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .error-code {
+        font-size: clamp(6rem, 20vw, 9rem);
+        font-weight: 800;
+        line-height: 1;
+        color: #f3f3f3;
+        letter-spacing: -0.04em;
+        margin-bottom: 1rem;
+        user-select: none;
+      }
+
+      h1 {
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.75rem;
+      }
+
+      p {
+        font-size: 0.9375rem;
+        color: #6b6b6b;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #FF385C;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0.625rem 1.375rem;
+        border-radius: 999px;
+        transition: opacity 0.15s;
+      }
+
+      .btn:hover { opacity: 0.85; }
+
+      .divider {
+        width: 2.5rem;
+        height: 2px;
+        background: #FF385C;
+        margin: 1.5rem auto;
+        border-radius: 999px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/" class="brand">VESTA</a>
+      <div class="error-code">404</div>
+      <div class="divider"></div>
+      <h1>Page introuvable</h1>
+      <p>La page que vous recherchez n'existe pas ou a été déplacée.</p>
+      <a href="/" class="btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 12L1 7L6 2M1 7H13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Retour à l'accueil
+      </a>
+    </div>
+  </body>
+</html>
