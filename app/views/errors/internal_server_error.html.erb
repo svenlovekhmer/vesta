@@ -1,0 +1,21 @@
+<% content_for :title, "Erreur serveur – Vesta" %>
+
+<div class="error-page">
+  <div class="error-card">
+    <div class="error-logo">
+      <%= image_tag "logo.svg", height: 32, alt: "Vesta" %>
+      <span>VESTA</span>
+    </div>
+
+    <div class="error-code">500</div>
+
+    <h1 class="error-title">Erreur serveur</h1>
+    <p class="error-message">
+      Une erreur inattendue s'est produite. Nos équipes en ont été informées.
+    </p>
+
+    <%= link_to root_path, class: "btn btn-danger vesta-btn text-white rounded-pill error-btn" do %>
+      Retour à l'accueil
+    <% end %>
+  </div>
+</div>

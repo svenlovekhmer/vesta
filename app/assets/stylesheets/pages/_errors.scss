@@ -1,0 +1,61 @@
+.error-page {
+  min-height: 100vh;
+  background: $light-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.error-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 1rem;
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.error-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #261B23;
+
+  img {
+    height: 32px;
+    width: auto;
+  }
+}
+
+.error-code {
+  font-size: 6rem;
+  font-weight: 900;
+  line-height: 1;
+  color: $red;
+}
+
+.error-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.error-message {
+  color: $gray;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.error-btn {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.5rem;
+}
